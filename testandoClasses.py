@@ -8,20 +8,13 @@ class Paciente():
         self.cpf = cpf
         #self.id = id
         
-    def cadastrarNovoPaciente(self, nome, idade, sexo, rg, cpf):
+    def cadastrarNovoPaciente(self, nome, idade, sexo, rg, cpf, dicionario):
         self.nome = nome
         self.idade = idade
         self.sexo = sexo
         self.rg = rg
         self.cpf = cpf
-
-
-    """def cabecalho(text):
-        print("_"*40)
-        print()
-        print(text.center(40))
-        print("_"*40)"""
-
+        dicionario = {'nome': nome, 'idade': idade, 'sexo': sexo, 'rg': rg, 'cpf': cpf}
     def cabecalho(texto):
         print("-"*40)
         print(texto.center(40))
@@ -46,7 +39,7 @@ class Paciente():
         pass
 
 encerrarPrograma = False
-
+dicionario = dict
 while encerrarPrograma != True:
     Paciente.cabecalho("MENU")
     print("""1 - Adicionar nova sessão
@@ -86,8 +79,15 @@ while encerrarPrograma != True:
         
     elif opcao == 5:
         print("Opção 5 - Cadastrar novo paciente")
+        Paciente.cabecalho("CADASTRO DE NOVO PACIENTE")
         input_nome = str(input("Nome: "))
-        input_idade = int(input("Idade: "))
+        while True:
+            try:
+                input_idade = int(input("Idade: "))
+            except: 
+                print("ERRO! Digite apenas números!")
+            else:
+                break
         input_sexo = str(input("Sexo[M/F]: "))
         input_rg = int(input("RG: "))
         input_cpf = int(input("CPF: "))
