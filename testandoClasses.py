@@ -7,7 +7,7 @@ class Paciente():
         self.cpf = cpf
         #self.id = id
         
-    def dadosPaciente(self, nome, idade, sexo, rg, cpf):
+    def cadastrarNovoPaciente(self, nome, idade, sexo, rg, cpf):
         self.nome = nome
         self.idade = idade
         self.sexo = sexo
@@ -33,9 +33,6 @@ class Paciente():
         pass
 
     def iniciarSessao():
-        pass
-
-    def cadastrarNovoPaciente():
         pass
 
     def marcarHorario():
@@ -65,20 +62,46 @@ while True:
     except:
         print("ERRO! Digite apenas números de 1 a 8!")
     else:
-        break
+        if opcao <= 8:
+            break
+        else:
+            print("ERRO! Digite apenas de 1 a 8!")
+            continue
 
-input_nome = str(input("Nome: "))
-input_idade = int(input("Idade: "))
-input_sexo = str(input("Sexo[M/F]: "))
-input_rg = int(input("RG: "))
-input_cpf = int(input("CPF: "))
+if opcao == 1:
+    print("Opção 1 - Adicionar nova sessão")
 
-paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
+elif opcao == 2: 
+    print("Opção 2 - Listar sessões clínicas")
 
-print(paciente.nome)
-print(paciente.idade)
-print(paciente.sexo)
-print(paciente.rg)
-print(paciente.cpf)
+elif opcao == 3: 
+    print("Opção 3 - Buscar sessão")
+
+elif opcao == 4:
+    print("Opção 4 - Iniciar sessão")
+    
+elif opcao == 5:
+    print("Opção 5 - Cadastrar novo paciente")
+    input_nome = str(input("Nome: "))
+    input_idade = int(input("Idade: "))
+    input_sexo = str(input("Sexo[M/F]: "))
+    input_rg = int(input("RG: "))
+    input_cpf = int(input("CPF: "))
+
+    paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
+
+    print(paciente.nome)
+    print(paciente.idade)
+    print(paciente.sexo)
+    print(paciente.rg)
+    print(paciente.cpf)
+
+elif opcao == 6:
+    print("Opção 7 - Marcar horário")
+
+elif opcao == 7:
+    print("Opção 8 - Listar próximos pacientes")
+
+
 
 
