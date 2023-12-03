@@ -1,3 +1,4 @@
+import time
 class Paciente():
     def __init__(self, nome, idade, sexo, rg, cpf):
         self.nome = nome
@@ -46,29 +47,29 @@ class Paciente():
 
 encerrarPrograma = False
 
-while encerrarPrograma == True:
+while encerrarPrograma != True:
     Paciente.cabecalho("MENU")
     print("""1 - Adicionar nova sessão
-    2 - Listar sessões clínicas 
-    3 - Buscar sessão
-    4 - Iniciar sessão      
-    5 - Cadastrar novo paciente
-    6 - Marcar horário 
-    7 - Buscar paciente
-    8 - Listar próximos pacientes
-    9 - Sair do sistema """)
+2 - Listar sessões clínicas 
+3 - Buscar sessão
+4 - Iniciar sessão      
+5 - Cadastrar novo paciente
+6 - Marcar horário 
+7 - Buscar paciente
+8 - Listar próximos pacientes
+9 - Sair do sistema """)
     print("-"*40)
 
     while True:
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
-            print("ERRO! Digite apenas números de 1 a 8!")
+            print("ERRO! Digite apenas números de 1 a 9!")
         else:
-            if opcao <= 8:
+            if opcao <= 9:
                 break
             else:
-                print("ERRO! Digite apenas de 1 a 8!")
+                print("ERRO! Digite apenas de 1 a 9!")
                 continue
 
     if opcao == 1:
@@ -110,6 +111,9 @@ while encerrarPrograma == True:
     
     elif opcao == 9:
         encerrarPrograma = True
+
+    time.sleep(2) #Só para teste
+    print('\033c', end='')
 
 
 
