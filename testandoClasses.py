@@ -99,7 +99,7 @@ while encerrarPrograma != True:
                 print("ERRO! Digite apenas M ou F!")
             else:
                 break
-            #Len é para string!
+            #Len é para string! Depois vejo isso
         """while True:
             try:
                 input_rg = int(input("RG: "))
