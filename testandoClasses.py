@@ -15,6 +15,7 @@ class Paciente():
         self.rg = rg
         self.cpf = cpf
         dicionario = {'nome': nome, 'idade': idade, 'sexo': sexo, 'rg': rg, 'cpf': cpf}
+
     def cabecalho(texto):
         print("-"*40)
         print(texto.center(40))
@@ -88,7 +89,16 @@ while encerrarPrograma != True:
                 print("ERRO! Digite apenas números!")
             else:
                 break
-        input_sexo = str(input("Sexo[M/F]: "))
+        while True:
+            try:
+                input_sexo = str(input("Sexo[M/F]: ")).upper()
+                if input_sexo != "M" and input_sexo != "F":
+                    print("ERRO! Digite apenas M ou F!")
+                    continue
+            except:
+                print("ERRO! Digite apenas M ou F!")
+            else:
+                break
         input_rg = int(input("RG: "))
         input_cpf = int(input("CPF: "))
 
