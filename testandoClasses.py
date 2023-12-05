@@ -100,10 +100,10 @@ while encerrarPrograma != True:
             else:
                 break
             #Len é para string! Depois vejo isso
-        """while True:
+        while True:
             try:
                 input_rg = int(input("RG: "))
-                if len(input_rg) != 10:
+                if len(str(input_rg)) != 10:
                     print("ERRO! Digite somente os 10 números do RG")
                     continue
             except:
@@ -114,13 +114,13 @@ while encerrarPrograma != True:
         while True:
             try:
                 input_cpf = int(input("CPF: "))
-                if len(input_rg) != 11:
+                if len(str(input_cpf)) != 11:
                     print("ERRO! Digite somente os 11 números do CPF")
                     continue
             except:
-                print("ERRO! Digite apenas números!")"""
-
-        
+                print("ERRO! Digite apenas números!")
+            else:
+                break
 
         paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
 
