@@ -41,6 +41,9 @@ class Paciente():
 
 encerrarPrograma = False
 dicionario = dict
+dadosPaciente = {}
+
+
 while encerrarPrograma != True:
     Paciente.cabecalho("MENU")
     print("""1 - Adicionar nova sessão
@@ -82,13 +85,17 @@ while encerrarPrograma != True:
         print("Opção 5 - Cadastrar novo paciente")
         Paciente.cabecalho("CADASTRO DE NOVO PACIENTE")
         input_nome = str(input("Nome: "))
+        dadosPaciente["nome"] = input_nome
+
         while True:
             try:
                 input_idade = int(input("Idade: "))
             except: 
                 print("ERRO! Digite apenas números!")
             else:
+                dadosPaciente["idade"] = input_idade
                 break
+
         while True:
             try:
                 input_sexo = str(input("Sexo[M/F]: ")).upper()
@@ -98,8 +105,9 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas M ou F!")
             else:
+                dadosPaciente["sexo"] = input_sexo
                 break
-            #Len é para string! Depois vejo isso
+        
         while True:
             try:
                 input_rg = int(input("RG: "))
@@ -109,6 +117,7 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas números!")
             else:
+                dadosPaciente["rg"] = input_rg
                 break
 
         while True:
@@ -120,8 +129,10 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas números!")
             else:
+                dadosPaciente["cpf"] = input_cpf
                 break
 
+        print(dadosPaciente)
         paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
 
         print(paciente.nome)
@@ -142,8 +153,8 @@ while encerrarPrograma != True:
     elif opcao == 9:
         encerrarPrograma = True
 
-    time.sleep(2) #Só para teste
-    print('\033c', end='')
+    """time.sleep(2) #Só para teste
+    print('\033c', end='')"""
 
 
 
