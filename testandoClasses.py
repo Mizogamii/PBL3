@@ -1,4 +1,5 @@
 import time
+import json
 class Paciente():
     def __init__(self, nome, idade, sexo, rg, cpf):
         self.nome = nome
@@ -14,7 +15,6 @@ class Paciente():
         self.sexo = sexo
         self.rg = rg
         self.cpf = cpf
-        dicionario = {'nome': nome, 'idade': idade, 'sexo': sexo, 'rg': rg, 'cpf': cpf}
 
     def cabecalho(texto):
         print("-"*40)
@@ -40,9 +40,8 @@ class Paciente():
         pass
 
 encerrarPrograma = False
-dicionario = dict
 dadosPaciente = {}
-
+listaDadosPaciente = []
 
 while encerrarPrograma != True:
     Paciente.cabecalho("MENU")
@@ -131,8 +130,21 @@ while encerrarPrograma != True:
             else:
                 dadosPaciente["cpf"] = input_cpf
                 break
-
+            
         print(dadosPaciente)
+        listaDadosPaciente.append(dadosPaciente)
+        print(listaDadosPaciente)
+        
+        json.dumps(dadosPaciente, indent = 4)
+        
+        #Criando o arquivo em json
+        with open('dadosPaciente.json', 'w') as arquivo:
+            arquivo.write(json.dumps(dadosPaciente))
+
+        with open('dadosPaciente.json', 'r') as arquivo:
+            texto = arquivo.read()
+            dados = json.loads(texto)
+            
         paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
 
         print(paciente.nome)
