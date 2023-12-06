@@ -42,6 +42,7 @@ class Paciente():
 encerrarPrograma = False
 dadosPaciente = {}
 listaDadosPaciente = []
+dicionarioDadosGeral = {}
 
 while encerrarPrograma != True:
     Paciente.cabecalho("MENU")
@@ -133,13 +134,14 @@ while encerrarPrograma != True:
             
         print(dadosPaciente)
         listaDadosPaciente.append(dadosPaciente)
-        print(listaDadosPaciente)
-        
-        json.dumps(dadosPaciente, indent = 4)
+
+        dicionarioDadosGeral = listaDadosPaciente
+
+        json.dumps(dicionarioDadosGeral, indent = 4)
         
         #Criando o arquivo em json
-        with open('dadosPaciente.json', 'w') as arquivo:
-            arquivo.write(json.dumps(dadosPaciente))
+        with open('dadosPaciente.json', 'a') as arquivo:
+            arquivo.write(json.dumps(dicionarioDadosGeral))
 
         with open('dadosPaciente.json', 'r') as arquivo:
             texto = arquivo.read()
