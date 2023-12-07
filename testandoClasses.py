@@ -1,43 +1,36 @@
 import time
 import json
 class Paciente():
-    def __init__(self, nome, idade, sexo, rg, cpf):
+    def __init__(self, nome, idade, sexo, rg, cpf, id):
         self.nome = nome
         self.idade = idade
         self.sexo = sexo
         self.rg = rg
         self.cpf = cpf
-        #self.id = id
-        
-    def cadastrarNovoPaciente(self, nome, idade, sexo, rg, cpf, dicionario):
-        self.nome = nome
-        self.idade = idade
-        self.sexo = sexo
-        self.rg = rg
-        self.cpf = cpf
+        self.id = id
 
-    def cabecalho(texto):
-        print("-"*40)
-        print(texto.center(40))
-        print("-"*40)
+def cabecalho(texto):
+    print("-"*40)
+    print(texto.center(40))
+    print("-"*40)
 
-    def adicionarNovaSessao():
-        pass
+def adicionarNovaSessao():
+    pass
 
-    def buscarSessao():
-        pass
+def buscarSessao():
+    pass
 
-    def iniciarSessao():
-        pass
+def iniciarSessao():
+    pass
 
-    def marcarHorario():
-        pass
+def marcarHorario():
+    pass
 
-    def buscarPaciente():
-        pass
+def buscarPaciente():
+    pass
 
-    def listarProximos():
-        pass
+def listarProximos():
+    pass
 
 encerrarPrograma = False
 dadosPaciente = {}
@@ -45,7 +38,7 @@ listaDadosPaciente = []
 dicionarioDadosGeral = {}
 
 while encerrarPrograma != True:
-    Paciente.cabecalho("MENU")
+    cabecalho("MENU")
     print("""1 - Adicionar nova sessão
 2 - Listar sessões clínicas 
 3 - Buscar sessão
@@ -83,7 +76,7 @@ while encerrarPrograma != True:
         
     elif opcao == 5:
         print("Opção 5 - Cadastrar novo paciente")
-        Paciente.cabecalho("CADASTRO DE NOVO PACIENTE")
+        cabecalho("CADASTRO DE NOVO PACIENTE")
         input_nome = str(input("Nome: "))
         dadosPaciente["nome"] = input_nome
 
