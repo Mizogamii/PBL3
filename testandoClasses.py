@@ -36,6 +36,7 @@ encerrarPrograma = False
 dadosPaciente = {}
 listaDadosPaciente = []
 dicionarioDadosGeral = {}
+idNovo = 0
 
 while encerrarPrograma != True:
     cabecalho("MENU")
@@ -78,7 +79,6 @@ while encerrarPrograma != True:
         print("Opção 5 - Cadastrar novo paciente")
         cabecalho("CADASTRO DE NOVO PACIENTE")
         input_nome = str(input("Nome: "))
-        dadosPaciente["nome"] = input_nome
 
         while True:
             try:
@@ -86,7 +86,6 @@ while encerrarPrograma != True:
             except: 
                 print("ERRO! Digite apenas números!")
             else:
-                dadosPaciente["idade"] = input_idade
                 break
 
         while True:
@@ -98,7 +97,6 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas M ou F!")
             else:
-                dadosPaciente["sexo"] = input_sexo
                 break
         
         while True:
@@ -110,7 +108,6 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas números!")
             else:
-                dadosPaciente["rg"] = input_rg
                 break
 
         while True:
@@ -122,31 +119,42 @@ while encerrarPrograma != True:
             except:
                 print("ERRO! Digite apenas números!")
             else:
-                dadosPaciente["cpf"] = input_cpf
                 break
             
         print(dadosPaciente)
-        listaDadosPaciente.append(dadosPaciente)
-
-        dicionarioDadosGeral = listaDadosPaciente
-
-        json.dumps(dicionarioDadosGeral, indent = 4)
         
-        #Criando o arquivo em json
-        with open('dadosPaciente.json', 'a') as arquivo:
-            arquivo.write(json.dumps(dicionarioDadosGeral))
+        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, idNovo)
 
-        with open('dadosPaciente.json', 'r') as arquivo:
-            texto = arquivo.read()
-            dados = json.loads(texto)
-            
-        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
-
+        idNovo += 1
+        
         print(paciente.nome)
         print(paciente.idade)
         print(paciente.sexo)
         print(paciente.rg)
         print(paciente.cpf)
+        print(paciente.id)
+
+        arquivosJson = {
+            'nome': paciente.nome,
+            'idade': paciente.idade,
+            'sexo': paciente.sexo,
+            'rg': paciente.rg,
+            'cpf': paciente.cpf,
+            'id': paciente.id
+        }
+
+        try:
+            with open('dadosPaciente.json', 'r') as arquivo:
+                dadosPaciente = json.load(arquivo)
+
+        except FileNotFoundError:
+            dadosPaciente = {}
+        
+        dadosPaciente.update(arquivosJson)
+
+        #Criando o arquivo em json
+        with open('dadosPaciente.json', 'w') as arquivo:
+            json.dump(dadosPaciente, arquivo, indent=4)
 
     elif opcao == 6:
         print("Opção 6 - Buscar paciente")
