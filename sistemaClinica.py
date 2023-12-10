@@ -16,8 +16,6 @@ class Recepcao():
         self.sessoes = sessoes
         self.fila = fila
         
-
-
 def cabecalho(texto):
     print("-"*40)
     print(texto.center(40))
@@ -44,7 +42,7 @@ def listarProximos():
 encerrarPrograma = False
 dadosGerais = {}
 arquivosJson = {}
-idNovo = 0
+id = 1
 
 while encerrarPrograma != True:
     cabecalho("MENU")
@@ -128,11 +126,9 @@ while encerrarPrograma != True:
                 print("ERRO! Digite apenas números!")
             else:
                 break
-        
-        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, idNovo)
 
-        idNovo += 1
-        
+        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
+
         print(paciente.nome)
         print(paciente.idade)
         print(paciente.sexo)
@@ -158,11 +154,21 @@ while encerrarPrograma != True:
         except FileNotFoundError:
             dadosPaciente = {}
         
-        dadosPaciente[idNovo] = arquivosJson
+        if dadosPaciente:
+            ultimoId = max(dadosPaciente.keys())
+            ultimoId = int(ultimoId)
+            id = ultimoId + 1
+        else:
+            id = 1
 
-        #Criando o arquivo em json
+        # Adiciona o novo paciente
+        dadosPaciente[id] = arquivosJson
+
+        # Salva os dados no arquivo
         with open('dadosPaciente.json', 'w') as arquivo:
             json.dump(dadosPaciente, arquivo, indent=4)
+
+        print(f"Cliente adicionado com sucesso! ID: {id}")
 
     elif opcao == 6:
         print("Opção 6 - Buscar paciente")
