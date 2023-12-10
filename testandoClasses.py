@@ -33,9 +33,8 @@ def listarProximos():
     pass
 
 encerrarPrograma = False
-dadosPaciente = {}
-listaDadosPaciente = []
-dicionarioDadosGeral = {}
+dadosGerais = {}
+arquivosJson = {}
 idNovo = 0
 
 while encerrarPrograma != True:
@@ -120,8 +119,6 @@ while encerrarPrograma != True:
                 print("ERRO! Digite apenas números!")
             else:
                 break
-            
-        print(dadosPaciente)
         
         paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, idNovo)
 
@@ -143,6 +140,8 @@ while encerrarPrograma != True:
             'id': paciente.id
         }
 
+        dadosGerais = {'id': paciente.id, 'dados': arquivosJson}
+
         try:
             with open('dadosPaciente.json', 'r') as arquivo:
                 dadosPaciente = json.load(arquivo)
@@ -150,7 +149,7 @@ while encerrarPrograma != True:
         except FileNotFoundError:
             dadosPaciente = {}
         
-        dadosPaciente.update(arquivosJson)
+        dadosPaciente[idNovo] = arquivosJson
 
         #Criando o arquivo em json
         with open('dadosPaciente.json', 'w') as arquivo:
