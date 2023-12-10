@@ -9,6 +9,15 @@ class Paciente():
         self.cpf = cpf
         self.id = id
 
+class Recepcao():
+    def __init__(self, data, horario, sessoes, fila):
+        self.data = data
+        self.horario = horario
+        self.sessoes = sessoes
+        self.fila = fila
+        
+
+
 def cabecalho(texto):
     print("-"*40)
     print(texto.center(40))
