@@ -100,7 +100,7 @@ while encerrarPrograma != True:
                 if input_sexo != "M" and input_sexo != "F":
                     print("ERRO! Digite apenas M ou F!")
                     continue
-            except:
+            except ValueError:
                 print("ERRO! Digite apenas M ou F!")
             else:
                 break
@@ -111,7 +111,7 @@ while encerrarPrograma != True:
                 if len(str(input_rg)) != 10:
                     print("ERRO! Digite somente os 10 números do RG")
                     continue
-            except:
+            except ValueError:
                 print("ERRO! Digite apenas números!")
             else:
                 break
@@ -122,7 +122,7 @@ while encerrarPrograma != True:
                 if len(str(input_cpf)) != 11:
                     print("ERRO! Digite somente os 11 números do CPF")
                     continue
-            except:
+            except ValueError:
                 print("ERRO! Digite apenas números!")
             else:
                 break
