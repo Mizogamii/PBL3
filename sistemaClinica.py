@@ -157,6 +157,7 @@ while encerrarPrograma != True:
         }
 
         dadosGerais = {'id': id, 'dados': arquivosJson}
+
         try:
             with open('dadosPaciente.json', 'r') as arquivo:
                 dadosPaciente = json.load(arquivo)
