@@ -57,6 +57,33 @@ while encerrarPrograma != True:
 
     if opcao == 1:
         print("Opção 1 - Adicionar nova sessão")
+        cabecalho("ADICIONAR NOVA SESSÃO")
+        dataSessao = int(input("Insira a data da nova sessão: "))
+        horarioSessao = int(input("Insira o horário da nova sessão: "))
+
+        recepcao = Recepcao(dataSessao, horarioSessao)
+        
+        arquivoRecepcaoNew = {'dataSessao': recepcao.dataSessao,
+                           'horarioSessao': recepcao.horarioSessao}
+        
+        print(recepcao.dataSessao)
+        print(recepcao.horarioSessao)   
+
+        try:
+            with open('dadosSessaoRecepcao.json', 'r') as arquivo:
+                dadosSessaoRecepcao = json.load(arquivo)
+
+        except FileNotFoundError:
+            dadosSessaoRecepcao = {}
+        
+        dadosSessaoRecepcao.update(arquivoRecepcaoNew)
+
+        # Salva os dados no arquivo
+        with open('dadosSessaoRecepcao.json', 'w') as arquivo:
+            json.dump(dadosSessaoRecepcao, arquivo, indent=4)
+
+        print(f"Sessão adicionada com sucesso!")
+
 
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
@@ -113,26 +140,23 @@ while encerrarPrograma != True:
             else:
                 break
 
-        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
+        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
 
         print(paciente.nome)
         print(paciente.idade)
         print(paciente.sexo)
         print(paciente.rg)
         print(paciente.cpf)
-        print(paciente.id)
 
         arquivosJson = {
             'nome': paciente.nome,
             'idade': paciente.idade,
             'sexo': paciente.sexo,
             'rg': paciente.rg,
-            'cpf': paciente.cpf,
-            'id': paciente.id
+            'cpf': paciente.cpf
         }
 
-        dadosGerais = {'id': paciente.id, 'dados': arquivosJson}
-
+        dadosGerais = {'id': id, 'dados': arquivosJson}
         try:
             with open('dadosPaciente.json', 'r') as arquivo:
                 dadosPaciente = json.load(arquivo)
@@ -141,7 +165,7 @@ while encerrarPrograma != True:
             dadosPaciente = {}
         
         if dadosPaciente:
-            ultimoId = max(dadosPaciente.keys())
+            ultimoId = max(map(int, dadosPaciente.keys()))
             ultimoId = int(ultimoId)
             id = ultimoId + 1
         else:
