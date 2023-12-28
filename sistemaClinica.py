@@ -29,7 +29,7 @@ def listarProximos():
 encerrarPrograma = False
 dadosGerais = {}
 arquivosJson = {}
-id = 1
+id = 0
 
 while encerrarPrograma != True:
     cabecalho("MENU")
@@ -161,21 +161,22 @@ Sessão 2 -- 14:00""")
                 break
 
         #Inserindo as informações na classe
-        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
+        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
 
         print(paciente.nome)
         print(paciente.idade)
         print(paciente.sexo)
         print(paciente.rg)
         print(paciente.cpf)
-        
+        print(paciente.id)
         #Inserindo os dados dentro do dicionário
         arquivosJson = {
             'nome': paciente.nome,
             'idade': paciente.idade,
             'sexo': paciente.sexo,
             'rg': paciente.rg,
-            'cpf': paciente.cpf
+            'cpf': paciente.cpf,
+            'id': paciente.id
         }
 
         dadosGerais = {'id': id, 'dados': arquivosJson}
@@ -195,15 +196,17 @@ Sessão 2 -- 14:00""")
         else:
             id = 1
 
+        id_str = str(id)
+        arquivosJson['id'] = id
+        dadosPaciente[str(id)] = arquivosJson
         # Adiciona o novo paciente
-        dadosPaciente[id] = arquivosJson
+        dadosPaciente[id_str] = arquivosJson
     
         # Salvando os dados no arquivo
         with open('dadosPaciente.json', 'w') as arquivo:
             json.dump(dadosPaciente, arquivo, indent=4)
 
         print(f"Cliente adicionado com sucesso! ID: {id}")
-
 
     elif opcao == 6:
         print("Opção 6 - Buscar paciente")
