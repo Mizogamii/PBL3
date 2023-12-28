@@ -1,7 +1,8 @@
 import time
 import json
 from classes import Paciente, Recepcao
-        
+
+#Função para organizar os títulos
 def cabecalho(texto):
     print("-"*40)
     print(texto.center(40))
@@ -58,32 +59,46 @@ while encerrarPrograma != True:
     if opcao == 1:
         print("Opção 1 - Adicionar nova sessão")
         cabecalho("ADICIONAR NOVA SESSÃO")
+        print("""Horário que inicia as sessões padrões: 
+Sessão 1 -- 08:00 
+Sessão 2 -- 14:00""")
+        print("-"*40)
+        
         dataSessao = int(input("Insira a data da nova sessão: "))
         horarioSessao = int(input("Insira o horário da nova sessão: "))
 
+        #Inserindo as informações na classe
         recepcao = Recepcao(dataSessao, horarioSessao)
-        
+
+        #Inserindo as informações em um dicionário
         arquivoRecepcaoNew = {'dataSessao': recepcao.dataSessao,
                            'horarioSessao': recepcao.horarioSessao}
         
+        #Só para testes
         print(recepcao.dataSessao)
         print(recepcao.horarioSessao)   
 
+        #Abrindo o arquivo para inserir as informações/verificando se já existe o arquivo
         try:
-            with open('dadosSessaoRecepcao.json', 'r') as arquivo:
-                dadosSessaoRecepcao = json.load(arquivo)
+            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                dadosSessaoRecepcao = json.load(arquivos)
 
         except FileNotFoundError:
             dadosSessaoRecepcao = {}
         
-        dadosSessaoRecepcao.update(arquivoRecepcaoNew)
+        if dadosSessaoRecepcao:
+            ultimoCodigo = max(map(int, dadosSessaoRecepcao.keys()))
+            codigo = ultimoCodigo + 1
+        else:
+            codigo = 1
+
+        dadosSessaoRecepcao[codigo] = arquivoRecepcaoNew
 
         # Salva os dados no arquivo
-        with open('dadosSessaoRecepcao.json', 'w') as arquivo:
-            json.dump(dadosSessaoRecepcao, arquivo, indent=4)
+        with open('dadosSessaoRecepcao.json', 'w') as arquivos:
+            json.dump(dadosSessaoRecepcao, arquivos, indent=4)
 
         print(f"Sessão adicionada com sucesso!")
-
 
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
@@ -97,8 +112,10 @@ while encerrarPrograma != True:
     elif opcao == 5:
         print("Opção 5 - Cadastrar novo paciente")
         cabecalho("CADASTRO DE NOVO PACIENTE")
+
         input_nome = str(input("Nome: "))
 
+        #Tratamento de dados, só aceita números
         while True:
             try:
                 input_idade = int(input("Idade: "))
@@ -107,6 +124,7 @@ while encerrarPrograma != True:
             else:
                 break
 
+        #Tratamento de dados, somente aceita F ou M, feminino ou masculino
         while True:
             try:
                 input_sexo = str(input("Sexo[M/F]: ")).upper()
@@ -117,7 +135,8 @@ while encerrarPrograma != True:
                 print("ERRO! Digite apenas M ou F!")
             else:
                 break
-        
+
+        #Tratamento de dados, como é rg somente aceita 10 dígitos
         while True:
             try:
                 input_rg = int(input("RG: "))
@@ -129,6 +148,7 @@ while encerrarPrograma != True:
             else:
                 break
 
+        #Tratamento de dados, como é cpf somente aceita 11 dígitos     
         while True:
             try:
                 input_cpf = int(input("CPF: "))
@@ -140,6 +160,7 @@ while encerrarPrograma != True:
             else:
                 break
 
+        #Inserindo as informações na classe
         paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf)
 
         print(paciente.nome)
@@ -147,7 +168,8 @@ while encerrarPrograma != True:
         print(paciente.sexo)
         print(paciente.rg)
         print(paciente.cpf)
-
+        
+        #Inserindo os dados dentro do dicionário
         arquivosJson = {
             'nome': paciente.nome,
             'idade': paciente.idade,
@@ -158,6 +180,7 @@ while encerrarPrograma != True:
 
         dadosGerais = {'id': id, 'dados': arquivosJson}
 
+        #Abrindo o arquivo para inserir as informações/verificando se já existe o arquivo
         try:
             with open('dadosPaciente.json', 'r') as arquivo:
                 dadosPaciente = json.load(arquivo)
@@ -174,12 +197,13 @@ while encerrarPrograma != True:
 
         # Adiciona o novo paciente
         dadosPaciente[id] = arquivosJson
-
-        # Salva os dados no arquivo
+    
+        # Salvando os dados no arquivo
         with open('dadosPaciente.json', 'w') as arquivo:
             json.dump(dadosPaciente, arquivo, indent=4)
 
         print(f"Cliente adicionado com sucesso! ID: {id}")
+
 
     elif opcao == 6:
         print("Opção 6 - Buscar paciente")

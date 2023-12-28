@@ -1,4 +1,7 @@
 {
-    "dataSessao": 36,
-    "horarioSessao": 52
+    "1": {
+        "codigo": 1,
+        "dataSessao": 12,
+        "horarioSessao": 12
+    }
 }
