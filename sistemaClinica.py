@@ -102,9 +102,28 @@ Sessão 2 -- 14:00""")
 
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
+        cabecalho("LISTAR SESSÕES CLÍNICAS")
+        try:
+            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                dadosSessaoRecepcao = json.load(arquivos)
+
+        except FileNotFoundError:
+            print("ERRO! Não há dados a serem mostrados.")
+        
+        if dadosSessaoRecepcao:
+            for codigo, dados in dadosSessaoRecepcao.items():
+                print("Sessão: ", codigo)
+                print("Data da sessão: ", dados['dataSessao'])
+                print("Horário da sessão: ", dados['horarioSessao'])
+                print("."*40)
+
 
     elif opcao == 3: 
         print("Opção 3 - Buscar sessão")
+        cabecalho("BUSCAR SESSÃO")
+        buscarData = int(input("Informe a data a ser buscada: "))
+        buscarHorario = int(input("Informe o horário a ser buscado: "))
+
 
     elif opcao == 4:
         print("Opção 4 - Iniciar sessão")
@@ -209,15 +228,21 @@ Sessão 2 -- 14:00""")
         print(f"Cliente adicionado com sucesso! ID: {id}")
 
     elif opcao == 6:
-        print("Opção 6 - Buscar paciente")
+        print("Opção 6 - Marcar horário")
+        cabecalho("MARCAR HORÁRIO")
+        horarioMarcar = int(input("Insira o horário da sessão desejada: "))
+        dataMarcar = int(input("Insira a data da sessão desejada: "))
+        
+
     
     elif opcao == 7:
-        print("Opção 7 - Marcar horário")
+        print("Opção 7 - Buscar paciente")
 
     elif opcao == 8:
         print("Opção 8 - Listar próximos pacientes")
     
     elif opcao == 9:
+        print("Encerrando...")
         encerrarPrograma = True
 
     """time.sleep(2) #Só para teste
