@@ -21,7 +21,7 @@ def menu():
 9 - Sair do sistema """)
     print("-"*40)
 
-def salvarArquivo(nomeArquivo, arq):
+def salvarArquivo(nomeArquivo, arq, numero):
     try:
         with open(nomeArquivo, 'r') as arquivo:
             dados = json.load(arquivo)
@@ -37,7 +37,7 @@ def salvarArquivo(nomeArquivo, arq):
         id = 1
 
     id_str = str(id)
-    arq['id'] = id
+    arq[numero] = id
     dados[str(id)] = arq
 
     # Adiciona o novo paciente
@@ -67,7 +67,7 @@ Sessão 2 -- 14:00""")
     arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
                         'horarioSessao': recepcao.horarioSessao}
     
-    recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
+    recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
 
     #Só para testes
     print(recepcao.codigo)
@@ -161,7 +161,7 @@ def cadastrarPaciente():
 
     dadosGerais = {'id': id, 'dados': arquivosJson}
 
-    id = salvarArquivo('dadosPaciente.json', arquivosJson)
+    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id')
 
     print(f"\nCliente adicionado com sucesso! ID: {id}")
 
@@ -256,47 +256,41 @@ while encerrarPrograma != True:
         try: 
             with open('dadosPaciente.json', 'r') as arquivo:
                 dadosPaciente = json.load(arquivo)
-            while True:
-                try:
-                    nomePaciente = input("Informe o nome do paciente: ")
-                    for elementos, dados in dadosPaciente.items():
-                        if dados['nome'] != nomePaciente:
-                            continue
-                except ValueError:
-                    print("ERRO!")
-                else: 
+          
+            nomePaciente = input("Informe o nome do paciente: ")
+            for elementos, dados in dadosPaciente.items():
+                if dados['nome'] == nomePaciente:
                     contadorNomeCerto = 1
-                    break
-
-                if contadorNomeCerto == 0:
-                    print("Não há cadastros com este nome!\nTente novamente!")
             
+            if contadorNomeCerto == 0: 
+                print("Não há cadastros com este nome!\nTente novamente!")
+                
+            else: 
+                horarioMarcar = int(input("Insira o horário da sessão desejada: "))
+                dataMarcar = int(input("Insira a data da sessão desejada: "))
+                print("."*40)
+            
+                try:
+                    with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                        dadosSessaoRecepcao = json.load(arquivos)
 
-            horarioMarcar = int(input("Insira o horário da sessão desejada: "))
-            dataMarcar = int(input("Insira a data da sessão desejada: "))
-            print("."*40)
+                    for elementos, dados in dadosSessaoRecepcao.items():
+                        if dados['dataSessao'] == dataMarcar:
+                            if dados['horarioSessao'] == horarioMarcar:
+                                print("Horário marcado com sucesso.")
+                                sucessoMarcar = 1
 
-            try:
-                with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-                    dadosSessaoRecepcao = json.load(arquivos)
+                                MarcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
 
-                for elementos, dados in dadosSessaoRecepcao.items():
-                    if dados['dataSessao'] == dataMarcar:
-                        if dados['horarioSessao'] == horarioMarcar:
-                            print("Horário marcado com sucesso.")
-                            sucessoMarcar = 1
+                                marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
 
-                            MarcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
+                                contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
+                            
+                    if sucessoMarcar == 0:
+                        print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
-                            marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
-
-                            contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao )
-                        
-                if sucessoMarcar == 0:
-                    print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
-
-            except FileNotFoundError:
-                print("ERRO! Não há dados a serem mostrados.")
+                except FileNotFoundError:
+                    print("ERRO! Não há dados a serem mostrados.")
 
         except FileNotFoundError:
             print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
