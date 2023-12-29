@@ -74,6 +74,7 @@ arquivosJson = {}
 id = 0
 codigo = 0
 cont = 0
+contadorNomeCerto = 0
 
 while encerrarPrograma != True:
     if cont == 0:
@@ -248,32 +249,54 @@ Sessão 2 -- 14:00""")
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
         cabecalho("MARCAR HORÁRIO")
-        nomePaciente = input("Informe o nome do paciente: ")
-        horarioMarcar = int(input("Insira o horário da sessão desejada: "))
-        dataMarcar = int(input("Insira a data da sessão desejada: "))
-        print("."*40)
 
-        try:
-            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-                dadosSessaoRecepcao = json.load(arquivos)
+        try: 
+            with open('dadosPaciente.json', 'r') as arquivo:
+                dadosPaciente = json.load(arquivo)
+            while True:
+                try:
+                    nomePaciente = input("Informe o nome do paciente: ")
+                    for elementos, dados in dadosPaciente.items():
+                        if dados['nome'] != nomePaciente:
+                            continue
+                except ValueError:
+                    print("ERRO!")
+                else: 
+                    contadorNomeCerto = 1
+                    break
 
-            for elementos, dados in dadosSessaoRecepcao.items():
-                if dados['dataSessao'] == dataMarcar:
-                    if dados['horarioSessao'] == horarioMarcar:
-                        print("Horário marcado com sucesso.")
-                        sucessoMarcar = 1
+                if contadorNomeCerto == 0:
+                    print("Não há cadastros com este nome!\nTente novamente!")
+            
 
-                        MarcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
+            horarioMarcar = int(input("Insira o horário da sessão desejada: "))
+            dataMarcar = int(input("Insira a data da sessão desejada: "))
+            print("."*40)
 
-                        marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
+            try:
+                with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                    dadosSessaoRecepcao = json.load(arquivos)
 
-                        contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao )
-                    
-            if sucessoMarcar == 0:
-                print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
+                for elementos, dados in dadosSessaoRecepcao.items():
+                    if dados['dataSessao'] == dataMarcar:
+                        if dados['horarioSessao'] == horarioMarcar:
+                            print("Horário marcado com sucesso.")
+                            sucessoMarcar = 1
 
+                            MarcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
+
+                            marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
+
+                            contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao )
+                        
+                if sucessoMarcar == 0:
+                    print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
+
+            except FileNotFoundError:
+                print("ERRO! Não há dados a serem mostrados.")
+                
         except FileNotFoundError:
-            print("ERRO! Não há dados a serem mostrados.")
+            print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
         
     
     elif opcao == 7:
