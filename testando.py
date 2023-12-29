@@ -271,7 +271,7 @@ Sessão 2 -- 14:00""")
                         print("Horário marcado com sucesso.")
                         sucessoMarcar = 1
 
-                        marcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
+                        MarcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
 
                         marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
 
