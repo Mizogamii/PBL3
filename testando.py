@@ -275,24 +275,8 @@ Sessão 2 -- 14:00""")
 
                         marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
 
-                        try:
-                            with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
-                                horariosMarcadosRecepcao = json.load(arquivo)
-                        except FileNotFoundError:
-                            horariosMarcadosRecepcao = {}
-
-                        if horariosMarcadosRecepcao:
-                            ultimoContador = max(map(int, horariosMarcadosRecepcao.keys()))
-                            contador = ultimoContador + 1
-                        else:
-                            contador = 1
-                        
-                        horariosMarcadosRecepcao[contador] = marcarHorarioSessao
-
-                        with open('horariosMarcadosRecepcao.json', 'w') as arquivos:
-                            json.dump(horariosMarcadosRecepcao, arquivos, indent=4)
-
-
+                        contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao )
+                    
             if sucessoMarcar == 0:
                 print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
