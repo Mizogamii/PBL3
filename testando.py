@@ -8,6 +8,19 @@ def cabecalho(texto):
     print(texto.center(40))
     print("-"*40)
 
+def menu():
+    cabecalho("MENU")
+    print("""1 - Adicionar nova sessão
+2 - Listar sessões clínicas 
+3 - Buscar sessão
+4 - Iniciar sessão      
+5 - Cadastrar novo paciente
+6 - Marcar horário 
+7 - Buscar paciente
+8 - Listar próximos pacientes
+9 - Sair do sistema """)
+    print("-"*40)
+
 def salvarArquivo(nomeArquivo, arq):
     try:
         with open(nomeArquivo, 'r') as arquivo:
@@ -60,19 +73,27 @@ dadosGerais = {}
 arquivosJson = {}
 id = 0
 codigo = 0
+cont = 0
 
 while encerrarPrograma != True:
-    cabecalho("MENU")
-    print("""1 - Adicionar nova sessão
-2 - Listar sessões clínicas 
-3 - Buscar sessão
-4 - Iniciar sessão      
-5 - Cadastrar novo paciente
-6 - Marcar horário 
-7 - Buscar paciente
-8 - Listar próximos pacientes
-9 - Sair do sistema """)
-    print("-"*40)
+    if cont == 0:
+        menu()
+    else: 
+        while True:
+            try:
+                resposta = input("Deseja voltar ao menu?\nDigite S para sim e N para não: ").upper()
+                if resposta != "S" and resposta != "N":
+                    print("ERRO! Digite apenas S ou N")
+                    continue
+            except ValueError:
+                print("ERRO! Digite S ou N!")
+            else:
+                break
+
+        if resposta == "S":
+            menu()
+
+    cont += 1
 
     while True:
         contadorSucessoBuscar = 0
@@ -112,32 +133,9 @@ Sessão 2 -- 14:00""")
         print(recepcao.dataSessao)
         print(recepcao.horarioSessao)   
 
-        #Abrindo o arquivo para inserir as informações/verificando se já existe o arquivo
-        try:
-            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-                dadosSessaoRecepcao = json.load(arquivos)
+        salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
 
-        except FileNotFoundError:
-            dadosSessaoRecepcao = {}
-        
-        if dadosSessaoRecepcao:
-            ultimoCodigo = max(map(int, dadosSessaoRecepcao.keys()))
-            recepcao.codigo = ultimoCodigo + 1
-        else:
-            recepcao.codigo = 1
-
-        codigoStr = str(recepcao.codigo)
-        arquivoRecepcaoNovo['codigo'] = recepcao.codigo
-        dadosSessaoRecepcao[str(recepcao.codigo)] = arquivoRecepcaoNovo
-
-        # Adiciona o nova sessão
-        dadosSessaoRecepcao[codigoStr] = arquivoRecepcaoNovo
-
-        # Salva os dados no arquivo
-        with open('dadosSessaoRecepcao.json', 'w') as arquivos:
-            json.dump(dadosSessaoRecepcao, arquivos, indent=4)
-
-        print(f"Sessão adicionada com sucesso!")
+        print("\nSessão adicionada com sucesso!")
 
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
@@ -194,7 +192,7 @@ Sessão 2 -- 14:00""")
         while True:
             try:
                 input_idade = int(input("Idade: "))
-            except: 
+            except ValueError: 
                 print("ERRO! Digite apenas números!")
             else:
                 break
@@ -252,7 +250,7 @@ Sessão 2 -- 14:00""")
 
         id = salvarArquivo('dadosPaciente.json', arquivosJson)
 
-        print(f"Cliente adicionado com sucesso! ID: {id}")
+        print(f"\nCliente adicionado com sucesso! ID: {id}")
 
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
@@ -291,8 +289,12 @@ Sessão 2 -- 14:00""")
         print("Opção 8 - Listar próximos pacientes")
     
     elif opcao == 9:
-        print("Encerrando...")
+        print("\nEncerrando...")
         encerrarPrograma = True
+    
+    print("-"*40)
+
+
 
     """time.sleep(2) #Só para teste
     print('\033c', end='')"""

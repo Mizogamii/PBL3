@@ -8,5 +8,47 @@
         "codigo": 2,
         "dataSessao": 20,
         "horarioSessao": 15
+    },
+    "3": {
+        "codigo": 0,
+        "dataSessao": 8,
+        "horarioSessao": 14,
+        "id": 3
+    },
+    "4": {
+        "codigo": 0,
+        "dataSessao": 14,
+        "horarioSessao": 14,
+        "id": 4
+    },
+    "5": {
+        "codigo": 0,
+        "dataSessao": 2,
+        "horarioSessao": 2,
+        "id": 5
+    },
+    "6": {
+        "codigo": 0,
+        "dataSessao": 2,
+        "horarioSessao": 2,
+        "id": 6
+    },
+    "7": {
+        "codigo": 0,
+        "dataSessao": 12,
+        "horarioSessao": 3,
+        "id": 7
+    },
+    "8": {
+        "codigo": 0,
+        "dataSessao": 8,
+        "horarioSessao": 14,
+        "id": 8
+    },
+    "9": {
+        "codigo": 0,
+        "dataSessao": 14,
+        "horarioSessao": 9,
+        "id": 9
     }
 }
