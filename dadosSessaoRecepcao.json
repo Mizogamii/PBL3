@@ -50,5 +50,29 @@
         "dataSessao": 14,
         "horarioSessao": 9,
         "id": 9
+    },
+    "10": {
+        "codigo": 0,
+        "dataSessao": 20,
+        "horarioSessao": 5,
+        "id": 10
+    },
+    "11": {
+        "codigo": 0,
+        "dataSessao": 5,
+        "horarioSessao": 3,
+        "id": 11
+    },
+    "12": {
+        "codigo": 0,
+        "dataSessao": 2,
+        "horarioSessao": 3,
+        "id": 12
+    },
+    "13": {
+        "codigo": 0,
+        "dataSessao": 12,
+        "horarioSessao": 3,
+        "id": 13
     }
 }

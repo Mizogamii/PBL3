@@ -79,19 +79,12 @@ while encerrarPrograma != True:
     if cont == 0:
         menu()
     else: 
-        while True:
-            try:
-                resposta = input("Deseja voltar ao menu?\nDigite S para sim e N para não: ").upper()
-                if resposta != "S" and resposta != "N":
-                    print("ERRO! Digite apenas S ou N")
-                    continue
-            except ValueError:
-                print("ERRO! Digite S ou N!")
-            else:
-                break
+        resposta = input("Aperte ENTER para continuar: ")
+        print('\033c', end='')
+        menu()
 
-        if resposta == "S":
-            menu()
+        """if resposta == "S":
+            #time.sleep(2) #Só para teste"""
 
     cont += 1
 
@@ -128,12 +121,13 @@ Sessão 2 -- 14:00""")
         arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
                            'horarioSessao': recepcao.horarioSessao}
         
+        
+        recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
+
         #Só para testes
         print(recepcao.codigo)
         print(recepcao.dataSessao)
-        print(recepcao.horarioSessao)   
-
-        salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
+        print(recepcao.horarioSessao) 
 
         print("\nSessão adicionada com sucesso!")
 
@@ -153,7 +147,6 @@ Sessão 2 -- 14:00""")
                 print("Data da sessão: ", dados['dataSessao'])
                 print("Horário da sessão: ", dados['horarioSessao'])
                 print("."*40)
-
 
     elif opcao == 3: 
         print("Opção 3 - Buscar sessão")
@@ -258,6 +251,7 @@ Sessão 2 -- 14:00""")
         nomePaciente = input("Informe o nome do paciente: ")
         horarioMarcar = int(input("Insira o horário da sessão desejada: "))
         dataMarcar = int(input("Insira a data da sessão desejada: "))
+        print("."*40)
 
         try:
             with open('dadosSessaoRecepcao.json', 'r') as arquivos:
@@ -293,11 +287,6 @@ Sessão 2 -- 14:00""")
         encerrarPrograma = True
     
     print("-"*40)
-
-
-
-    """time.sleep(2) #Só para teste
-    print('\033c', end='')"""
 
 
 
