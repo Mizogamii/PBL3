@@ -26,6 +26,7 @@ def salvarArquivo(nomeArquivo, arq):
     id_str = str(id)
     arq['id'] = id
     dados[str(id)] = arq
+
     # Adiciona o novo paciente
     dados[id_str] = arq
 
@@ -35,7 +36,6 @@ def salvarArquivo(nomeArquivo, arq):
     
     return id
     
-
 
 def adicionarNovaSessao():
     pass
@@ -279,7 +279,6 @@ Sessão 2 -- 14:00""")
                     
             if sucessoMarcar == 0:
                 print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
-
 
         except FileNotFoundError:
             print("ERRO! Não há dados a serem mostrados.")
