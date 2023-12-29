@@ -30,6 +30,7 @@ encerrarPrograma = False
 dadosGerais = {}
 arquivosJson = {}
 id = 0
+codigo = 0
 
 while encerrarPrograma != True:
     cabecalho("MENU")
@@ -45,6 +46,8 @@ while encerrarPrograma != True:
     print("-"*40)
 
     while True:
+        contadorSucessoBuscar = 0
+
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
@@ -68,13 +71,14 @@ Sessão 2 -- 14:00""")
         horarioSessao = int(input("Insira o horário da nova sessão: "))
 
         #Inserindo as informações na classe
-        recepcao = Recepcao(dataSessao, horarioSessao)
+        recepcao = Recepcao(codigo, dataSessao, horarioSessao)
 
         #Inserindo as informações em um dicionário
-        arquivoRecepcaoNew = {'dataSessao': recepcao.dataSessao,
+        arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
                            'horarioSessao': recepcao.horarioSessao}
         
         #Só para testes
+        print(recepcao.codigo)
         print(recepcao.dataSessao)
         print(recepcao.horarioSessao)   
 
@@ -88,11 +92,16 @@ Sessão 2 -- 14:00""")
         
         if dadosSessaoRecepcao:
             ultimoCodigo = max(map(int, dadosSessaoRecepcao.keys()))
-            codigo = ultimoCodigo + 1
+            recepcao.codigo = ultimoCodigo + 1
         else:
-            codigo = 1
+            recepcao.codigo = 1
 
-        dadosSessaoRecepcao[codigo] = arquivoRecepcaoNew
+        codigoStr = str(recepcao.codigo)
+        arquivoRecepcaoNovo['codigo'] = recepcao.codigo
+        dadosSessaoRecepcao[str(recepcao.codigo)] = arquivoRecepcaoNovo
+
+        # Adiciona o nova sessão
+        dadosSessaoRecepcao[codigoStr] = arquivoRecepcaoNovo
 
         # Salva os dados no arquivo
         with open('dadosSessaoRecepcao.json', 'w') as arquivos:
@@ -123,8 +132,25 @@ Sessão 2 -- 14:00""")
         cabecalho("BUSCAR SESSÃO")
         buscarData = int(input("Informe a data a ser buscada: "))
         buscarHorario = int(input("Informe o horário a ser buscado: "))
+        print("."*40)
 
+        try:
+            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                dadosSessaoRecepcao = json.load(arquivos)
+            
+            for elementos, dados in dadosSessaoRecepcao.items():
+                if dados['dataSessao'] == buscarData:
+                    if dados['horarioSessao'] == buscarHorario:
+                        print("Sessão encontrada com sucesso.\n")
+                        print("Sessão número", dados['codigo'])
+                        contadorSucessoBuscar = 1
 
+            if contadorSucessoBuscar == 0:
+                print("Não há sessões com essa data e horário.")
+
+        except FileNotFoundError:
+            print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
+    
     elif opcao == 4:
         print("Opção 4 - Iniciar sessão")
         
@@ -233,7 +259,6 @@ Sessão 2 -- 14:00""")
         horarioMarcar = int(input("Insira o horário da sessão desejada: "))
         dataMarcar = int(input("Insira a data da sessão desejada: "))
         
-
     
     elif opcao == 7:
         print("Opção 7 - Buscar paciente")

@@ -8,8 +8,7 @@ class Paciente():
         self.id = id
 
 class Recepcao():
-    def __init__(self, dataSessao, horarioSessao): #, sessoes, fila
+    def __init__(self, codigo, dataSessao, horarioSessao):
+        self.codigo = codigo
         self.dataSessao = dataSessao
         self.horarioSessao = horarioSessao
-        """self.sessoes = sessoes
-        self.fila = fila"""
