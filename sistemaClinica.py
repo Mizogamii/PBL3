@@ -300,7 +300,6 @@ Sessão 2 -- 14:00""")
         except FileNotFoundError:
             print("ERRO! Não há dados a serem mostrados.")
         
-        
     
     elif opcao == 7:
         print("Opção 7 - Buscar paciente")
