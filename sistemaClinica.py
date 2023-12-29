@@ -268,9 +268,9 @@ Sessão 2 -- 14:00""")
             for elementos, dados in dadosSessaoRecepcao.items():
                 if dados['dataSessao'] == dataMarcar:
                     if dados['horarioSessao'] == horarioMarcar:
-                        print("É possível marcar nesse horário")
+                        print("Horário marcado com sucesso.")
                         sucessoMarcar = 1
-                        
+
                         marcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
 
                         marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
@@ -293,8 +293,8 @@ Sessão 2 -- 14:00""")
                             json.dump(horariosMarcadosRecepcao, arquivos, indent=4)
 
 
-                if sucessoMarcar == 0:
-                    print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
+            if sucessoMarcar == 0:
+                print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
 
         except FileNotFoundError:
