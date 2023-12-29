@@ -12,3 +12,10 @@ class Recepcao():
         self.codigo = codigo
         self.dataSessao = dataSessao
         self.horarioSessao = horarioSessao
+
+class MarcarHorario():
+    def __init__(self, nome, dataMarcar, horarioMarcar):
+        self.nome = nome
+        self.dataMarcar = dataMarcar
+        self.horarioMarcar = horarioMarcar
+        

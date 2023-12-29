@@ -1,6 +1,6 @@
 import time
 import json
-from classes import Paciente, Recepcao
+from classes import Paciente, Recepcao, MarcarHorario
 
 #Função para organizar os títulos
 def cabecalho(texto):
@@ -47,6 +47,7 @@ while encerrarPrograma != True:
 
     while True:
         contadorSucessoBuscar = 0
+        sucessoMarcar = 0
 
         try:
             opcao = int(input("Opcão escolhida: "))
@@ -256,8 +257,49 @@ Sessão 2 -- 14:00""")
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
         cabecalho("MARCAR HORÁRIO")
+        nomePaciente = input("Informe o nome do paciente: ")
         horarioMarcar = int(input("Insira o horário da sessão desejada: "))
         dataMarcar = int(input("Insira a data da sessão desejada: "))
+
+        try:
+            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                dadosSessaoRecepcao = json.load(arquivos)
+
+            for elementos, dados in dadosSessaoRecepcao.items():
+                if dados['dataSessao'] == dataMarcar:
+                    if dados['horarioSessao'] == horarioMarcar:
+                        print("É possível marcar nesse horário")
+                        sucessoMarcar = 1
+                        
+                        marcarHorario = (nomePaciente, dataMarcar, horarioMarcar)
+
+                        marcarHorarioSessao = {'nomePac': nomePaciente, 'data': dataMarcar, 'horario': horarioMarcar}
+
+                        try:
+                            with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
+                                horariosMarcadosRecepcao = json.load(arquivo)
+                        except FileNotFoundError:
+                            horariosMarcadosRecepcao = {}
+
+                        if horariosMarcadosRecepcao:
+                            ultimoContador = max(map(int, horariosMarcadosRecepcao.keys()))
+                            contador = ultimoContador + 1
+                        else:
+                            contador = 1
+                        
+                        horariosMarcadosRecepcao[contador] = marcarHorarioSessao
+
+                        with open('horariosMarcadosRecepcao.json', 'w') as arquivos:
+                            json.dump(horariosMarcadosRecepcao, arquivos, indent=4)
+
+
+                if sucessoMarcar == 0:
+                    print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
+
+
+        except FileNotFoundError:
+            print("ERRO! Não há dados a serem mostrados.")
+        
         
     
     elif opcao == 7:
