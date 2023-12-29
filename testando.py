@@ -51,13 +51,119 @@ def salvarArquivo(nomeArquivo, arq):
     
 
 def adicionarNovaSessao():
-    pass
+    print("Opção 1 - Adicionar nova sessão")
+    cabecalho("ADICIONAR NOVA SESSÃO")
+    print("""Horário que inicia as sessões padrões: 
+Sessão 1 -- 08:00 
+Sessão 2 -- 14:00""")
+    print("-"*40)
+    dataSessao = int(input("Insira a data da nova sessão: "))
+    horarioSessao = int(input("Insira o horário da nova sessão: "))
+
+    #Inserindo as informações na classe
+    recepcao = Recepcao(codigo, dataSessao, horarioSessao)
+
+    #Inserindo as informações em um dicionário
+    arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
+                        'horarioSessao': recepcao.horarioSessao}
+    
+    recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
+
+    #Só para testes
+    print(recepcao.codigo)
+    print(recepcao.dataSessao)
+    print(recepcao.horarioSessao) 
+
+    print("\nSessão adicionada com sucesso!")
 
 def buscarSessao():
-    pass
+    cabecalho("LISTAR SESSÕES CLÍNICAS")
+    try:
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+
+    except FileNotFoundError:
+        print("ERRO! Não há dados a serem mostrados.")
+    
+    if dadosSessaoRecepcao:
+        for codigo, dados in dadosSessaoRecepcao.items():
+            print("Sessão: ", codigo)
+            print("Data da sessão: ", dados['dataSessao'])
+            print("Horário da sessão: ", dados['horarioSessao'])
+            print("."*40)
 
 def iniciarSessao():
     pass
+
+def cadastrarPaciente():
+    id = 0
+    cabecalho("CADASTRO DE NOVO PACIENTE")
+
+    input_nome = str(input("Nome: "))
+
+    #Tratamento de dados, só aceita números
+    while True:
+        try:
+            input_idade = int(input("Idade: "))
+        except ValueError: 
+            print("ERRO! Digite apenas números!")
+        else:
+            break
+
+    #Tratamento de dados, somente aceita F ou M, feminino ou masculino
+    while True:
+        try:
+            input_sexo = str(input("Sexo[M/F]: ")).upper()
+            if input_sexo != "M" and input_sexo != "F":
+                print("ERRO! Digite apenas M ou F!")
+                continue
+        except ValueError:
+            print("ERRO! Digite apenas M ou F!")
+        else:
+            break
+
+    #Tratamento de dados, como é rg somente aceita 10 dígitos
+    while True:
+        try:
+            input_rg = int(input("RG: "))
+            if len(str(input_rg)) != 10:
+                print("ERRO! Digite somente os 10 números do RG")
+                continue
+        except ValueError:
+            print("ERRO! Digite apenas números!")
+        else:
+            break
+
+    #Tratamento de dados, como é cpf somente aceita 11 dígitos     
+    while True:
+        try:
+            input_cpf = int(input("CPF: "))
+            if len(str(input_cpf)) != 11:
+                print("ERRO! Digite somente os 11 números do CPF")
+                continue
+        except ValueError:
+            print("ERRO! Digite apenas números!")
+        else:
+            break
+
+    #Inserindo as informações na classe
+    paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
+
+    #Inserindo os dados dentro do dicionário
+    arquivosJson = {
+        'nome': paciente.nome,
+        'idade': paciente.idade,
+        'sexo': paciente.sexo,
+        'rg': paciente.rg,
+        'cpf': paciente.cpf,
+        'id': paciente.id
+    }
+
+    dadosGerais = {'id': id, 'dados': arquivosJson}
+
+    id = salvarArquivo('dadosPaciente.json', arquivosJson)
+
+    print(f"\nCliente adicionado com sucesso! ID: {id}")
 
 def marcarHorario():
     pass
@@ -105,49 +211,11 @@ while encerrarPrograma != True:
                 continue
 
     if opcao == 1:
-        print("Opção 1 - Adicionar nova sessão")
-        cabecalho("ADICIONAR NOVA SESSÃO")
-        print("""Horário que inicia as sessões padrões: 
-Sessão 1 -- 08:00 
-Sessão 2 -- 14:00""")
-        print("-"*40)
+        adicionarNovaSessao()
         
-        dataSessao = int(input("Insira a data da nova sessão: "))
-        horarioSessao = int(input("Insira o horário da nova sessão: "))
-
-        #Inserindo as informações na classe
-        recepcao = Recepcao(codigo, dataSessao, horarioSessao)
-
-        #Inserindo as informações em um dicionário
-        arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
-                           'horarioSessao': recepcao.horarioSessao}
-        
-        
-        recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo)
-
-        #Só para testes
-        print(recepcao.codigo)
-        print(recepcao.dataSessao)
-        print(recepcao.horarioSessao) 
-
-        print("\nSessão adicionada com sucesso!")
-
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
-        cabecalho("LISTAR SESSÕES CLÍNICAS")
-        try:
-            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-                dadosSessaoRecepcao = json.load(arquivos)
-
-        except FileNotFoundError:
-            print("ERRO! Não há dados a serem mostrados.")
-        
-        if dadosSessaoRecepcao:
-            for codigo, dados in dadosSessaoRecepcao.items():
-                print("Sessão: ", codigo)
-                print("Data da sessão: ", dados['dataSessao'])
-                print("Horário da sessão: ", dados['horarioSessao'])
-                print("."*40)
+        buscarSessao()
 
     elif opcao == 3: 
         print("Opção 3 - Buscar sessão")
@@ -178,73 +246,8 @@ Sessão 2 -- 14:00""")
         
     elif opcao == 5:
         print("Opção 5 - Cadastrar novo paciente")
-        cabecalho("CADASTRO DE NOVO PACIENTE")
-
-        input_nome = str(input("Nome: "))
-
-        #Tratamento de dados, só aceita números
-        while True:
-            try:
-                input_idade = int(input("Idade: "))
-            except ValueError: 
-                print("ERRO! Digite apenas números!")
-            else:
-                break
-
-        #Tratamento de dados, somente aceita F ou M, feminino ou masculino
-        while True:
-            try:
-                input_sexo = str(input("Sexo[M/F]: ")).upper()
-                if input_sexo != "M" and input_sexo != "F":
-                    print("ERRO! Digite apenas M ou F!")
-                    continue
-            except ValueError:
-                print("ERRO! Digite apenas M ou F!")
-            else:
-                break
-
-        #Tratamento de dados, como é rg somente aceita 10 dígitos
-        while True:
-            try:
-                input_rg = int(input("RG: "))
-                if len(str(input_rg)) != 10:
-                    print("ERRO! Digite somente os 10 números do RG")
-                    continue
-            except ValueError:
-                print("ERRO! Digite apenas números!")
-            else:
-                break
-
-        #Tratamento de dados, como é cpf somente aceita 11 dígitos     
-        while True:
-            try:
-                input_cpf = int(input("CPF: "))
-                if len(str(input_cpf)) != 11:
-                    print("ERRO! Digite somente os 11 números do CPF")
-                    continue
-            except ValueError:
-                print("ERRO! Digite apenas números!")
-            else:
-                break
-
-        #Inserindo as informações na classe
-        paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
-
-        #Inserindo os dados dentro do dicionário
-        arquivosJson = {
-            'nome': paciente.nome,
-            'idade': paciente.idade,
-            'sexo': paciente.sexo,
-            'rg': paciente.rg,
-            'cpf': paciente.cpf,
-            'id': paciente.id
-        }
-
-        dadosGerais = {'id': id, 'dados': arquivosJson}
-
-        id = salvarArquivo('dadosPaciente.json', arquivosJson)
-
-        print(f"\nCliente adicionado com sucesso! ID: {id}")
+        cadastrarPaciente()
+        
 
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
@@ -294,7 +297,7 @@ Sessão 2 -- 14:00""")
 
             except FileNotFoundError:
                 print("ERRO! Não há dados a serem mostrados.")
-                
+
         except FileNotFoundError:
             print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
         
