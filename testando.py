@@ -224,13 +224,14 @@ def buscarPaciente():
             dadosPaciente = json.load(arquivo)
         
         nomePaciente = input("Informe o nome do paciente: ")
+        
         for dados in dadosPaciente.values():
             if dados['nome'] == nomePaciente:
                 contadorNomeCerto = 1
         
         if contadorNomeCerto == 0: 
             print("Não há cadastros com este nome!\nTente novamente!")
-            
+
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
 
