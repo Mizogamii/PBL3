@@ -13,7 +13,7 @@ class Recepcao():
         self.dataSessao = dataSessao
         self.horarioSessao = horarioSessao
 
-class MarcarHorario():
+class MarcarHorarioPaciente():
     def __init__(self, nome, dataMarcar, horarioMarcar):
         self.nome = nome
         self.dataMarcar = dataMarcar
