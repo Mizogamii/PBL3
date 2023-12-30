@@ -175,6 +175,7 @@ def cadastrarPaciente():
 def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
+    cabecalho("MARCAR HORÁRIO")
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
             dadosPaciente = json.load(arquivo)
@@ -236,9 +237,6 @@ while encerrarPrograma != True:
         print('\033c', end='')
         menu()
 
-        """if resposta == "S":
-            #time.sleep(2) #Só para teste"""
-
     cont += 1
 
     while True:
@@ -297,8 +295,6 @@ while encerrarPrograma != True:
 
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
-        cabecalho("MARCAR HORÁRIO")
-
         marcarHorario()
         
     
