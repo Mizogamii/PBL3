@@ -13,7 +13,7 @@ def menu():
     cabecalho("MENU")
     print("""1 - Adicionar nova sessão
 2 - Listar sessões clínicas 
-3 - Buscar sessão
+3 - Buscar sessão clínica
 4 - Iniciar sessão      
 5 - Cadastrar novo paciente
 6 - Marcar horário 
@@ -219,7 +219,20 @@ def marcarHorario():
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
 
 def buscarPaciente():
-    pass
+    try: 
+        with open('dadosPaciente.json', 'r') as arquivo:
+            dadosPaciente = json.load(arquivo)
+        
+        nomePaciente = input("Informe o nome do paciente: ")
+        for dados in dadosPaciente.values():
+            if dados['nome'] == nomePaciente:
+                contadorNomeCerto = 1
+        
+        if contadorNomeCerto == 0: 
+            print("Não há cadastros com este nome!\nTente novamente!")
+            
+    except FileNotFoundError:
+        print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
 
 def listarProximos():
     pass
@@ -292,12 +305,10 @@ while encerrarPrograma != True:
         print("Opção 5 - Cadastrar novo paciente")
         cadastrarPaciente()
         
-
     elif opcao == 6:
         print("Opção 6 - Marcar horário")
         marcarHorario()
         
-    
     elif opcao == 7:
         print("Opção 7 - Buscar paciente")
 
