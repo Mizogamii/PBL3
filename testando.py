@@ -219,18 +219,25 @@ def marcarHorario():
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
 
 def buscarPaciente():
+    contadorNomeCerto = 0
     try: 
-        with open('dadosPaciente.json', 'r') as arquivo:
-            dadosPaciente = json.load(arquivo)
+        with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
+            horariosMarcadosRecepcao = json.load(arquivo)
         
         nomePaciente = input("Informe o nome do paciente: ")
+        print("."*40)
+        #print(f"Todos os horários marcados pelo paciente \n{nomePaciente} ")
         
-        for dados in dadosPaciente.values():
-            if dados['nome'] == nomePaciente:
+        for dados in horariosMarcadosRecepcao.values():
+            if dados['nomePac'] == nomePaciente:
                 contadorNomeCerto = 1
+                print("."*40)
+                print(f"Nome: {dados['nomePac']}")
+                print(f"Data: {dados['data']}")
+                print(f"Horário: {dados['horario']}")
         
         if contadorNomeCerto == 0: 
-            print("Não há cadastros com este nome!\nTente novamente!")
+            print("Não há reservas para este nome.\nTente novamente!")
 
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
@@ -312,6 +319,9 @@ while encerrarPrograma != True:
         
     elif opcao == 7:
         print("Opção 7 - Buscar paciente")
+        cabecalho("BUSCAR PACIENTE")
+        buscarPaciente()
+
 
     elif opcao == 8:
         print("Opção 8 - Listar próximos pacientes")
