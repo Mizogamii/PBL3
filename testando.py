@@ -67,13 +67,16 @@ Sessão 2 -- 14:00""")
     duracao = int(input("Duração dessa sessão, em horas: "))
     duracaoSessao = duracao * 60
     tempoCadaConsulta = int(input("Tempo de cada consulta dessa sessão:  "))
+    quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
+    
+
 
     #Inserindo as informações na classe
-    recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta)
+    recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta, quantidadePacientePossivel)
 
     #Inserindo as informações em um dicionário
     arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
-                        'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta }
+                        'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta, 'quantidadePacientePossivel': quantidadePacientePossivel}
     
     recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
 
@@ -202,23 +205,26 @@ def marcarHorario():
             print("."*40)
         
             try:
-                with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+                with open('dadosSessaoRecepcao.json', 'r+') as arquivos:
                     dadosSessaoRecepcao = json.load(arquivos)
 
-                for dados in dadosSessaoRecepcao.values():
-                    if dados['dataSessao'] == dataMarcar:
-                        if dados['horarioSessao'] == horarioMarcar:
-                            if quantidadePacientePossivel > 0: 
-                                print("Horário marcado com sucesso.")
-                                sucessoMarcar = 1
-                                quantidadePacientePossivel -= 1
+                for codigo, dados in dadosSessaoRecepcao.items():
+                    if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
+                        if dados['quantidadePacientePossivel'] > 0: 
+                            print("Horário marcado com sucesso.")
+                            sucessoMarcar = 1
+                            dadosSessaoRecepcao[codigo]['quantidadePacientePossivel'] = dadosSessaoRecepcao[codigo]['quantidadePacientePossivel'] - 1
+
+                            #dados['quantidadePacientePossivel'] = dados['quantidadePacientePossivel'] - 1
 
                             marcando = MarcarHorarioPaciente(nomePaciente, dataMarcar, horarioMarcar)
                             
                             marcarHorarioSessao = {'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
 
                             contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
-                        
+                        else: 
+                            print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.")
+
                 if sucessoMarcar == 0:
                     print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
@@ -286,10 +292,7 @@ while encerrarPrograma != True:
                 continue
 
     if opcao == 1:
-        resultados = adicionarNovaSessao()
-        tempoSessao, tempoConsulta = resultados
-        quantidadePacientePossivel = tempoSessao // tempoConsulta
-        
+        adicionarNovaSessao()
         
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")

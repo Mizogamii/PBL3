@@ -8,16 +8,17 @@ class Paciente():
         self.id = id
 
 class Recepcao():
-    def __init__(self, codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta):
+    def __init__(self, codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta, quantidadePacientePossivel):
         self.codigo = codigo
         self.dataSessao = dataSessao
         self.horarioSessao = horarioSessao
         self.duracaoSessao = duracaoSessao
         self.tempoCadaConsulta = tempoCadaConsulta
+        self.quantidadePacientePossivel = quantidadePacientePossivel 
 
 class MarcarHorarioPaciente():
-    def __init__(self, nome, dataMarcar, horarioMarcar):
-        self.nome = nome
+    def __init__(self, nomePaciente, dataMarcar, horarioMarcar):
+        self.nomePaciente = nomePaciente
         self.dataMarcar = dataMarcar
         self.horarioMarcar = horarioMarcar
     
