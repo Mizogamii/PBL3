@@ -61,15 +61,19 @@ def adicionarNovaSessao():
 Sessão 1 -- 08:00 
 Sessão 2 -- 14:00""")
     print("-"*40)
-    dataSessao = int(input("Insira a data da nova sessão: "))
-    horarioSessao = int(input("Insira o horário da nova sessão: "))
+    print("Insira os datos pedidos: ")
+    dataSessao = int(input("Data da nova sessão: "))
+    horarioSessao = int(input("Horário da nova sessão: "))
+    duracao = int(input("Duração dessa sessão, em horas: "))
+    duracaoSessao = duracao * 60
+    tempoCadaConsulta = int(input("Tempo de cada consulta dessa sessão:  "))
 
     #Inserindo as informações na classe
-    recepcao = Recepcao(codigo, dataSessao, horarioSessao)
+    recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta)
 
     #Inserindo as informações em um dicionário
     arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
-                        'horarioSessao': recepcao.horarioSessao}
+                        'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta }
     
     recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
 
@@ -77,8 +81,12 @@ Sessão 2 -- 14:00""")
     print(recepcao.codigo)
     print(recepcao.dataSessao)
     print(recepcao.horarioSessao) 
+    print(recepcao.tempoCadaConsulta)
+    print(recepcao.duracaoSessao)
 
     print("\nSessão adicionada com sucesso!")
+
+    return duracaoSessao, tempoCadaConsulta
 
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
@@ -200,8 +208,10 @@ def marcarHorario():
                 for dados in dadosSessaoRecepcao.values():
                     if dados['dataSessao'] == dataMarcar:
                         if dados['horarioSessao'] == horarioMarcar:
-                            print("Horário marcado com sucesso.")
-                            sucessoMarcar = 1
+                            if quantidadePacientePossivel > 0: 
+                                print("Horário marcado com sucesso.")
+                                sucessoMarcar = 1
+                                quantidadePacientePossivel -= 1
 
                             marcando = MarcarHorarioPaciente(nomePaciente, dataMarcar, horarioMarcar)
                             
@@ -254,7 +264,7 @@ while encerrarPrograma != True:
     if cont == 0:
         menu()
     else: 
-        resposta = input("Aperte ENTER para continuar: ")
+        resposta = input("Aperte ENTER para continuar")
         print('\033c', end='')
         menu()
 
@@ -276,7 +286,10 @@ while encerrarPrograma != True:
                 continue
 
     if opcao == 1:
-        adicionarNovaSessao()
+        resultados = adicionarNovaSessao()
+        tempoSessao, tempoConsulta = resultados
+        quantidadePacientePossivel = tempoSessao // tempoConsulta
+        
         
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
