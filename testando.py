@@ -69,8 +69,6 @@ Sessão 2 -- 14:00""")
     tempoCadaConsulta = int(input("Tempo de cada consulta dessa sessão:  "))
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
     
-
-
     #Inserindo as informações na classe
     recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta, quantidadePacientePossivel)
 
@@ -106,6 +104,7 @@ def buscarSessao():
             print("Sessão: ", codigo)
             print("Data da sessão: ", dados['dataSessao'])
             print("Horário da sessão: ", dados['horarioSessao'])
+            print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
             print("."*40)
 
 def iniciarSessao():
@@ -186,6 +185,7 @@ def cadastrarPaciente():
 def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
+    contadorDataHoraIguais = 0
     cabecalho("MARCAR HORÁRIO")
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
@@ -203,6 +203,17 @@ def marcarHorario():
             dataMarcar = int(input("Insira a data da sessão desejada: "))
             horarioMarcar = int(input("Insira o horário da sessão desejada: "))
             print("."*40)
+
+            try:
+                with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
+                    horariosMarcadosRecepcao = json.load(arquivos)
+                    for dados in horariosMarcadosRecepcao.values():
+                        if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
+                            contadorDataHoraIguais += 1
+                    print(f"Contador iguais: {contadorDataHoraIguais}")
+
+            except FileNotFoundError:
+                horariosMarcadosRecepcao = {}
         
             try:
                 with open('dadosSessaoRecepcao.json', 'r+') as arquivos:
@@ -210,10 +221,9 @@ def marcarHorario():
 
                 for codigo, dados in dadosSessaoRecepcao.items():
                     if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
-                        if dados['quantidadePacientePossivel'] > 0: 
+                        if dados['quantidadePacientePossivel'] > contadorDataHoraIguais: 
                             print("Horário marcado com sucesso.")
                             sucessoMarcar = 1
-                            dadosSessaoRecepcao[codigo]['quantidadePacientePossivel'] = dadosSessaoRecepcao[codigo]['quantidadePacientePossivel'] - 1
 
                             #dados['quantidadePacientePossivel'] = dados['quantidadePacientePossivel'] - 1
 
