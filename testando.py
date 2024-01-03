@@ -91,6 +91,29 @@ Sessão 2 -- 14:00""")
 
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
+    cabecalho("BUSCAR SESSÃO")
+    buscarData = int(input("Informe a data a ser buscada: "))
+    buscarHorario = int(input("Informe o horário a ser buscado: "))
+    print("."*40)
+
+    try:
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+        
+        for elementos, dados in dadosSessaoRecepcao.items():
+            if dados['dataSessao'] == buscarData:
+                if dados['horarioSessao'] == buscarHorario:
+                    print("Sessão encontrada com sucesso.\n")
+                    print("Sessão número", dados['codigo'])
+                    contadorSucessoBuscar = 1
+
+        if contadorSucessoBuscar == 0:
+            print("Não há sessões com essa data e horário.")
+
+    except FileNotFoundError:
+        print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
+
+def listarSessao():
     cabecalho("LISTAR SESSÕES CLÍNICAS")
     try:
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
@@ -216,16 +239,14 @@ def marcarHorario():
                 horariosMarcadosRecepcao = {}
         
             try:
-                with open('dadosSessaoRecepcao.json', 'r+') as arquivos:
+                with open('dadosSessaoRecepcao.json', 'r') as arquivos:
                     dadosSessaoRecepcao = json.load(arquivos)
 
-                for codigo, dados in dadosSessaoRecepcao.items():
+                for dados in dadosSessaoRecepcao.values():
                     if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
                         if dados['quantidadePacientePossivel'] > contadorDataHoraIguais: 
                             print("Horário marcado com sucesso.")
                             sucessoMarcar = 1
-
-                            #dados['quantidadePacientePossivel'] = dados['quantidadePacientePossivel'] - 1
 
                             marcando = MarcarHorarioPaciente(nomePaciente, dataMarcar, horarioMarcar)
                             
@@ -306,31 +327,11 @@ while encerrarPrograma != True:
         
     elif opcao == 2: 
         print("Opção 2 - Listar sessões clínicas")
-        buscarSessao()
+        listarSessao()
 
     elif opcao == 3: 
         print("Opção 3 - Buscar sessão")
-        cabecalho("BUSCAR SESSÃO")
-        buscarData = int(input("Informe a data a ser buscada: "))
-        buscarHorario = int(input("Informe o horário a ser buscado: "))
-        print("."*40)
-
-        try:
-            with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-                dadosSessaoRecepcao = json.load(arquivos)
-            
-            for elementos, dados in dadosSessaoRecepcao.items():
-                if dados['dataSessao'] == buscarData:
-                    if dados['horarioSessao'] == buscarHorario:
-                        print("Sessão encontrada com sucesso.\n")
-                        print("Sessão número", dados['codigo'])
-                        contadorSucessoBuscar = 1
-
-            if contadorSucessoBuscar == 0:
-                print("Não há sessões com essa data e horário.")
-
-        except FileNotFoundError:
-            print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
+        buscarSessao()
     
     elif opcao == 4:
         print("Opção 4 - Iniciar sessão")
