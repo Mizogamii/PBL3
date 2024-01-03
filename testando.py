@@ -299,6 +299,7 @@ def formatoData():
         try:
             inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
             data = datetime.strptime(inputDataSessao, "%d/%m/%Y").strftime("%d/%m/%Y")
+            
         except ValueError: 
             print("ERRO! Digite no formato pedido.")
         else:
