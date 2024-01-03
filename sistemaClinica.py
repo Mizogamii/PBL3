@@ -349,7 +349,6 @@ while encerrarPrograma != True:
         cabecalho("BUSCAR PACIENTE")
         buscarPaciente()
 
-
     elif opcao == 8:
         print("Opção 8 - Listar próximos pacientes")
     
