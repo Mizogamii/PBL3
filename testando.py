@@ -94,7 +94,7 @@ Sessão 2 -- 14:00""")
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
     cabecalho("BUSCAR SESSÃO")
-    buscarData = int(input("Informe a data a ser buscada: "))
+    buscarData = formatoData()
     buscarHorario = int(input("Informe o horário a ser buscado: "))
     print("."*40)
 
@@ -298,8 +298,13 @@ def formatoData():
     while True:
         try:
             inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
-            data = datetime.strptime(inputDataSessao, "%d/%m/%Y").strftime("%d/%m/%Y")
-            
+            data = datetime.strptime(inputDataSessao, "%d/%m/%Y")
+        
+            if data < datetime.now():
+                print("Digite anos atuais!")
+                continue
+
+            data = data.strftime("%d/%m/%Y")
         except ValueError: 
             print("ERRO! Digite no formato pedido.")
         else:
