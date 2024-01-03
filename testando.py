@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 import json
 from classes import Paciente, Recepcao, MarcarHorarioPaciente
 
@@ -62,11 +62,13 @@ Sessão 1 -- 08:00
 Sessão 2 -- 14:00""")
     print("-"*40)
     print("Insira os datos pedidos: ")
-    dataSessao = int(input("Data da nova sessão: "))
+    
+    dataSessao = formatoData()
+
     horarioSessao = int(input("Horário da nova sessão: "))
     duracao = int(input("Duração dessa sessão, em horas: "))
     duracaoSessao = duracao * 60
-    tempoCadaConsulta = int(input("Tempo de cada consulta dessa sessão:  "))
+    tempoCadaConsulta = int(input("Duração de cada consulta, em minutos: "))
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
     
     #Inserindo as informações na classe
@@ -100,7 +102,7 @@ def buscarSessao():
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
             dadosSessaoRecepcao = json.load(arquivos)
         
-        for elementos, dados in dadosSessaoRecepcao.items():
+        for dados in dadosSessaoRecepcao.values():
             if dados['dataSessao'] == buscarData:
                 if dados['horarioSessao'] == buscarHorario:
                     print("Sessão encontrada com sucesso.\n")
@@ -223,10 +225,10 @@ def marcarHorario():
             print("Não há cadastros com este nome!\nTente novamente!")
             
         else: 
-            dataMarcar = int(input("Insira a data da sessão desejada: "))
+            dataMarcar = formatoData()
             horarioMarcar = int(input("Insira o horário da sessão desejada: "))
             print("."*40)
-
+    
             try:
                 with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
                     horariosMarcadosRecepcao = json.load(arquivos)
@@ -291,6 +293,17 @@ def buscarPaciente():
 
 def listarProximos():
     pass
+
+def formatoData():
+    while True:
+        try:
+            inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
+            data = datetime.strptime(inputDataSessao, "%d/%m/%Y").strftime("%d/%m/%Y")
+        except ValueError: 
+            print("ERRO! Digite no formato pedido.")
+        else:
+            break
+    return data
 
 encerrarPrograma = False
 dadosGerais = {}
