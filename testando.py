@@ -61,7 +61,7 @@ def adicionarNovaSessao():
 Sessão 1 -- 08:00 
 Sessão 2 -- 14:00""")
     print("-"*40)
-    print("Insira os datos pedidos: ")
+    print("Insira os dados pedidos: ")
     
     dataSessao = formatoData()
 
