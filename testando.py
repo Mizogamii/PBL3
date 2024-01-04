@@ -94,7 +94,7 @@ Sessão 2 -- 14:00""")
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
     contadorSucessoBuscar = 0
-    
+
     cabecalho("BUSCAR SESSÃO")
     buscarData = formatoData()
     buscarHorario = int(input("Informe o horário a ser buscado: "))
@@ -109,6 +109,8 @@ def buscarSessao():
                 if dados['horarioSessao'] == buscarHorario:
                     print("Sessão encontrada com sucesso.\n")
                     print("Sessão número", dados['codigo'])
+                    print("Data da sessão: ", dados['dataSessao'])
+                    print("Duração de cada consulta: ", dados['tempoConsulta'], "minutos")
                     contadorSucessoBuscar = 1
 
         if contadorSucessoBuscar == 0:
@@ -277,8 +279,6 @@ def buscarPaciente():
             horariosMarcadosRecepcao = json.load(arquivo)
         
         nomePaciente = input("Informe o nome do paciente: ")
-        print("."*40)
-        #print(f"Todos os horários marcados pelo paciente \n{nomePaciente} ")
         
         for dados in horariosMarcadosRecepcao.values():
             if dados['nomePac'] == nomePaciente:
@@ -323,7 +323,7 @@ while encerrarPrograma != True:
     if cont == 0:
         menu()
     else: 
-        resposta = input("Aperte ENTER para continuar")
+        resposta = input("Clique ENTER para continuar ")
         print('\033c', end='')
         menu()
 
@@ -367,7 +367,6 @@ while encerrarPrograma != True:
         print("Opção 7 - Buscar paciente")
         cabecalho("BUSCAR PACIENTE")
         buscarPaciente()
-
 
     elif opcao == 8:
         print("Opção 8 - Listar próximos pacientes")
