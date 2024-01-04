@@ -175,12 +175,16 @@ def iniciarSessao():
 
                                 with open('pacientesMarcadosSessao.json', 'w') as arquivos:
                                     json.dump(pacientesMarcadosSessao, arquivos, indent=4)
+        print("."*40)
+        print("Pacientes marcados na sessão: ")
+        for dados in pacientesMarcadosSessao:
+            print(dados['nome'])
 
     except FileNotFoundError:
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
 
     if contadorTemHorario == 0: 
-        print("Não há sessões com essa data e horário cadastrados no sistema.")
+        print("Não há sessões com essa data e horário\ncadastrados no sistema.")
 
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
