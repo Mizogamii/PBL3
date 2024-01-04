@@ -26,12 +26,12 @@ while encerrarPrograma != True:
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
-            print("ERRO! Digite apenas números de 1 a 10!")
+            print("ERRO! Digite apenas números de 1 a 11!")
         else:
-            if 0 < opcao <= 10:
+            if 0 < opcao <= 11:
                 break
             else:
-                print("ERRO! Digite apenas de 1 a 10!")
+                print("ERRO! Digite apenas de 1 a 11!")
                 continue
 
     if opcao == 1:
@@ -71,6 +71,10 @@ while encerrarPrograma != True:
         listarProximos()
 
     elif opcao == 10:
+        cabecalho("CONSULTAS REALIZADAS NA SESSÃO")
+        listarConsultasRealizadas()
+    
+    elif opcao == 11:
         print("\nEncerrando...")
         encerrarPrograma = True
     

@@ -54,5 +54,13 @@
         "duracaoSessao": 240,
         "tempoConsulta": 30,
         "quantidadePacientePossivel": 8
+    },
+    "8": {
+        "codigo": 8,
+        "dataSessao": "12/05/2024",
+        "horarioSessao": 8,
+        "duracaoSessao": 240,
+        "tempoConsulta": 60,
+        "quantidadePacientePossivel": 4
     }
 }

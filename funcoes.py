@@ -8,12 +8,12 @@ arquivosJson = {}
 #Função para organizar os títulos
 def cabecalho(texto):
     print("-"*47)
-    print(texto.center(50))
+    print(texto.center(47))
     print("-"*47)
 
 #Função para impressão do menu 
 def menu():
-    cabecalho("MENU")
+    cabecalho("MENU RECEPÇÃO")
     print("""1 -  Adicionar nova sessão
 2 -  Listar sessões clínicas 
 3 -  Buscar sessão clínica
@@ -23,7 +23,8 @@ def menu():
 7 -  Listar horários marcados
 8 -  Verificar se paciente tem horário marcado
 9 -  Mostrar próximo paciente na fila
-10 - Sair do sistema """) 
+10 - Listar consultas realizadas na sessão
+11 - Sair do sistema """) 
     
     print("-"*47)
 
@@ -371,6 +372,18 @@ def listarProximos():
 
     print(pacientesMarcadosSessao[0]['nome'])
 
+def listarConsultasRealizadas():
+    try:
+        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+            pacientesMarcadosSessao = json.load(arquivos)
+    except FileNotFoundError:
+        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
+    for dados in pacientesMarcadosSessao:
+        print("Nome: ", dados['nome'])
+        print("Data: ", dados['data'])
+        print("Horário: ", dados['horario'])
+        print("."*47)
+
 #Função para formatação das datas
 def formatoData():
     while True:
@@ -389,3 +402,14 @@ def formatoData():
             break
     return data
 
+def menuDentista():
+    cabecalho("MENU DENTISTA")
+    print("""1 - Buscar sessão clínica
+2 - Iniciar sessão clínica
+3 - Atender próximo paciente
+4 - Ler prontuário de paciente
+5 - Ler a primeira anotação do paciente
+6 - Ler a última anotação do paciente
+7 - Anotar no prontuário
+8 - Sair do sistema""")
+    print("-"*47)
