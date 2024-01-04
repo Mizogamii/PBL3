@@ -67,7 +67,7 @@ while encerrarPrograma != True:
         confirmarHorario()
     
     elif opcao == 9: 
-        cabecalho("LISTAR PRÓXIMOS PACIENTES")
+        cabecalho("PRÓXIMO PACIENTE")
         listarProximos()
 
     elif opcao == 10:
