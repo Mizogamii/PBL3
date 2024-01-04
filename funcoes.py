@@ -156,10 +156,29 @@ def iniciarSessao():
                 if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
                     print('Sessão aberta com sucesso.')
                     contadorTemHorario = 1
+                    
+                    with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
+                        horariosMarcadosRecepcao = json.load(arquivo)
+                        for dados in horariosMarcadosRecepcao.values():
+                            if dataSessaoIniciar == dados['data'] and horarioDaSessao == dados['horario']:
+                                try:
+                                    with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+                                        pacientesMarcadosSessao = json.load(arquivos)
+                                except FileNotFoundError:
+                                    pacientesMarcadosSessao = []
+                                
+                                pacientesMarcadosSessao.append({
+                                    'nome': dados['nomePac'], 
+                                    'data': dados['data'], 
+                                    'horario': dados['horario']
+                                })
+
+                                with open('pacientesMarcadosSessao.json', 'w') as arquivos:
+                                    json.dump(pacientesMarcadosSessao, arquivos, indent=4)
 
     except FileNotFoundError:
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
-        
+
     if contadorTemHorario == 0: 
         print("Não há sessões com essa data e horário cadastrados no sistema.")
 
