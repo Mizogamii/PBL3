@@ -144,6 +144,7 @@ def buscarSessao():
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
     contadorTemHorario = 0
+    pacientesMarcadosSessao = []
     
     try: 
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:

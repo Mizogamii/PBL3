@@ -11,8 +11,8 @@
         "codigo": 2,
         "dataSessao": "23/02/2024",
         "horarioSessao": 8,
-        "duracaoSessao": 240,
+        "duracaoSessao": 120,
         "tempoConsulta": 30,
-        "quantidadePacientePossivel": 8
+        "quantidadePacientePossivel": 4
     }
 }
