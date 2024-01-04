@@ -47,6 +47,7 @@ while encerrarPrograma != True:
     
     elif opcao == 4:
         print("Opção 4 - Iniciar sessão")
+        iniciarSessao()
         
     elif opcao == 5:
         print("Opção 5 - Cadastrar novo paciente")

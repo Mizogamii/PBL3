@@ -143,7 +143,26 @@ def buscarSessao():
 
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
-    pass
+    contadorTemHorario = 0
+    cabecalho("INICIAR SESSÃO")
+    
+    try: 
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+
+            dataSessaoIniciar = formatoData()
+            horarioDaSessao = int(input("Insira o horário: "))
+            for dados in dadosSessaoRecepcao.values():
+                if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
+                    print('Sessão aberta com sucesso.')
+                    contadorTemHorario = 1
+
+    except FileNotFoundError:
+        print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
+        
+    if contadorTemHorario == 0: 
+        print("Não há sessões com essa data e horário cadastrados no sistema.")
+
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -322,3 +341,4 @@ def formatoData():
         else:
             break
     return data
+
