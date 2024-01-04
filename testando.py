@@ -93,6 +93,8 @@ Sessão 2 -- 14:00""")
 
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
+    contadorSucessoBuscar = 0
+    
     cabecalho("BUSCAR SESSÃO")
     buscarData = formatoData()
     buscarHorario = int(input("Informe o horário a ser buscado: "))
@@ -211,6 +213,7 @@ def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
     contadorDataHoraIguais = 0
+
     cabecalho("MARCAR HORÁRIO")
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
@@ -327,9 +330,6 @@ while encerrarPrograma != True:
     cont += 1
 
     while True:
-        contadorSucessoBuscar = 0
-        sucessoMarcar = 0
-
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
