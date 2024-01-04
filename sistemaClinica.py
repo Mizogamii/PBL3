@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 import json
 from classes import Paciente, Recepcao, MarcarHorarioPaciente
 
@@ -22,6 +22,7 @@ def menu():
 9 - Sair do sistema """)
     print("-"*40)
 
+#Função para salvar as informações em arquivo json
 def salvarArquivo(nomeArquivo, arq, numero):
 #Abrindo o arquivo para leitura
     try:
@@ -61,12 +62,14 @@ def adicionarNovaSessao():
 Sessão 1 -- 08:00 
 Sessão 2 -- 14:00""")
     print("-"*40)
-    print("Insira os datos pedidos: ")
-    dataSessao = int(input("Data da nova sessão: "))
+    print("Insira os dados pedidos: ")
+    
+    dataSessao = formatoData()
+
     horarioSessao = int(input("Horário da nova sessão: "))
     duracao = int(input("Duração dessa sessão, em horas: "))
     duracaoSessao = duracao * 60
-    tempoCadaConsulta = int(input("Tempo de cada consulta dessa sessão:  "))
+    tempoCadaConsulta = int(input("Duração de cada consulta, em minutos: "))
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
     
     #Inserindo as informações na classe
@@ -89,30 +92,7 @@ Sessão 2 -- 14:00""")
 
     return duracaoSessao, tempoCadaConsulta
 
-#Função da opção 3 de buscar a sessão clínica
-def buscarSessao():
-    cabecalho("BUSCAR SESSÃO")
-    buscarData = int(input("Informe a data a ser buscada: "))
-    buscarHorario = int(input("Informe o horário a ser buscado: "))
-    print("."*40)
-
-    try:
-        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-            dadosSessaoRecepcao = json.load(arquivos)
-        
-        for elementos, dados in dadosSessaoRecepcao.items():
-            if dados['dataSessao'] == buscarData:
-                if dados['horarioSessao'] == buscarHorario:
-                    print("Sessão encontrada com sucesso.\n")
-                    print("Sessão número", dados['codigo'])
-                    contadorSucessoBuscar = 1
-
-        if contadorSucessoBuscar == 0:
-            print("Não há sessões com essa data e horário.")
-
-    except FileNotFoundError:
-        print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
-
+#Função da opção 2 de listar as sessões clínicas
 def listarSessao():
     cabecalho("LISTAR SESSÕES CLÍNICAS")
     try:
@@ -130,6 +110,35 @@ def listarSessao():
             print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
             print("."*40)
 
+#Função da opção 3 de buscar a sessão clínica
+def buscarSessao():
+    contadorSucessoBuscar = 0
+
+    cabecalho("BUSCAR SESSÃO")
+    buscarData = formatoData()
+    buscarHorario = int(input("Informe o horário a ser buscado: "))
+    print("."*40)
+
+    try:
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+        
+        for dados in dadosSessaoRecepcao.values():
+            if dados['dataSessao'] == buscarData:
+                if dados['horarioSessao'] == buscarHorario:
+                    print("Sessão encontrada com sucesso.\n")
+                    print("Sessão número", dados['codigo'])
+                    print("Data da sessão: ", dados['dataSessao'])
+                    print("Duração de cada consulta: ", dados['tempoConsulta'], "minutos")
+                    contadorSucessoBuscar = 1
+
+        if contadorSucessoBuscar == 0:
+            print("Não há sessões com essa data e horário.")
+
+    except FileNotFoundError:
+        print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
+
+#Função da opção 4 de iniciar as sessões
 def iniciarSessao():
     pass
 
@@ -209,6 +218,7 @@ def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
     contadorDataHoraIguais = 0
+
     cabecalho("MARCAR HORÁRIO")
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
@@ -223,10 +233,10 @@ def marcarHorario():
             print("Não há cadastros com este nome!\nTente novamente!")
             
         else: 
-            dataMarcar = int(input("Insira a data da sessão desejada: "))
+            dataMarcar = formatoData()
             horarioMarcar = int(input("Insira o horário da sessão desejada: "))
             print("."*40)
-
+    
             try:
                 with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
                     horariosMarcadosRecepcao = json.load(arquivos)
@@ -265,6 +275,7 @@ def marcarHorario():
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
 
+#Função da opção 7 de buscar se o paciente tem horário marcado 
 def buscarPaciente():
     contadorNomeCerto = 0
     try: 
@@ -272,8 +283,6 @@ def buscarPaciente():
             horariosMarcadosRecepcao = json.load(arquivo)
         
         nomePaciente = input("Informe o nome do paciente: ")
-        print("."*40)
-        #print(f"Todos os horários marcados pelo paciente \n{nomePaciente} ")
         
         for dados in horariosMarcadosRecepcao.values():
             if dados['nomePac'] == nomePaciente:
@@ -289,8 +298,27 @@ def buscarPaciente():
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
 
+#Função da opção 8 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     pass
+
+#Função para formatação das datas
+def formatoData():
+    while True:
+        try:
+            inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
+            data = datetime.strptime(inputDataSessao, "%d/%m/%Y")
+        
+            if data < datetime.now():
+                print("Digite anos atuais!")
+                continue
+
+            data = data.strftime("%d/%m/%Y")
+        except ValueError: 
+            print("ERRO! Digite no formato pedido.")
+        else:
+            break
+    return data
 
 encerrarPrograma = False
 dadosGerais = {}
@@ -301,16 +329,13 @@ while encerrarPrograma != True:
     if cont == 0:
         menu()
     else: 
-        resposta = input("Aperte ENTER para continuar")
+        resposta = input("Clique ENTER para continuar ")
         print('\033c', end='')
         menu()
 
     cont += 1
 
     while True:
-        contadorSucessoBuscar = 0
-        sucessoMarcar = 0
-
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
