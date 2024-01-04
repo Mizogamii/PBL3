@@ -22,6 +22,7 @@ def menu():
 9 - Sair do sistema """)
     print("-"*40)
 
+#Função para salvar as informações em arquivo json
 def salvarArquivo(nomeArquivo, arq, numero):
 #Abrindo o arquivo para leitura
     try:
@@ -91,6 +92,24 @@ Sessão 2 -- 14:00""")
 
     return duracaoSessao, tempoCadaConsulta
 
+#Função da opção 2 de listar as sessões clínicas
+def listarSessao():
+    cabecalho("LISTAR SESSÕES CLÍNICAS")
+    try:
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+
+    except FileNotFoundError:
+        print("ERRO! Não há dados a serem mostrados.")
+    
+    if dadosSessaoRecepcao:
+        for codigo, dados in dadosSessaoRecepcao.items():
+            print("Sessão: ", codigo)
+            print("Data da sessão: ", dados['dataSessao'])
+            print("Horário da sessão: ", dados['horarioSessao'])
+            print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
+            print("."*40)
+
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
     contadorSucessoBuscar = 0
@@ -119,23 +138,7 @@ def buscarSessao():
     except FileNotFoundError:
         print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
 
-def listarSessao():
-    cabecalho("LISTAR SESSÕES CLÍNICAS")
-    try:
-        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-            dadosSessaoRecepcao = json.load(arquivos)
-
-    except FileNotFoundError:
-        print("ERRO! Não há dados a serem mostrados.")
-    
-    if dadosSessaoRecepcao:
-        for codigo, dados in dadosSessaoRecepcao.items():
-            print("Sessão: ", codigo)
-            print("Data da sessão: ", dados['dataSessao'])
-            print("Horário da sessão: ", dados['horarioSessao'])
-            print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
-            print("."*40)
-
+#Função da opção 4 de iniciar as sessões
 def iniciarSessao():
     pass
 
@@ -272,6 +275,7 @@ def marcarHorario():
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.")
 
+#Função da opção 7 de buscar se o paciente tem horário marcado 
 def buscarPaciente():
     contadorNomeCerto = 0
     try: 
@@ -294,9 +298,11 @@ def buscarPaciente():
     except FileNotFoundError:
         print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
 
+#Função da opção 8 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     pass
 
+#Função para formatação das datas
 def formatoData():
     while True:
         try:
