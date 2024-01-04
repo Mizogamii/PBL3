@@ -192,7 +192,7 @@ def iniciarSessao():
 def cadastrarPaciente():
     id = 0
 
-    input_nome = str(input("Nome: "))
+    input_nome = str(input("Nome: ")).upper()
 
     #Tratamento de dados, só aceita números
     while True:
@@ -268,7 +268,7 @@ def marcarHorario():
         with open('dadosPaciente.json', 'r') as arquivo:
             dadosPaciente = json.load(arquivo)
         
-        nomePaciente = input("Informe o nome do paciente: ")
+        nomePaciente = input("Informe o nome do paciente: ").upper()
         for dados in dadosPaciente.values():
             if dados['nome'] == nomePaciente:
                 contadorNomeCerto = 1
@@ -326,7 +326,7 @@ def listarHorariosMarcados():
         with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
             horariosMarcadosRecepcao = json.load(arquivo)
         
-        nomePaciente = input("Informe o nome do paciente: ")
+        nomePaciente = input("Informe o nome do paciente: ").upper()
         
         for dados in horariosMarcadosRecepcao.values():
             if dados['nomePac'] == nomePaciente:
@@ -346,44 +346,44 @@ def listarHorariosMarcados():
 def confirmarHorario():
     nomeConsta = 0
     try:
-       with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
+            nomePaciente = input("Informe o nome do paciente: ").upper()
+        for dados in pacientesMarcadosSessao:
+            if dados['nome'] == nomePaciente:
+                nomeConsta = 1
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
-
-    nomePaciente = input("Informe o nome do paciente: ")
-
-    for dados in pacientesMarcadosSessao:
-        if dados['nome'] == nomePaciente:
-            nomeConsta = 1
 
     if nomeConsta == 1:
         print("Paciente está com horário marcado.")
     else:
-        print("Não há horários marcados para ", nomePaciente)
+        print("Não há horários marcados para esse paciente")
         
 #Função da opção 9 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     try:
         with open('pacientesMarcadosSessao.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
+            print(pacientesMarcadosSessao[0]['nome'])
+
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
 
-    print(pacientesMarcadosSessao[0]['nome'])
-
+#Função da opção 10 de mostrar todas as consultas realizadas na sessão
 def listarConsultasRealizadas():
     try:
         with open('pacientesMarcadosSessao.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
+            for dados in pacientesMarcadosSessao:
+                print("Nome: ", dados['nome'])
+                print("Data: ", dados['data'])
+                print("Horário: ", dados['horario'])
+                print("."*47)
+
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
-    for dados in pacientesMarcadosSessao:
-        print("Nome: ", dados['nome'])
-        print("Data: ", dados['data'])
-        print("Horário: ", dados['horario'])
-        print("."*47)
-
+    
 #Função para formatação das datas
 def formatoData():
     while True:

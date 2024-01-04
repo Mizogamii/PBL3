@@ -9,58 +9,10 @@
     },
     "2": {
         "codigo": 2,
-        "dataSessao": "25/05/2024",
-        "horarioSessao": 15,
-        "duracaoSessao": 240,
-        "tempoConsulta": 60,
-        "quantidadePacientePossivel": 4
-    },
-    "3": {
-        "codigo": 3,
-        "dataSessao": "04/01/2024",
-        "horarioSessao": 15,
-        "duracaoSessao": 240,
-        "tempoConsulta": 40,
-        "quantidadePacientePossivel": 6
-    },
-    "4": {
-        "codigo": 4,
-        "dataSessao": "08/05/2024",
-        "horarioSessao": 8,
-        "duracaoSessao": 120,
-        "tempoConsulta": 20,
-        "quantidadePacientePossivel": 6
-    },
-    "5": {
-        "codigo": 5,
-        "dataSessao": "25/02/2024",
-        "horarioSessao": 14,
-        "duracaoSessao": 180,
-        "tempoConsulta": 60,
-        "quantidadePacientePossivel": 3
-    },
-    "6": {
-        "codigo": 6,
-        "dataSessao": "30/01/2024",
+        "dataSessao": "23/02/2024",
         "horarioSessao": 8,
         "duracaoSessao": 240,
         "tempoConsulta": 30,
         "quantidadePacientePossivel": 8
-    },
-    "7": {
-        "codigo": 7,
-        "dataSessao": "03/02/2024",
-        "horarioSessao": 8,
-        "duracaoSessao": 240,
-        "tempoConsulta": 30,
-        "quantidadePacientePossivel": 8
-    },
-    "8": {
-        "codigo": 8,
-        "dataSessao": "12/05/2024",
-        "horarioSessao": 8,
-        "duracaoSessao": 240,
-        "tempoConsulta": 60,
-        "quantidadePacientePossivel": 4
     }
 }
