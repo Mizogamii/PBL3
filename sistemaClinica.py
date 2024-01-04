@@ -116,7 +116,7 @@ def listarSessao():
             print("Data da sessão: ", dados['dataSessao'])
             print("Horário da sessão: ", dados['horarioSessao'])
             print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
-            print("."*40)
+            print("."*47)
 
 #Função da opção 3 de buscar a sessão clínica
 def buscarSessao():
@@ -125,7 +125,7 @@ def buscarSessao():
     cabecalho("BUSCAR SESSÃO")
     buscarData = formatoData()
     buscarHorario = int(input("Informe o horário a ser buscado: "))
-    print("."*40)
+    print("."*47)
 
     try:
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
@@ -243,7 +243,7 @@ def marcarHorario():
         else: 
             dataMarcar = formatoData()
             horarioMarcar = int(input("Insira o horário da sessão desejada: "))
-            print("."*40)
+            print("."*47)
     
             try:
                 with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
@@ -295,7 +295,7 @@ def buscarPaciente():
         for dados in horariosMarcadosRecepcao.values():
             if dados['nomePac'] == nomePaciente:
                 contadorNomeCerto = 1
-                print("."*40)
+                print("."*47)
                 print(f"Nome: {dados['nomePac']}")
                 print(f"Data: {dados['data']}")
                 print(f"Horário: {dados['horario']}")

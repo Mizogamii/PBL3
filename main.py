@@ -26,50 +26,53 @@ while encerrarPrograma != True:
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
-            print("ERRO! Digite apenas números de 1 a 9!")
+            print("ERRO! Digite apenas números de 1 a 10!")
         else:
-            if opcao <= 9:
+            if 0 < opcao <= 10:
                 break
             else:
-                print("ERRO! Digite apenas de 1 a 9!")
+                print("ERRO! Digite apenas de 1 a 10!")
                 continue
 
     if opcao == 1:
+        cabecalho("ADICIONAR NOVA SESSÃO CLÍNICA")
         adicionarNovaSessao()
         
     elif opcao == 2: 
-        print("Opção 2 - Listar sessões clínicas")
+        cabecalho("LISTAR SESSÕES CLÍNICAS")
         listarSessao()
 
     elif opcao == 3: 
-        print("Opção 3 - Buscar sessão")
+        cabecalho("BUSCAR SESSÕES CLÍNICAS")
         buscarSessao()
     
     elif opcao == 4:
-        print("Opção 4 - Iniciar sessão")
+        cabecalho("INICIAR SESSÃO")
         iniciarSessao()
         
     elif opcao == 5:
-        print("Opção 5 - Cadastrar novo paciente")
+        cabecalho("CADASTRAR NOVO PACIENTE")
         cadastrarPaciente()
         
     elif opcao == 6:
-        print("Opção 6 - Marcar horário")
+        cabecalho("MARCAR HORÁRIO")
         marcarHorario()
         
     elif opcao == 7:
-        print("Opção 7 - Buscar paciente")
-        cabecalho("BUSCAR PACIENTE")
-        buscarPaciente()
+        cabecalho("LISTAR HORÁRIOS MARCADOS")
+        listarHorariosMarcados()
 
     elif opcao == 8:
-        print("Opção 8 - Listar próximos pacientes")
+        cabecalho('VERIFICAR SE PACIENTE TEM HORÁRIO MARCADO')
     
-    elif opcao == 9:
+    elif opcao == 9: 
+        cabecalho("LISTAR PRÓXIMOS PACIENTES")
+
+    elif opcao == 10:
         print("\nEncerrando...")
         encerrarPrograma = True
     
-    print("-"*40)
+    print("-"*47)
 
 
 
