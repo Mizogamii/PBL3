@@ -64,9 +64,11 @@ while encerrarPrograma != True:
 
     elif opcao == 8:
         cabecalho('VERIFICAR SE PACIENTE TEM HORÁRIO MARCADO')
+        confirmarHorario()
     
     elif opcao == 9: 
         cabecalho("LISTAR PRÓXIMOS PACIENTES")
+        listarProximos()
 
     elif opcao == 10:
         print("\nEncerrando...")

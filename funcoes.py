@@ -173,16 +173,19 @@ def iniciarSessao():
 
                                 with open('pacientesMarcadosSessao.json', 'w') as arquivos:
                                     json.dump(pacientesMarcadosSessao, arquivos, indent=4)
-        print("."*47)
-        print("Pacientes marcados na sessão: ")
-        for dados in pacientesMarcadosSessao:
-            print(dados['nome'])
 
     except FileNotFoundError:
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
 
     if contadorTemHorario == 0: 
         print("Não há sessões com essa data e horário\ncadastrados no sistema.")
+    else:
+        print("."*47)
+        print("Pacientes marcados na sessão: ")
+        for dados in pacientesMarcadosSessao:
+            print(dados['nome'])
+
+        return dataSessaoIniciar, horarioDaSessao
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -340,8 +343,24 @@ def listarHorariosMarcados():
 
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
-    pass
+    nomeConsta = 0
+    try:
+       with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+            pacientesMarcadosSessao = json.load(arquivos)
+    except FileNotFoundError:
+        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
 
+    nomePaciente = input("Informe o nome do paciente: ")
+
+    for dados in pacientesMarcadosSessao:
+        if dados['nome'] == nomePaciente:
+            nomeConsta = 1
+
+    if nomeConsta == 1:
+        print("Paciente está com horário marcado.")
+    else:
+        print("Não há horários marcados para ", nomePaciente)
+        
 #Função da opção 9 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     pass
