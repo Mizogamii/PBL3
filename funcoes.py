@@ -63,8 +63,8 @@ def salvarArquivo(nomeArquivo, arq, numero):
 def adicionarNovaSessao():
     codigo = 0
     print("""Horário que inicia as sessões padrões: 
-Sessão 1 -- 08:00 
-Sessão 2 -- 14:00""")
+Sessão da manhã -- 08:00 
+Sessão da tarde -- 14:00""")
     print("-"*47)
     print("Insira os dados pedidos: ")
     
@@ -423,8 +423,7 @@ def pacientesComHoraMarcadaSessao():
                     }
                 if pacientesAtual not in pacientesMarcadosSessao:
                     pacientesMarcadosSessao.append(pacientesAtual)
-                    
-
+                
                     with open('pacientesMarcadosSessao.json', 'w') as arquivos:
                         json.dump(pacientesMarcadosSessao, arquivos, indent=4)
 

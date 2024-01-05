@@ -1,12 +1,12 @@
 {
     "1": {
-        "nomePac": "EARTH",
+        "nomePac": "MIX",
         "data": "22/02/2024",
         "horario": 14,
         "ordemMarcacao": 1
     },
     "2": {
-        "nomePac": "MIX",
+        "nomePac": "EARTH",
         "data": "22/02/2024",
         "horario": 14,
         "ordemMarcacao": 2
