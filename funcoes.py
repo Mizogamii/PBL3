@@ -407,11 +407,7 @@ def pacientesComHoraMarcadaSessao():
             with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
                 horariosMarcadosRecepcao = json.load(arquivo)
                             
-            try:
-                with open('pacientesMarcadosSessao.json', 'r') as arquivos:
-                    pacientesMarcadosSessao = json.load(arquivos)
-            except FileNotFoundError:
-                pacientesMarcadosSessao = []
+            pacientesMarcadosSessao = lerArquivoPacientesMarcadosSessao()
 
             for dados in horariosMarcadosRecepcao.values():
                 if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
@@ -420,6 +416,7 @@ def pacientesComHoraMarcadaSessao():
                         'data': dados['data'], 
                         'horario': dados['horario']
                     }
+
                 if pacientesAtual not in pacientesMarcadosSessao:
                     pacientesMarcadosSessao.append(pacientesAtual)
                 
@@ -428,6 +425,15 @@ def pacientesComHoraMarcadaSessao():
 
     except FileNotFoundError:
         print("ERRO! Tente iniciar a sessão na opção 4.")
+
+def lerArquivoPacientesMarcadosSessao():
+    try:
+        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+            pacientesMarcadosSessao = json.load(arquivos)
+    except FileNotFoundError:
+        pacientesMarcadosSessao = []
+
+    return pacientesMarcadosSessao
 
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista
@@ -445,7 +451,23 @@ def menuDentista():
 
 #Função da opção 3 para atender o próximo paciente da lista
 def atenderProxPaciente():
-    pass
+    pacientesMarcadosSessao = lerArquivoPacientesMarcadosSessao()
+    print("Nome: ", pacientesMarcadosSessao[0]['nome'])
+    print("Data: ", pacientesMarcadosSessao[0]['data'])
+    print("Horário: ", pacientesMarcadosSessao[0]['horario'])
+    print("."*47)
+    
+    del pacientesMarcadosSessao[0]
+
+    with open('pacientesMarcadosSessao.json', 'w') as arquivos:
+        json.dump(pacientesMarcadosSessao, arquivos, indent=4)
+    
+    if not pacientesMarcadosSessao:
+        try:
+            with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                dataHoraSessaoAberta = json.load(arquivo)
+        except FileNotFoundError:
+            print("ERRO! ")
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario():

@@ -35,18 +35,23 @@ while encerrarPrograma != True:
 
     elif opcao == 3:
         cabecalho("ATENDER PRÓXIMO PACIENTE")
+        atenderProxPaciente()
 
     elif opcao == 4: 
         cabecalho("LER PRONTUÁRIO")
+        lerProntuario()
 
     elif opcao == 5: 
         cabecalho("LER PRIMEIRA ANOTAÇÃO")
+        lerPrimeiraAnotacao()
 
     elif opcao == 6: 
         cabecalho("LER ÚLTIMA ANOTAÇÃO")
+        lerUltimaAnotacao()
 
     elif opcao == 7: 
         cabecalho("ANOTAR NO PRONTUÁRIO")
+        anotarProntuario()
 
     elif opcao == 8:
         print("Encerrando...")
