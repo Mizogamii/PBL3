@@ -347,13 +347,13 @@ def confirmarHorario():
         for dados in pacientesMarcadosSessao:
             if dados['nome'] == nomePaciente:
                 nomeConsta = 1
+        if nomeConsta == 1:
+            print("Paciente está com horário marcado.")
+        else:
+            print("Não há horários marcados para esse paciente")
+    
     except FileNotFoundError:
-        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
-
-    if nomeConsta == 1:
-        print("Paciente está com horário marcado.")
-    else:
-        print("Não há horários marcados para esse paciente")
+        print("Não há dados no arquivo!")
         
 #Função da opção 9 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
@@ -407,14 +407,16 @@ def pacientesComHoraMarcadaSessao():
 
             with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
                 horariosMarcadosRecepcao = json.load(arquivo)
+                nomePacienteMarcado = horariosMarcadosRecepcao['nomePac']
                 
+            try:
+                with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+                    pacientesMarcadosSessao = json.load(arquivos)
+            except FileNotFoundError:
+                pacientesMarcadosSessao = []
+
             for dados in horariosMarcadosRecepcao.values():
-                if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
-                    try:
-                        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
-                            pacientesMarcadosSessao = json.load(arquivos)
-                    except FileNotFoundError:
-                        pacientesMarcadosSessao = []
+                if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario'] and dados['nome']:
                     
                     pacientesMarcadosSessao.append({
                         'nome': dados['nomePac'], 
@@ -426,7 +428,7 @@ def pacientesComHoraMarcadaSessao():
                         json.dump(pacientesMarcadosSessao, arquivos, indent=4)
 
     except FileNotFoundError:
-        print("ERRO! Tente inicialmente iniciar a sessao na opção 4.")
+        print("ERRO! Tente iniciar a sessão na opção 4.")
 
 def menuDentista():
     cabecalho("MENU DENTISTA")
