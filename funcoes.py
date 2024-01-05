@@ -407,8 +407,7 @@ def pacientesComHoraMarcadaSessao():
 
             with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
                 horariosMarcadosRecepcao = json.load(arquivo)
-                nomePacienteMarcado = horariosMarcadosRecepcao['nomePac']
-                
+                            
             try:
                 with open('pacientesMarcadosSessao.json', 'r') as arquivos:
                     pacientesMarcadosSessao = json.load(arquivos)
@@ -416,13 +415,15 @@ def pacientesComHoraMarcadaSessao():
                 pacientesMarcadosSessao = []
 
             for dados in horariosMarcadosRecepcao.values():
-                if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario'] and dados['nome']:
-                    
-                    pacientesMarcadosSessao.append({
+                if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
+                    pacientesAtual = {
                         'nome': dados['nomePac'], 
                         'data': dados['data'], 
                         'horario': dados['horario']
-                    })
+                    }
+                if pacientesAtual not in pacientesMarcadosSessao:
+                    pacientesMarcadosSessao.append(pacientesAtual)
+                    
 
                     with open('pacientesMarcadosSessao.json', 'w') as arquivos:
                         json.dump(pacientesMarcadosSessao, arquivos, indent=4)

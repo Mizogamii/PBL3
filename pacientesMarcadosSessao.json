@@ -1,27 +1,12 @@
 [
     {
-        "nome": "KHAO",
-        "data": "02/02/2024",
-        "horario": 14
-    },
-    {
-        "nome": "KHAO",
-        "data": "02/02/2024",
+        "nome": "EARTH",
+        "data": "22/02/2024",
         "horario": 14
     },
     {
         "nome": "MIX",
-        "data": "02/02/2024",
-        "horario": 14
-    },
-    {
-        "nome": "KHAO",
-        "data": "02/02/2024",
-        "horario": 14
-    },
-    {
-        "nome": "MIX",
-        "data": "02/02/2024",
+        "data": "22/02/2024",
         "horario": 14
     }
 ]
