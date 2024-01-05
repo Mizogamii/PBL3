@@ -27,9 +27,11 @@ while encerrarPrograma != True:
                 continue
     if opcao == 1:
         cabecalho("BUSCAR SESSÃO")
+        buscarSessao()
 
     elif opcao == 2:
         cabecalho("INICIAR SESSÃO")
+        iniciarSessao()
 
     elif opcao == 3:
         cabecalho("ATENDER PRÓXIMO PACIENTE")

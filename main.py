@@ -14,11 +14,11 @@ cont = 0
 
 while encerrarPrograma != True:
     if cont == 0:
-        menu()
+        menuRecepcao()
     else: 
         resposta = input("Clique ENTER para continuar ")
         print('\033c', end='')
-        menu()
+        menuRecepcao()
 
     cont += 1
 

@@ -11,8 +11,8 @@ def cabecalho(texto):
     print(texto.center(47))
     print("-"*47)
 
-#Função para impressão do menu 
-def menu():
+#Função para impressão do menu da recepção
+def menuRecepcao():
     cabecalho("MENU RECEPÇÃO")
     print("""1 -  Adicionar nova sessão
 2 -  Listar sessões clínicas 
@@ -180,7 +180,6 @@ def iniciarSessao():
         print("Pacientes marcados na sessão: ")
         for dados in pacientesMarcadosSessao:
             print(dados['nome'])
-
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -430,6 +429,8 @@ def pacientesComHoraMarcadaSessao():
     except FileNotFoundError:
         print("ERRO! Tente iniciar a sessão na opção 4.")
 
+#FUNÇÕES DA PARTE DO DENTISTA
+#Função para impressão do menu do dentista
 def menuDentista():
     cabecalho("MENU DENTISTA")
     print("""1 - Buscar sessão clínica
@@ -441,3 +442,23 @@ def menuDentista():
 7 - Anotar no prontuário
 8 - Sair do sistema""")
     print("-"*47)
+
+#Função da opção 3 para atender o próximo paciente da lista
+def atenderProxPaciente():
+    pass
+
+#Função da opção 4 para ler o prontuário do paciente que está sendo atendido
+def lerProntuario():
+    pass
+
+#Função da opção 5 para ler a primeira anotação feita na consulta do paciente
+def lerPrimeiraAnotacao():
+    pass
+
+#Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
+def lerUltimaAnotacao():
+    pass
+
+#Função da opção 7 para anotar informações do paciente no prontuário
+def anotarProntuario():
+    pass
