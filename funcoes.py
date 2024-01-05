@@ -151,30 +151,24 @@ def iniciarSessao():
             dadosSessaoRecepcao = json.load(arquivos)
 
             dataSessaoIniciar = formatoData()
+
             horarioDaSessao = int(input("Insira o horário: "))
             for dados in dadosSessaoRecepcao.values():
                 if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
                     print('Sessão aberta com sucesso.')
                     contadorTemHorario = 1
-                    
-                    with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
-                        horariosMarcadosRecepcao = json.load(arquivo)
-                        for dados in horariosMarcadosRecepcao.values():
-                            if dataSessaoIniciar == dados['data'] and horarioDaSessao == dados['horario']:
-                                try:
-                                    with open('pacientesMarcadosSessao.json', 'r') as arquivos:
-                                        pacientesMarcadosSessao = json.load(arquivos)
-                                except FileNotFoundError:
-                                    pacientesMarcadosSessao = []
-                                
-                                pacientesMarcadosSessao.append({
-                                    'nome': dados['nomePac'], 
-                                    'data': dados['data'], 
-                                    'horario': dados['horario']
-                                })
 
-                                with open('pacientesMarcadosSessao.json', 'w') as arquivos:
-                                    json.dump(pacientesMarcadosSessao, arquivos, indent=4)
+                try:
+                    with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                        dataHoraSessaoAberta = json.load(arquivo)
+                except FileNotFoundError:
+                    dataHoraSessaoAberta = {}
+
+                dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
+
+                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                    json.dump(dataHoraSessaoAberta, arquivo, indent=4)
+                    
 
     except FileNotFoundError:
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
@@ -187,7 +181,6 @@ def iniciarSessao():
         for dados in pacientesMarcadosSessao:
             print(dados['nome'])
 
-        return dataSessaoIniciar, horarioDaSessao
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -346,6 +339,7 @@ def listarHorariosMarcados():
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
     nomeConsta = 0
+    pacientesComHoraMarcadaSessao()
     try:
         with open('pacientesMarcadosSessao.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
@@ -402,6 +396,37 @@ def formatoData():
         else:
             break
     return data
+
+def pacientesComHoraMarcadaSessao():
+    try:
+        with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+            dataHoraSessaoAberta = json.load(arquivo)
+
+            dataSessaoAberta = dataHoraSessaoAberta['data']
+            horaSessaoAberta = dataHoraSessaoAberta['hora']
+
+            with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
+                horariosMarcadosRecepcao = json.load(arquivo)
+                
+            for dados in horariosMarcadosRecepcao.values():
+                if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
+                    try:
+                        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+                            pacientesMarcadosSessao = json.load(arquivos)
+                    except FileNotFoundError:
+                        pacientesMarcadosSessao = []
+                    
+                    pacientesMarcadosSessao.append({
+                        'nome': dados['nomePac'], 
+                        'data': dados['data'], 
+                        'horario': dados['horario']
+                    })
+
+                    with open('pacientesMarcadosSessao.json', 'w') as arquivos:
+                        json.dump(pacientesMarcadosSessao, arquivos, indent=4)
+
+    except FileNotFoundError:
+        print("ERRO! Tente inicialmente iniciar a sessao na opção 4.")
 
 def menuDentista():
     cabecalho("MENU DENTISTA")
