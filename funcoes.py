@@ -466,8 +466,14 @@ def atenderProxPaciente():
         try:
             with open('dataHoraSessaoAberta.json', 'r') as arquivo:
                 dataHoraSessaoAberta = json.load(arquivo)
+
+                del dataHoraSessaoAberta['data']
+                del dataHoraSessaoAberta['hora']
         except FileNotFoundError:
             print("ERRO! ")
+        
+        with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+            json.dump(dataHoraSessaoAberta, arquivos, indent=4)
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario():
