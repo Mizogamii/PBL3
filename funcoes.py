@@ -144,7 +144,6 @@ def buscarSessao():
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
     contadorTemHorario = 0
-    pacientesMarcadosSessao = []
     
     try: 
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
@@ -158,16 +157,16 @@ def iniciarSessao():
                     print('Sessão aberta com sucesso.')
                     contadorTemHorario = 1
 
-                try:
-                    with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                        dataHoraSessaoAberta = json.load(arquivo)
-                except FileNotFoundError:
-                    dataHoraSessaoAberta = {}
+                    try:
+                        with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                            dataHoraSessaoAberta = json.load(arquivo)
+                    except FileNotFoundError:
+                        dataHoraSessaoAberta = {}
 
-                dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
+                    dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
 
-                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                    json.dump(dataHoraSessaoAberta, arquivo, indent=4)
+                    with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                        json.dump(dataHoraSessaoAberta, arquivo, indent=4)
                     
 
     except FileNotFoundError:
@@ -175,11 +174,11 @@ def iniciarSessao():
 
     if contadorTemHorario == 0: 
         print("Não há sessões com essa data e horário\ncadastrados no sistema.")
-    else:
+    """else:
         print("."*47)
         print("Pacientes marcados na sessão: ")
         for dados in pacientesMarcadosSessao:
-            print(dados['nome'])
+            print(dados['nome'])"""
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -434,6 +433,24 @@ def lerArquivoPacientesMarcadosSessao():
         pacientesMarcadosSessao = []
 
     return pacientesMarcadosSessao
+
+
+def sessaoAbertaOuFechada():
+    aberta = False
+    try:
+        with open('dataHoraSessaoAberta.json', 'r') as arquivos:
+            dataHoraSessaoAberta = json.load(arquivos)
+            if dataHoraSessaoAberta != None:
+                aberta = True
+            else:
+                dataHoraSessaoAberta = []
+    except FileNotFoundError:
+        dataHoraSessaoAberta = []
+    
+    with open('dataHoraSessaoAberta.json', 'w') as arquivos:
+        json.dump(dataHoraSessaoAberta, arquivos, indent=4)
+
+    return aberta
 
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista

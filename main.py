@@ -48,7 +48,12 @@ while encerrarPrograma != True:
     
     elif opcao == 4:
         cabecalho("INICIAR SESSÃO")
-        iniciarSessao()
+        sessaoAberta = sessaoAbertaOuFechada()
+        
+        if sessaoAberta == False:
+            iniciarSessao()
+        else:
+            print("Há uma sessão aberta.\nTente novamente após encerrar a sessão atual.")
         
     elif opcao == 5:
         cabecalho("CADASTRAR NOVO PACIENTE")
