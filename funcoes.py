@@ -356,7 +356,7 @@ def confirmarHorario():
 #Função da opção 9 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     try:
-        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+        with open('listaDeAtendimento.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
             print(pacientesMarcadosSessao[0]['nome'])
 
