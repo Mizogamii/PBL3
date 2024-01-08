@@ -349,7 +349,7 @@ def confirmarHorario():
             print("Paciente está com horário marcado.")
         else:
             print("Não há horários marcados para esse paciente")
-    
+        listaDeAtendimentoPacientes(nomePaciente)
     except FileNotFoundError:
         print("Não há dados no arquivo!")
         
@@ -451,6 +451,28 @@ def sessaoAbertaOuFechada():
         json.dump(dataHoraSessaoAberta, arquivos, indent=4)
 
     return aberta
+
+def listaDeAtendimentoPacientes(nomePaciente):
+    ordemPacientesMarcados = lerArquivoPacientesMarcadosSessao()
+    print(nomePaciente)
+    try:
+        with open('listaDeAtendimento.json', 'r') as arquivos:
+            listaDeAtendimento = json.load(arquivos)
+        
+    except FileNotFoundError:
+        listaDeAtendimento = []
+
+    for dados in ordemPacientesMarcados:
+        if nomePaciente == dados['nome']:
+            paciente = {
+                'nome': dados['nomePac']
+            }
+
+        if paciente not in listaDeAtendimento:
+            listaDeAtendimento.append(paciente)
+        
+            with open('listaDeAtendimento.json', 'w') as arquivos:
+                json.dump(listaDeAtendimento, arquivos, indent=4) 
 
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista
