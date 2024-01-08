@@ -467,9 +467,11 @@ def listaDeAtendimentoPacientes(nomePaciente):
     for dados in ordemPacientesMarcados:
         if nomePaciente == dados['nome']:
             paciente = {
-                'nome': dados['nome']
+                'nome': dados['nome'],
+                'data': dados['data'],
+                'hora': dados['horario'],
+                'paciente': "presente"
             }
-            print("TESTANDO")
 
         if paciente not in listaDeAtendimento and paciente is not None:
             listaDeAtendimento.append(paciente)
