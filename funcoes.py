@@ -462,13 +462,16 @@ def listaDeAtendimentoPacientes(nomePaciente):
     except FileNotFoundError:
         listaDeAtendimento = []
 
+    paciente = None
+
     for dados in ordemPacientesMarcados:
         if nomePaciente == dados['nome']:
             paciente = {
-                'nome': dados['nomePac']
+                'nome': dados['nome']
             }
+            print("TESTANDO")
 
-        if paciente not in listaDeAtendimento:
+        if paciente not in listaDeAtendimento and paciente is not None:
             listaDeAtendimento.append(paciente)
         
             with open('listaDeAtendimento.json', 'w') as arquivos:
