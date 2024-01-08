@@ -1,7 +1,7 @@
 {
     "1": {
         "codigo": 1,
-        "dataSessao": "22/02/2024",
+        "dataSessao": "10/10/2024",
         "horarioSessao": 14,
         "duracaoSessao": 180,
         "tempoConsulta": 30,
@@ -9,8 +9,8 @@
     },
     "2": {
         "codigo": 2,
-        "dataSessao": "23/02/2024",
-        "horarioSessao": 8,
+        "dataSessao": "10/10/2024",
+        "horarioSessao": 14,
         "duracaoSessao": 240,
         "tempoConsulta": 60,
         "quantidadePacientePossivel": 4
