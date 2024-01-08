@@ -1,24 +1,6 @@
 [
     {
-        "nome": "KHAO",
-        "data": "22/02/2024",
-        "hora": 14,
-        "paciente": "presente"
-    },
-    {
-        "nome": "MIX",
-        "data": "22/02/2024",
-        "hora": 14,
-        "paciente": "presente"
-    },
-    {
-        "nome": "SATOMI",
-        "data": "22/02/2024",
-        "hora": 14,
-        "paciente": "presente"
-    },
-    {
-        "nome": "EARTH",
+        "nome": "TESTE",
         "data": "22/02/2024",
         "hora": 14,
         "paciente": "presente"

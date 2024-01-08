@@ -255,25 +255,32 @@ def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
     contadorDataHoraIguais = 0
-    erro = 0
+    deuErro = 0
+    repetido = False
 
+    #Abrindo o arquivo de cadastramento de clientes para verificação da existência de cadastro
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
             dadosPaciente = json.load(arquivo)
-        
+
+        #Pedindo o nome do paciente
         nomePaciente = input("Informe o nome do paciente: ").upper()
+
+        #Verificando se o nome existe no arquivo de cadastro
         for dados in dadosPaciente.values():
             if dados['nome'] == nomePaciente:
                 contadorNomeCerto = 1
         
         if contadorNomeCerto == 0: 
             print("Não há cadastros com este nome!\nTente novamente!")
-            
+
+        #Pedindo a data e horário que o paciente deseja marcar 
         else: 
             dataMarcar = formatoData()
             horarioMarcar = int(input("Insira o horário da sessão desejada: "))
             print("."*47)
-    
+
+            #Abrindo arquivo de horários marcados para inserir os dados
             try:
                 with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
                     horariosMarcadosRecepcao = json.load(arquivos)
@@ -281,7 +288,12 @@ def marcarHorario():
                         if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
                             contadorDataHoraIguais += 1
                     print(f"Contador iguais: {contadorDataHoraIguais}")
-
+                    
+                    #Verificar se o paciente tem um horário marcado para não marcar duas vezes
+                    for informacoes in horariosMarcadosRecepcao.values():
+                        if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar:
+                            repetido = True
+                            print("Paciente já está com horário marcado.")
             except FileNotFoundError:
                 horariosMarcadosRecepcao = {}
         
@@ -289,9 +301,10 @@ def marcarHorario():
                 with open('dadosSessaoRecepcao.json', 'r') as arquivos:
                     dadosSessaoRecepcao = json.load(arquivos)
 
+
                 for dados in dadosSessaoRecepcao.values():
                     if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
-                        if dados['quantidadePacientePossivel'] > contadorDataHoraIguais: 
+                        if dados['quantidadePacientePossivel'] > contadorDataHoraIguais and repetido == False: 
                             print("Horário marcado com sucesso.")
                             sucessoMarcar = 1
 
@@ -301,10 +314,11 @@ def marcarHorario():
 
                             salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
                         else: 
-                            print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.") 
-                            erro = 1
+                            deuErro = 1
+                            if repetido == False:
+                                print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.") 
 
-                if sucessoMarcar == 0 and erro == 0:
+                if sucessoMarcar == 0 and deuErro == 0:
                     print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
             except FileNotFoundError:
