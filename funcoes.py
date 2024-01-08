@@ -255,6 +255,7 @@ def marcarHorario():
     contadorNomeCerto = 0
     sucessoMarcar = 0
     contadorDataHoraIguais = 0
+    erro = 0
 
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
@@ -298,11 +299,12 @@ def marcarHorario():
                             
                             marcarHorarioSessao = {'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
 
-                            contador = salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
+                            salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
                         else: 
-                            print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.")
+                            print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.") 
+                            erro = 1
 
-                if sucessoMarcar == 0:
+                if sucessoMarcar == 0 and erro == 0:
                     print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
 
             except FileNotFoundError:
