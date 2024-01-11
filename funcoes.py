@@ -62,6 +62,7 @@ def salvarArquivo(nomeArquivo, arq, numero):
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
     codigo = 0
+    permitido = True
     print("""Horário que inicia as sessões padrões: 
 Sessão da manhã -- 08:00 
 Sessão da tarde -- 14:00""")
@@ -75,24 +76,29 @@ Sessão da tarde -- 14:00""")
     duracaoSessao = duracao * 60
     tempoCadaConsulta = int(input("Duração de cada consulta, em minutos: "))
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
-    
-    #Inserindo as informações na classe
-    recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta, quantidadePacientePossivel)
+    print("."*47)
+    try: 
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+            for dados in dadosSessaoRecepcao.values():
+                if dados['dataSessao'] == dataSessao and dados['horarioSessao'] == horarioSessao:
+                    permitido = False
+    except FileNotFoundError:
+            dadosSessaoRecepcao = {}
 
-    #Inserindo as informações em um dicionário
-    arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
-                        'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta, 'quantidadePacientePossivel': quantidadePacientePossivel}
-    
-    recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
+    if permitido == True:
+        #Inserindo as informações na classe
+        recepcao = Recepcao(codigo, dataSessao, horarioSessao, duracaoSessao, tempoCadaConsulta, quantidadePacientePossivel)
 
-    #Só para testes
-    print(recepcao.codigo)
-    print(recepcao.dataSessao)
-    print(recepcao.horarioSessao) 
-    print(recepcao.tempoCadaConsulta)
-    print(recepcao.duracaoSessao)
+        #Inserindo as informações em um dicionário
+        arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
+                            'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta, 'quantidadePacientePossivel': quantidadePacientePossivel}
+        
+        recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
 
-    print("\nSessão adicionada com sucesso!")
+        print("Sessão adicionada com sucesso!")
+    else:
+        print("ERRO!\nJá existe uma sessão com essa data e horário.\nTente novamente!")
 
     return duracaoSessao, tempoCadaConsulta
 

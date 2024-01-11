@@ -3,7 +3,6 @@ from funcoes import *
 encerrarPrograma = False
 cont = 0
 
-    
 while encerrarPrograma != True:
     if cont == 0:
         menuDentista()
