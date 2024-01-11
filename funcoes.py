@@ -524,7 +524,7 @@ def atenderProxPaciente():
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             listaDeAtendimento = json.load(arquivos)
-            if listaDeAtendimento != None:
+            if listaDeAtendimento:
                 print("Nome: ", listaDeAtendimento[0]['nome'])
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
@@ -532,24 +532,28 @@ def atenderProxPaciente():
         
                 del listaDeAtendimento[0]
 
-        with open('listaDeAtendimento.json', 'w') as arquivos:
-            json.dump(listaDeAtendimento, arquivos, indent=4)
+                with open('listaDeAtendimento.json', 'w') as arquivos:
+                    json.dump(listaDeAtendimento, arquivos, indent=4)
         
-        if not listaDeAtendimento:
-            try:
-                with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                    dataHoraSessaoAberta = json.load(arquivo)
+            else:
+                try:
+                    with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                        dataHoraSessaoAberta = json.load(arquivo)
 
-                    del dataHoraSessaoAberta['data']
-                    del dataHoraSessaoAberta['hora']
-            except FileNotFoundError:
-                print("ERRO! ")
-            
-            with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                json.dump(dataHoraSessaoAberta, arquivos, indent=4)
+                        del dataHoraSessaoAberta['data']
+                        del dataHoraSessaoAberta['hora']
+                except FileNotFoundError:
+                    print("ERRO! ")
+                    return
+                
+                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                    json.dump(dataHoraSessaoAberta, arquivos, indent=4)
             
     except FileNotFoundError:
         print("Erro! Não há pacientes na fila.")
+        
+    except json.JSONDecodeError as e:
+        print(f"Erro ao decodificar JSON: {e}")
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario():

@@ -30,5 +30,13 @@
         "duracaoSessao": 180,
         "tempoConsulta": 30,
         "quantidadePacientePossivel": 6
+    },
+    "5": {
+        "codigo": 5,
+        "dataSessao": "30/01/2024",
+        "horarioSessao": 8,
+        "duracaoSessao": 240,
+        "tempoConsulta": 60,
+        "quantidadePacientePossivel": 4
     }
 }
