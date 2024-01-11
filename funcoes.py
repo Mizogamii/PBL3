@@ -536,7 +536,7 @@ def atenderProxPaciente():
                     json.dump(listaDeAtendimento, arquivos, indent=4)
         
             else:
-                print("")
+                print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
                 try:
                     with open('dataHoraSessaoAberta.json', 'r') as arquivo:
                         conteudoArquivo = arquivo.read()
