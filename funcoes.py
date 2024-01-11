@@ -529,7 +529,18 @@ def atenderProxPaciente():
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
-        
+                try:
+                    with open('listaPacientesAtendidos.json', 'r') as arquivos:
+                        listaPacientesAtendidos = json.load(arquivos)
+                        pacienteAtendidoAtual = {'nome': listaPacientesAtendidos[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
+                        listaPacientesAtendidos.append(pacienteAtendidoAtual)
+
+                    with open('listaPacientesAtendidos.json', 'w') as arquivos:
+                        json.dump(listaPacientesAtendidos, arquivos, indent=4)
+                        
+                except FileNotFoundError:
+                    listaPacientesAtendidos = {}
+
                 del listaDeAtendimento[0]
 
                 with open('listaDeAtendimento.json', 'w') as arquivos:
