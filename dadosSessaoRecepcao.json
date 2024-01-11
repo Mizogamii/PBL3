@@ -14,5 +14,21 @@
         "duracaoSessao": 240,
         "tempoConsulta": 60,
         "quantidadePacientePossivel": 4
+    },
+    "3": {
+        "codigo": 3,
+        "dataSessao": "25/02/2024",
+        "horarioSessao": 8,
+        "duracaoSessao": 240,
+        "tempoConsulta": 30,
+        "quantidadePacientePossivel": 8
+    },
+    "4": {
+        "codigo": 4,
+        "dataSessao": "24/02/2024",
+        "horarioSessao": 14,
+        "duracaoSessao": 180,
+        "tempoConsulta": 30,
+        "quantidadePacientePossivel": 6
     }
 }

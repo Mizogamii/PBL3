@@ -60,4 +60,5 @@ while encerrarPrograma != True:
     elif opcao == 8:
         print("Encerrando...")
         encerrarPrograma = True 
-
+        
+    print("-"*47)
