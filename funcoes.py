@@ -382,12 +382,12 @@ def listarProximos():
 #Função da opção 10 de mostrar todas as consultas realizadas na sessão
 def listarConsultasRealizadas():
     try:
-        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
-            pacientesMarcadosSessao = json.load(arquivos)
-            for dados in pacientesMarcadosSessao:
+        with open('listaDeAtendimento.json', 'r') as arquivos:
+            listaAtendimento = json.load(arquivos)
+            for dados in listaAtendimento:
                 print("Nome: ", dados['nome'])
                 print("Data: ", dados['data'])
-                print("Horário: ", dados['horario'])
+                print("Horário: ", dados['hora'])
                 print("."*47)
 
     except FileNotFoundError:
