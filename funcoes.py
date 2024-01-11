@@ -355,7 +355,7 @@ def listarHorariosMarcados():
             print("Não há reservas para este nome.\nTente novamente!")
 
     except FileNotFoundError:
-        print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados nas \nopções 1 e 5.") 
+        print("Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados.\nPara isso utilize as opções 1, 5 e 6. ")  
 
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
@@ -524,7 +524,7 @@ def atenderProxPaciente():
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             listaDeAtendimento = json.load(arquivos)
-            if listaDeAtendimento:
+            if listaDeAtendimento != []:
                 print("Nome: ", listaDeAtendimento[0]['nome'])
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
@@ -536,24 +536,22 @@ def atenderProxPaciente():
                     json.dump(listaDeAtendimento, arquivos, indent=4)
         
             else:
+                print("")
                 try:
                     with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                        dataHoraSessaoAberta = json.load(arquivo)
-
-                        del dataHoraSessaoAberta['data']
-                        del dataHoraSessaoAberta['hora']
+                        conteudoArquivo = arquivo.read()
+                        if not conteudoArquivo:
+                            dataHoraSessaoAberta = json.load(arquivo)
+                            if dataHoraSessaoAberta:
+                                del dataHoraSessaoAberta['data']
+                                del dataHoraSessaoAberta['hora']
+                                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                                    json.dump(dataHoraSessaoAberta, arquivos, indent=4)
                 except FileNotFoundError:
-                    print("ERRO! ")
-                    return
-                
-                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                    json.dump(dataHoraSessaoAberta, arquivos, indent=4)
+                    print("ERRO!")
             
     except FileNotFoundError:
         print("Erro! Não há pacientes na fila.")
-        
-    except json.JSONDecodeError as e:
-        print(f"Erro ao decodificar JSON: {e}")
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario():
