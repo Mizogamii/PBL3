@@ -540,13 +540,16 @@ def atenderProxPaciente():
                 try:
                     with open('dataHoraSessaoAberta.json', 'r') as arquivo:
                         conteudoArquivo = arquivo.read()
-                        if not conteudoArquivo:
-                            dataHoraSessaoAberta = json.load(arquivo)
-                            if dataHoraSessaoAberta:
-                                del dataHoraSessaoAberta['data']
-                                del dataHoraSessaoAberta['hora']
-                                with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                                    json.dump(dataHoraSessaoAberta, arquivos, indent=4)
+                        if conteudoArquivo:
+                            arquivo.close()
+                            print("Excluir sessao")
+                            with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                                dataHoraSessaoAberta = json.load(arquivo)
+                                if dataHoraSessaoAberta:
+                                    del dataHoraSessaoAberta['data']
+                                    del dataHoraSessaoAberta['hora']
+                                    with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                                        json.dump(dataHoraSessaoAberta, arquivos, indent=4)
                 except FileNotFoundError:
                     print("ERRO!")
             
