@@ -86,4 +86,3 @@ while encerrarPrograma != True:
     print("-"*47)
 
 
-

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 import json
 from classes import Paciente, Recepcao, MarcarHorarioPaciente
 
@@ -70,13 +70,14 @@ Sessão da tarde -- 14:00""")
     print("Insira os dados pedidos: ")
     
     dataSessao = formatoData()
+    horarioSessao = formatoHora()
 
-    horarioSessao = int(input("Horário da nova sessão: "))
     duracao = int(input("Duração dessa sessão, em horas: "))
     duracaoSessao = duracao * 60
     tempoCadaConsulta = int(input("Duração de cada consulta, em minutos: "))
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
     print("."*47)
+
     try: 
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
             dadosSessaoRecepcao = json.load(arquivos)
@@ -124,8 +125,8 @@ def buscarSessao():
     contadorSucessoBuscar = 0
 
     buscarData = formatoData()
+    buscarHorario = formatoHora()
 
-    buscarHorario = int(input("Informe o horário a ser buscado: "))
     print("."*47)
 
     try:
@@ -156,8 +157,8 @@ def iniciarSessao():
             dadosSessaoRecepcao = json.load(arquivos)
 
             dataSessaoIniciar = formatoData()
+            horarioDaSessao = formatoHora()
 
-            horarioDaSessao = int(input("Insira o horário: "))
             for dados in dadosSessaoRecepcao.values():
                 if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
                     print('Sessão aberta com sucesso.')
@@ -284,7 +285,8 @@ def marcarHorario():
         #Pedindo a data e horário que o paciente deseja marcar 
         else: 
             dataMarcar = formatoData()
-            horarioMarcar = int(input("Insira o horário da sessão desejada: "))
+            horarioMarcar = formatoHora()
+
             print("."*47)
 
             #Abrindo arquivo de horários marcados para inserir os dados
@@ -418,6 +420,20 @@ def formatoData():
             break
     return data
 
+#Função para formatação das horas
+def formatoHora():
+    while True:
+        try:
+            inputHora = input("Hora da sessão [hh:mm]: ")
+            hora = datetime.strptime(inputHora, "%H:%M").time()
+            hora = hora.strftime("%H:%M")
+        except ValueError:
+            print("ERRO! Digite no formato pedido.")
+        
+        else:
+            break
+    return hora
+
 #Função para listar os paciêntes que estão marcados na sessão aberta no sistema
 def pacientesComHoraMarcadaSessao():
     try:
@@ -530,16 +546,18 @@ def atenderProxPaciente():
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
                 try:
-                    with open('listaPacientesAtendidos.json', 'r') as arquivos:
-                        listaPacientesAtendidos = json.load(arquivos)
+                    with open('listaPacientesAtendidos.json', 'r') as arq:
+                        listaPacientesAtendidos = json.load(arq)
+                        
                         pacienteAtendidoAtual = {'nome': listaPacientesAtendidos[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
+
                         listaPacientesAtendidos.append(pacienteAtendidoAtual)
 
-                    with open('listaPacientesAtendidos.json', 'w') as arquivos:
-                        json.dump(listaPacientesAtendidos, arquivos, indent=4)
+                    with open('listaPacientesAtendidos.json', 'w') as arq:
+                        json.dump(listaPacientesAtendidos, arq, indent=4)
                         
                 except FileNotFoundError:
-                    listaPacientesAtendidos = {}
+                    listaPacientesAtendidos = []
 
                 del listaDeAtendimento[0]
 
