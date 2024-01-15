@@ -28,10 +28,8 @@ def menuRecepcao():
     
     print("-"*47)
 
-#Função para salvar as informações em arquivo json
-def salvarArquivo(nomeArquivo, dicionario, codigo, dados): #nome do arquivo, nome do dicionário que será inserido, nome do id, nome do que vai poder ser manipulado
-
-#Abrindo o arquivo para leitura
+#Função para abrir o arquivo json para leitura
+def abrirArquivo(nomeArquivo): 
     try:
         with open(nomeArquivo, 'r') as arquivo:
             dados = json.load(arquivo)
@@ -39,6 +37,24 @@ def salvarArquivo(nomeArquivo, dicionario, codigo, dados): #nome do arquivo, nom
     except FileNotFoundError:
         dados = {}
 
+    return dados
+
+def abrirArquivoComMensagem(nomeArquivo, mensagem):
+    try:
+        with open(nomeArquivo, 'r') as arquivo:
+            dados = json.load(arquivo)
+
+    except FileNotFoundError:
+        dados = mensagem
+
+    return dados
+
+def inserirDadosArquivo(nomeArquivo, dados):
+    # Inserção dos dados no arquivo
+    with open(nomeArquivo, 'w') as arquivo:
+        json.dump(dados, arquivo, indent=4)
+
+def organizandoId(dados, dicionario, codigo):
     #Procurando o último id para conseguir botar o próximo com a numeração certa
     if dados:
         ultimoId = max(map(int, dados.keys()))
@@ -54,46 +70,8 @@ def salvarArquivo(nomeArquivo, dicionario, codigo, dados): #nome do arquivo, nom
     # Adicionando o novo paciente com id
     dados[id_str] = dicionario
 
-    # Inserção dos dados no arquivo
-    with open(nomeArquivo, 'w') as arquivo:
-        json.dump(dados, arquivo, indent=4)
-    
-    return id
+    return id  
 
-"""#Função para salvar as informações em arquivo json
-def salvarArquivo(nomeArquivo, arq, numero, dados):
-#Abrindo o arquivo para leitura
-    try:
-        with open(nomeArquivo, 'r') as arquivo:
-            dados = json.load(arquivo)
-
-    except FileNotFoundError:
-        dados = {}
-
-def arrumandoId(dados, arq, numero):
-    #Procurando o último id para conseguir botar o próximo com a numeração certa
-    if dados:
-        ultimoId = max(map(int, dados.keys()))
-        ultimoId = int(ultimoId)
-        id = ultimoId + 1
-    else:
-        id = 1
-
-    id_str = str(id)
-    arq[numero] = id
-    dados[str(id)] = arq
-
-    # Adicionando o novo paciente com id
-    dados[id_str] = arq
-
-def salvar(nomeArquivo, arq, dados):
-
-    # Inserção dos dados no arquivo
-    with open(nomeArquivo, 'w') as arquivo:
-        json.dump(dados, arquivo, indent=4)
-    
-    return id"""
-    
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
     codigo = 0
@@ -130,7 +108,9 @@ Sessão da tarde -- 14:00""")
         arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
                             'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta, 'quantidadePacientePossivel': quantidadePacientePossivel}
         
-        recepcao.codigo = salvarArquivo('dadosSessaoRecepcao.json', arquivoRecepcaoNovo, 'codigo')
+        inserirDadosArquivo('dadosSessaoRecepcao.json', dadosSessaoRecepcao)
+        
+        recepcao.codigo = organizandoId(dadosSessaoRecepcao, arquivoRecepcaoNovo, codigo)
 
         print("Sessão adicionada com sucesso!")
     else:
@@ -140,12 +120,7 @@ Sessão da tarde -- 14:00""")
 
 #Função da opção 2 de listar as sessões clínicas
 def listarSessao():
-    try:
-        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-            dadosSessaoRecepcao = json.load(arquivos)
-
-    except FileNotFoundError:
-        print("ERRO! Não há dados a serem mostrados.")
+    dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem mostrados.")
     
     if dadosSessaoRecepcao:
         for codigo, dados in dadosSessaoRecepcao.items():
@@ -199,29 +174,17 @@ def iniciarSessao():
                     print('Sessão aberta com sucesso.')
                     contadorTemHorario = 1
                     #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
-                    try:
-                        with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                            dataHoraSessaoAberta = json.load(arquivo)
-                    except FileNotFoundError:
-                        dataHoraSessaoAberta = {}
+                    dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
 
                     dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
 
-                    with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                        json.dump(dataHoraSessaoAberta, arquivo, indent=4)
-                    
+                    inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
 
     except FileNotFoundError:
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
 
     if contadorTemHorario == 0: 
         print("Não há sessões com essa data e horário\ncadastrados no sistema.")
-    else:
-        pacientesMarcadosSessao = lerArquivoPacientesMarcadosSessao()
-        print("."*47)
-        print("Pacientes marcados na sessão: ")
-        for dados in pacientesMarcadosSessao:
-            print(dados['nome'])
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -289,9 +252,10 @@ def cadastrarPaciente():
 
     dadosGerais = {'id': id, 'dados': arquivosJson}
 
-    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id', 'dados') #nome do arquivo, nome do dicionário que será inserido, nome do id 
+    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id', 'dadosCliente') #nome do arquivo, nome do dicionário que será inserido, nome do id 
     #salvar('dadosPaciente.json', arquivosJson, 'dados')
-
+    abrirArquivo('dadosPaciente.json')
+    #INSERE ID E DEPOIS SALVA!!!!!!!!!!!!!
     print(f"\nCliente adicionado com sucesso! ID: {id}")
 
 #Função da opção 6 de marcar horário para paciente
