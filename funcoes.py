@@ -2,9 +2,6 @@ from datetime import datetime, time
 import json
 from classes import Paciente, Recepcao, MarcarHorarioPaciente
 
-dadosGerais = {}
-arquivosJson = {}
-
 #Função para organizar os títulos
 def cabecalho(texto):
     print("-"*47)
@@ -65,7 +62,7 @@ def organizandoId(dados, dicionario, codigo):
     id_str = str(id)
     
     #Adicionando o id ao dicionário
-    dicionario['id'] = id  
+    dicionario[codigo] = id  
 
     #Adicionando o novo paciente com id
     dados[id_str] = dicionario
@@ -108,10 +105,10 @@ Sessão da tarde -- 14:00""")
         arquivoRecepcaoNovo = {'codigo': recepcao.codigo,'dataSessao': recepcao.dataSessao,
                             'horarioSessao': recepcao.horarioSessao, 'duracaoSessao': duracaoSessao, 'tempoConsulta': tempoCadaConsulta, 'quantidadePacientePossivel': quantidadePacientePossivel}
         
+        recepcao.codigo = organizandoId(dadosSessaoRecepcao, arquivoRecepcaoNovo, 'id')
+
         inserirDadosArquivo('dadosSessaoRecepcao.json', dadosSessaoRecepcao)
         
-        recepcao.codigo = organizandoId(dadosSessaoRecepcao, arquivoRecepcaoNovo, codigo)
-
         print("Sessão adicionada com sucesso!")
     else:
         print("ERRO!\nJá existe uma sessão com essa data e horário.\nTente novamente!")
@@ -260,9 +257,9 @@ def cadastrarPaciente():
     #dadosGerais = {'id': id, 'dados': arquivosJson}
 
     dadosPaciente = abrirArquivo('dadosPaciente.json')
-    id = organizandoId(dadosPaciente, arquivosJson, paciente.id)
+    id = organizandoId(dadosPaciente, arquivosJson, 'id')
     inserirDadosArquivo('dadosPaciente.json', dadosPaciente)
-    print("ID classe: ", paciente.id)
+
     print(f"\nCliente adicionado com sucesso! ID: {paciente.id}")
 
 #Função da opção 6 de marcar horário para paciente
@@ -272,6 +269,13 @@ def marcarHorario():
     contadorDataHoraIguais = 0
     deuErro = 0
     repetido = False
+
+    resposta = abrirArquivo('horariosMarcadosRecepcao.json')
+    if resposta:
+        ultimoOrdemMarcacao = max(map(int, resposta.keys()))
+        ordemMarcacao = ultimoOrdemMarcacao + 1
+    else:
+        ordemMarcacao = 1
 
     #Abrindo o arquivo de cadastramento de clientes para verificação da existência de cadastro
     try: 
@@ -300,6 +304,7 @@ def marcarHorario():
             try:
                 with open('horariosMarcadosRecepcao.json', 'r') as arquivos:
                     horariosMarcadosRecepcao = json.load(arquivos)
+
                     for dados in horariosMarcadosRecepcao.values():
                         if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
                             contadorDataHoraIguais += 1
@@ -323,11 +328,15 @@ def marcarHorario():
                             print("Horário marcado com sucesso.")
                             sucessoMarcar = 1
 
-                            marcando = MarcarHorarioPaciente(nomePaciente, dataMarcar, horarioMarcar)
+                            marcando = MarcarHorarioPaciente(ordemMarcacao, nomePaciente, dataMarcar, horarioMarcar)
+                             
+                            marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
                             
-                            marcarHorarioSessao = {'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
+                            
 
-                            inserirDadosArquivo('horariosMarcadosRecepcao.json',marcarHorarioSessao)
+                            marcando.ordemMarcacao = organizandoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao')
+                            
+                            inserirDadosArquivo('horariosMarcadosRecepcao.json', horariosMarcadosRecepcao)
                         else: 
                             deuErro = 1
                             if repetido == False:
