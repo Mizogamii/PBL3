@@ -246,16 +246,16 @@ def cadastrarPaciente():
         'idade': paciente.idade,
         'sexo': paciente.sexo,
         'rg': paciente.rg,
-        'cpf': paciente.cpf,
-        'id': paciente.id
+        'cpf': paciente.cpf
     }
 
-    dadosGerais = {'id': id, 'dados': arquivosJson}
+    #dadosGerais = {'id': id, 'dados': arquivosJson}
 
-    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id', 'dadosCliente') #nome do arquivo, nome do dicionário que será inserido, nome do id 
-    #salvar('dadosPaciente.json', arquivosJson, 'dados')
-    abrirArquivo('dadosPaciente.json')
-    #INSERE ID E DEPOIS SALVA!!!!!!!!!!!!!
+    dadosPaciente = abrirArquivo('dadosPaciente.json')
+    id = organizandoId(dadosPaciente, arquivosJson, paciente.id)
+    paciente.id = id
+    inserirDadosArquivo('dadosPaciente.json', dadosPaciente)
+
     print(f"\nCliente adicionado com sucesso! ID: {id}")
 
 #Função da opção 6 de marcar horário para paciente
