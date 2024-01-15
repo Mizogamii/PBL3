@@ -29,7 +29,8 @@ def menuRecepcao():
     print("-"*47)
 
 #Função para salvar as informações em arquivo json
-def salvarArquivo(nomeArquivo, arq, numero):
+def salvarArquivo(nomeArquivo, dicionario, codigo, dados): #nome do arquivo, nome do dicionário que será inserido, nome do id, nome do que vai poder ser manipulado
+
 #Abrindo o arquivo para leitura
     try:
         with open(nomeArquivo, 'r') as arquivo:
@@ -47,17 +48,51 @@ def salvarArquivo(nomeArquivo, arq, numero):
         id = 1
 
     id_str = str(id)
-    arq[numero] = id
-    dados[str(id)] = arq
+    dicionario[codigo] = id
+    dados[str(id)] = dicionario
 
     # Adicionando o novo paciente com id
-    dados[id_str] = arq
+    dados[id_str] = dicionario
 
     # Inserção dos dados no arquivo
     with open(nomeArquivo, 'w') as arquivo:
         json.dump(dados, arquivo, indent=4)
     
     return id
+
+"""#Função para salvar as informações em arquivo json
+def salvarArquivo(nomeArquivo, arq, numero, dados):
+#Abrindo o arquivo para leitura
+    try:
+        with open(nomeArquivo, 'r') as arquivo:
+            dados = json.load(arquivo)
+
+    except FileNotFoundError:
+        dados = {}
+
+def arrumandoId(dados, arq, numero):
+    #Procurando o último id para conseguir botar o próximo com a numeração certa
+    if dados:
+        ultimoId = max(map(int, dados.keys()))
+        ultimoId = int(ultimoId)
+        id = ultimoId + 1
+    else:
+        id = 1
+
+    id_str = str(id)
+    arq[numero] = id
+    dados[str(id)] = arq
+
+    # Adicionando o novo paciente com id
+    dados[id_str] = arq
+
+def salvar(nomeArquivo, arq, dados):
+
+    # Inserção dos dados no arquivo
+    with open(nomeArquivo, 'w') as arquivo:
+        json.dump(dados, arquivo, indent=4)
+    
+    return id"""
     
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
@@ -254,7 +289,8 @@ def cadastrarPaciente():
 
     dadosGerais = {'id': id, 'dados': arquivosJson}
 
-    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id')
+    id = salvarArquivo('dadosPaciente.json', arquivosJson, 'id', 'dados') #nome do arquivo, nome do dicionário que será inserido, nome do id 
+    #salvar('dadosPaciente.json', arquivosJson, 'dados')
 
     print(f"\nCliente adicionado com sucesso! ID: {id}")
 
@@ -321,7 +357,7 @@ def marcarHorario():
                             
                             marcarHorarioSessao = {'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
 
-                            salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao')
+                            salvarArquivo('horariosMarcadosRecepcao.json', marcarHorarioSessao, 'ordemMarcacao', 'marcarHorarioSessao')
                         else: 
                             deuErro = 1
                             if repetido == False:
