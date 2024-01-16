@@ -602,7 +602,7 @@ def atenderProxPaciente():
                         conteudoArquivo = arquivo.read()
                         if conteudoArquivo:
                             arquivo.close()
-                            print("Excluir sessao")
+                            print("Sessão finalizada!")
                             with open('dataHoraSessaoAberta.json', 'r') as arquivos:
                                 dataHoraSessaoAberta = json.load(arquivos)
 
