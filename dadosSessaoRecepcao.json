@@ -10,27 +10,17 @@
     "2": {
         "codigo": 2,
         "dataSessao": "23/02/2024",
+        "horarioSessao": "09:00",
+        "duracaoSessao": 180,
+        "tempoConsulta": 30,
+        "quantidadePacientePossivel": 6
+    },
+    "3": {
+        "codigo": 3,
+        "dataSessao": "24/02/2024",
         "horarioSessao": "08:00",
         "duracaoSessao": 240,
         "tempoConsulta": 30,
         "quantidadePacientePossivel": 8
-    },
-    "3": {
-        "codigo": 0,
-        "dataSessao": "24/02/2024",
-        "horarioSessao": "14:00",
-        "duracaoSessao": 180,
-        "tempoConsulta": 30,
-        "quantidadePacientePossivel": 6,
-        "id": 3
-    },
-    "4": {
-        "codigo": 0,
-        "dataSessao": "28/02/2024",
-        "horarioSessao": "15:00",
-        "duracaoSessao": 180,
-        "tempoConsulta": 30,
-        "quantidadePacientePossivel": 6,
-        "id": 4
     }
 }
