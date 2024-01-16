@@ -601,8 +601,7 @@ def atenderProxPaciente():
                                     del dataHoraSessaoAberta['hora']
                                     
                                     inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
-                                    """with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                                        json.dump(dataHoraSessaoAberta, arquivos, indent=4)"""
+                                    
                 except FileNotFoundError:
                     print("ERRO!")
             
