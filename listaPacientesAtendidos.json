@@ -2,21 +2,21 @@
     {
         "nome": "TESTE3",
         "data": "22/02/2024",
-        "horario": "14:00"
+        "hora": "14:00"
     },
     {
         "nome": "TESTE2",
         "data": "22/02/2024",
-        "horario": "14:00"
+        "hora": "14:00"
     },
     {
         "nome": "SATOMI",
         "data": "22/02/2024",
-        "horario": "14:00"
+        "hora": "14:00"
     },
     {
         "nome": "KHAO",
         "data": "22/02/2024",
-        "horario": "14:00"
+        "hora": "14:00"
     }
 ]

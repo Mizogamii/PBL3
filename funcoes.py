@@ -422,9 +422,9 @@ def listarProximos():
 #Função da opção 10 de mostrar todas as consultas realizadas na sessão
 def listarConsultasRealizadas():
     try:
-        with open('listaDeAtendimento.json', 'r') as arquivos:
-            listaAtendimento = json.load(arquivos)
-            for dados in listaAtendimento:
+        with open('listaPacientesAtendidos.json', 'r') as arquivos:
+            listaPacientesAtendidos = json.load(arquivos)
+            for dados in listaPacientesAtendidos:
                 print("Nome: ", dados['nome'])
                 print("Data: ", dados['data'])
                 print("Horário: ", dados['hora'])
@@ -507,12 +507,12 @@ def sessaoAbertaOuFechada():
     try:
         with open('dataHoraSessaoAberta.json', 'r') as arquivos:
             dataHoraSessaoAberta = json.load(arquivos)
-            if dataHoraSessaoAberta != None:
+            if dataHoraSessaoAberta != {}:
                 aberta = True
             else:
-                dataHoraSessaoAberta = []
+                dataHoraSessaoAberta = {}
     except FileNotFoundError:
-        dataHoraSessaoAberta = []
+        dataHoraSessaoAberta = {}
     
     with open('dataHoraSessaoAberta.json', 'w') as arquivos:
         json.dump(dataHoraSessaoAberta, arquivos, indent=4)
@@ -573,26 +573,16 @@ def atenderProxPaciente():
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
                 
-                try:
-                    with open('listaPacientesAtendidos.json', 'r') as arq:
-                        listaPacientesAtendidos = json.load(arq)
+                listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
                         
-                        pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
+                pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
 
-                        listaPacientesAtendidos.append(pacienteAtendidoAtual)
+                listaPacientesAtendidos.append(pacienteAtendidoAtual)
 
-                    """with open('listaPacientesAtendidos.json', 'w') as arq:
-                        json.dump(listaPacientesAtendidos, arq, indent=4)"""
-                    
-                    inserirDadosArquivo('listaPacientesAtendidos.json', listaPacientesAtendidos)
-                        
-                except FileNotFoundError:
-                    listaPacientesAtendidos = []
+                inserirDadosArquivo('listaPacientesAtendidos.json', listaPacientesAtendidos)
 
                 del listaDeAtendimento[0]
 
-                """with open('listaDeAtendimento.json', 'w') as arquivos:
-                    json.dump(listaDeAtendimento, arquivos, indent=4)"""
                 inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
         
             else:
