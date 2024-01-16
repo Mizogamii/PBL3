@@ -204,14 +204,8 @@ def iniciarSessao():
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
-    res = abrirArquivo('dadosPaciente.json')
-    if res:
-        ultimoId = max(map(int, res.keys()))
-        id = ultimoId + 1
-    else:
-        id = 1
-    
-    print(res)
+
+    id = codigoInicial('dadosPaciente.json', 'id')
 
     input_nome = str(input("Nome: ")).upper()
 
@@ -276,7 +270,7 @@ def cadastrarPaciente():
     #dadosGerais = {'id': id, 'dados': arquivosJson}
 
     dadosPaciente = abrirArquivo('dadosPaciente.json')
-    id = inserindoId(dadosPaciente, arquivosJson, 'id')
+    paciente.id = inserindoId(dadosPaciente, arquivosJson, 'id', id)
     inserirDadosArquivo('dadosPaciente.json', dadosPaciente)
 
     print(f"\nCliente adicionado com sucesso! ID: {paciente.id}")
@@ -289,12 +283,14 @@ def marcarHorario():
     deuErro = 0
     repetido = False
 
-    resposta = abrirArquivo('horariosMarcadosRecepcao.json')
+    """resposta = abrirArquivo('horariosMarcadosRecepcao.json')
     if resposta:
         ultimoOrdemMarcacao = max(map(int, resposta.keys()))
         ordemMarcacao = ultimoOrdemMarcacao + 1
     else:
-        ordemMarcacao = 1
+        ordemMarcacao = 1"""
+    
+    ordemMarcacao = codigoInicial('horariosMarcadosRecepcao.json', 'ordemMarcacao')
 
     #Abrindo o arquivo de cadastramento de clientes para verificação da existência de cadastro
     try: 
@@ -351,9 +347,7 @@ def marcarHorario():
                              
                             marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
                             
-                            
-
-                            marcando.ordemMarcacao = inserindoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao')
+                            marcando.ordemMarcacao = inserindoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao', ordemMarcacao)
                             
                             inserirDadosArquivo('horariosMarcadosRecepcao.json', horariosMarcadosRecepcao)
                         else: 
@@ -417,7 +411,10 @@ def listarProximos():
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             pacientesMarcadosSessao = json.load(arquivos)
-            print(pacientesMarcadosSessao[0]['nome'])
+            if pacientesMarcadosSessao:
+                print(pacientesMarcadosSessao[0]['nome'])
+            else:
+                print("Não há mais pacientes na fila")
 
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão ou verificar\nse algum paciente tem um horário marcado nessa\nsessão. Para isso, utilize a opção 8.")
@@ -524,7 +521,7 @@ def sessaoAbertaOuFechada():
 
 #Função para listar os pacientes que apareceram para a consulta da sessão que foi iniciado 
 def listaDeAtendimentoPacientes(nomePaciente):
-    ordemPacientesMarcados = lerArquivoPacientesMarcadosSessao()
+    ordemPacientesMarcados = abrirArquivoLista('pacientesMarcadosSessao.json')
     print(nomePaciente)
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
@@ -547,8 +544,9 @@ def listaDeAtendimentoPacientes(nomePaciente):
         if paciente not in listaDeAtendimento and paciente is not None:
             listaDeAtendimento.append(paciente)
         
-            with open('listaDeAtendimento.json', 'w') as arquivos:
-                json.dump(listaDeAtendimento, arquivos, indent=4) 
+            """with open('listaDeAtendimento.json', 'w') as arquivos:
+                json.dump(listaDeAtendimento, arquivos, indent=4)""" 
+            inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
 
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista
@@ -574,24 +572,28 @@ def atenderProxPaciente():
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
+                
                 try:
                     with open('listaPacientesAtendidos.json', 'r') as arq:
                         listaPacientesAtendidos = json.load(arq)
                         
-                        pacienteAtendidoAtual = {'nome': listaPacientesAtendidos[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
+                        pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
 
                         listaPacientesAtendidos.append(pacienteAtendidoAtual)
 
-                    with open('listaPacientesAtendidos.json', 'w') as arq:
-                        json.dump(listaPacientesAtendidos, arq, indent=4)
+                    """with open('listaPacientesAtendidos.json', 'w') as arq:
+                        json.dump(listaPacientesAtendidos, arq, indent=4)"""
+                    
+                    inserirDadosArquivo('listaPacientesAtendidos.json', listaPacientesAtendidos)
                         
                 except FileNotFoundError:
                     listaPacientesAtendidos = []
 
                 del listaDeAtendimento[0]
 
-                with open('listaDeAtendimento.json', 'w') as arquivos:
-                    json.dump(listaDeAtendimento, arquivos, indent=4)
+                """with open('listaDeAtendimento.json', 'w') as arquivos:
+                    json.dump(listaDeAtendimento, arquivos, indent=4)"""
+                inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
         
             else:
                 print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
@@ -601,13 +603,16 @@ def atenderProxPaciente():
                         if conteudoArquivo:
                             arquivo.close()
                             print("Excluir sessao")
-                            with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                                dataHoraSessaoAberta = json.load(arquivo)
+                            with open('dataHoraSessaoAberta.json', 'r') as arquivos:
+                                dataHoraSessaoAberta = json.load(arquivos)
+
                                 if dataHoraSessaoAberta:
                                     del dataHoraSessaoAberta['data']
                                     del dataHoraSessaoAberta['hora']
-                                    with open('dataHoraSessaoAberta.json', 'w') as arquivo:
-                                        json.dump(dataHoraSessaoAberta, arquivos, indent=4)
+                                    
+                                    inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
+                                    """with open('dataHoraSessaoAberta.json', 'w') as arquivo:
+                                        json.dump(dataHoraSessaoAberta, arquivos, indent=4)"""
                 except FileNotFoundError:
                     print("ERRO!")
             
