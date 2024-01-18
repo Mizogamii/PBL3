@@ -572,7 +572,8 @@ def atenderProxPaciente():
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
-                
+                nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
+
                 listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
                         
                 pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
@@ -592,25 +593,28 @@ def atenderProxPaciente():
                         conteudoArquivo = arquivo.read()
                         if conteudoArquivo:
                             arquivo.close()
-                            print("Sessão finalizada!")
-                            with open('dataHoraSessaoAberta.json', 'r') as arquivos:
-                                dataHoraSessaoAberta = json.load(arquivos)
-
-                                if dataHoraSessaoAberta:
-                                    del dataHoraSessaoAberta['data']
-                                    del dataHoraSessaoAberta['hora']
-                                    
-                                    inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
+                            encerrar = input("Deseja encerrar sessão? [S/N]").upper()
+                            if encerrar == "S":
+                                print("Sessão finalizada!")
+                                with open('dataHoraSessaoAberta.json', 'r') as arquivos:
+                                    dataHoraSessaoAberta = json.load(arquivos)
+                                    if dataHoraSessaoAberta:
+                                        del dataHoraSessaoAberta['data']
+                                        del dataHoraSessaoAberta['hora']
+                                        
+                                        inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
                                     
                 except FileNotFoundError:
                     print("ERRO!")
             
     except FileNotFoundError:
         print("Erro! Não há pacientes na fila.")
+    
+    return nomeDoPacienteEmAtendimento
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
-def lerProntuario():
-    pass
+def lerProntuario(nomePacienteAtendido):
+    print(nomePacienteAtendido)
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
 def lerPrimeiraAnotacao():

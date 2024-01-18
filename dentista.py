@@ -1,6 +1,7 @@
 from funcoes import *
 
 encerrarPrograma = False
+atendendoPaciente = False
 cont = 0
 
 while encerrarPrograma != True:
@@ -39,11 +40,15 @@ while encerrarPrograma != True:
 
     elif opcao == 3:
         cabecalho("ATENDER PRÓXIMO PACIENTE")
-        atenderProxPaciente()
+        atendendoPaciente = True
+        nomePacienteAtendido = atenderProxPaciente()
 
     elif opcao == 4: 
         cabecalho("LER PRONTUÁRIO")
-        lerProntuario()
+        if atendendoPaciente == True:
+            lerProntuario(nomePacienteAtendido)
+        else:
+            print("ERRO! Não há pacientes sendo atendidos no momento!")
 
     elif opcao == 5: 
         cabecalho("LER PRIMEIRA ANOTAÇÃO")
@@ -62,3 +67,4 @@ while encerrarPrograma != True:
         encerrarPrograma = True 
         
     print("-"*47)
+    

@@ -1,11 +1,6 @@
 [
     {
-        "nome": "TESTE3",
-        "data": "22/02/2024",
-        "horario": "14:00"
-    },
-    {
-        "nome": "TESTE2",
+        "nome": "MIX",
         "data": "22/02/2024",
         "horario": "14:00"
     },
@@ -15,7 +10,7 @@
         "horario": "14:00"
     },
     {
-        "nome": "KHAO",
+        "nome": "TESTE3",
         "data": "22/02/2024",
         "horario": "14:00"
     }
