@@ -520,13 +520,6 @@ def sessaoAbertaOuFechada():
 def listaDeAtendimentoPacientes(nomePaciente):
     ordemPacientesMarcados = abrirArquivoLista('pacientesMarcadosSessao.json')
     print(nomePaciente)
-
-    """try:
-        with open('listaDeAtendimento.json', 'r') as arquivos:
-            listaDeAtendimento = json.load(arquivos)
-        
-    except FileNotFoundError:
-        listaDeAtendimento = []"""
     
     listaDeAtendimento = abrirArquivoLista('listaDeAtendimento.json')
 
@@ -579,6 +572,7 @@ def menuDentista():
 
 #Função da opção 3 para atender o próximo paciente da lista
 def atenderProxPaciente():
+    filaVazia = True
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             listaDeAtendimento = json.load(arquivos)
@@ -587,6 +581,7 @@ def atenderProxPaciente():
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
+                filaVazia = False
                 nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
 
                 listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
@@ -603,6 +598,7 @@ def atenderProxPaciente():
         
             else:
                 print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
+                filaVazia = True
                 try:
                     with open('dataHoraSessaoAberta.json', 'r') as arquivo:
                         conteudoArquivo = arquivo.read()
@@ -624,8 +620,11 @@ def atenderProxPaciente():
             
     except FileNotFoundError:
         print("Erro! Não há pacientes na fila.")
-    
-    return nomeDoPacienteEmAtendimento
+
+    if filaVazia == False:
+        return nomeDoPacienteEmAtendimento
+    else:
+        return None
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario(nomePacienteAtendido):
