@@ -398,7 +398,6 @@ def confirmarHorario():
         print("Paciente está com horário marcado.")
     else:
         print("Não há horários marcados para esse paciente")
-
         
 #Função da opção 9 de colocar o paciente na lista de atendimento
 def colocarNaListaAtendimento():
@@ -434,7 +433,7 @@ def listarConsultasRealizadas():
                 print("."*47)
 
     except FileNotFoundError:
-        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão.")
+        print("ERRO! Ainda não foram atendidos pacientes nessa sessão.")
     
 #Função para formatação das datas
 def formatoData():
