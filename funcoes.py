@@ -390,24 +390,32 @@ def listarHorariosMarcados():
 
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
-    nomePaciente = input("Informe o nome do paciente: ").upper()
+    situacaoDaSessao = sessaoAbertaOuFechada()
+    if situacaoDaSessao == True:
+        nomePaciente = input("Informe o nome do paciente: ").upper()
 
-    nomeConsta = verificacaoPacienteMarcado(nomePaciente)
+        nomeConsta = verificacaoPacienteMarcado(nomePaciente)
 
-    if nomeConsta == 1:
-        print("Paciente está com horário marcado.")
-    else:
-        print("Não há horários marcados para esse paciente")
+        if nomeConsta == 1:
+            print("Paciente está com horário marcado.")
+        else:
+            print("Não há horários marcados para esse paciente")
+    else: 
+        print("Não há sessões abertas no momento.\nTente novamente.")
         
 #Função da opção 9 de colocar o paciente na lista de atendimento
 def colocarNaListaAtendimento():
-    nomePaciente = input("Informe o nome do paciente: ").upper()
-    verificacao = verificacaoPacienteMarcado(nomePaciente)
-    if verificacao == 1:
-        listaDeAtendimentoPacientes(nomePaciente)
-    else:
-        print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e\ntente novamente.")
-
+    situacaoDaSessao = sessaoAbertaOuFechada()
+    if situacaoDaSessao == True:
+        nomePaciente = input("Informe o nome do paciente: ").upper()
+        verificacao = verificacaoPacienteMarcado(nomePaciente)
+        if verificacao == 1:
+            listaDeAtendimentoPacientes(nomePaciente)
+        else:
+            print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e\ntente novamente.")
+    else: 
+        print("Não há sessões abertas no momento.\nTente novamente.")
+        
 #Função da opção 10 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     try:
@@ -604,7 +612,7 @@ def atenderProxPaciente():
                         conteudoArquivo = arquivo.read()
                         if conteudoArquivo:
                             arquivo.close()
-                            encerrar = input("Deseja encerrar sessão? [S/N]").upper()
+                            encerrar = input("Deseja encerrar sessão? [S/N]: ").upper()
                             if encerrar == "S":
                                 print("Sessão finalizada!")
                                 with open('dataHoraSessaoAberta.json', 'r') as arquivos:
