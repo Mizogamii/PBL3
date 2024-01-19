@@ -19,9 +19,10 @@ def menuRecepcao():
 6 -  Marcar horário 
 7 -  Listar horários marcados
 8 -  Verificar se paciente tem horário marcado
-9 -  Mostrar próximo paciente na fila
-10 - Listar consultas realizadas na sessão
-11 - Sair do sistema """) 
+9 -  Colocar paciente na fila de atendimento
+10 - Mostrar próximo paciente na fila
+11 - Listar consultas realizadas na sessão
+12 - Sair do sistema """) 
     
     print("-"*47)
 
@@ -389,24 +390,26 @@ def listarHorariosMarcados():
 
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
-    nomeConsta = 0
-    pacientesComHoraMarcadaSessao()
-    try:
-        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
-            pacientesMarcadosSessao = json.load(arquivos)
-            nomePaciente = input("Informe o nome do paciente: ").upper()
-        for dados in pacientesMarcadosSessao:
-            if dados['nome'] == nomePaciente:
-                nomeConsta = 1
-        if nomeConsta == 1:
-            print("Paciente está com horário marcado.")
-        else:
-            print("Não há horários marcados para esse paciente")
-        listaDeAtendimentoPacientes(nomePaciente)
-    except FileNotFoundError:
-        print("Não há dados no arquivo!")
+    nomePaciente = input("Informe o nome do paciente: ").upper()
+
+    nomeConsta = verificacaoPacienteMarcado(nomePaciente)
+
+    if nomeConsta == 1:
+        print("Paciente está com horário marcado.")
+    else:
+        print("Não há horários marcados para esse paciente")
+
         
-#Função da opção 9 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
+#Função da opção 9 de colocar o paciente na lista de atendimento
+def colocarNaListaAtendimento():
+    nomePaciente = input("Informe o nome do paciente: ").upper()
+    verificacao = verificacaoPacienteMarcado(nomePaciente)
+    if verificacao == 1:
+        listaDeAtendimentoPacientes(nomePaciente)
+    else:
+        print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e\ntente novamente.")
+
+#Função da opção 10 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
@@ -419,7 +422,7 @@ def listarProximos():
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão ou verificar\nse algum paciente tem um horário marcado nessa\nsessão. Para isso, utilize a opção 8.")
 
-#Função da opção 10 de mostrar todas as consultas realizadas na sessão
+#Função da opção 11 de mostrar todas as consultas realizadas na sessão
 def listarConsultasRealizadas():
     try:
         with open('listaPacientesAtendidos.json', 'r') as arquivos:
@@ -465,7 +468,7 @@ def formatoHora():
             break
     return hora
 
-#Função para listar os paciêntes que estão marcados na sessão aberta no sistema
+#Função para listar os pacientes que estão marcados na sessão aberta no sistema
 def pacientesComHoraMarcadaSessao():
     try:
         with open('dataHoraSessaoAberta.json', 'r') as arquivo:
@@ -473,15 +476,13 @@ def pacientesComHoraMarcadaSessao():
 
             dataSessaoAberta = dataHoraSessaoAberta['data']
             horaSessaoAberta = dataHoraSessaoAberta['hora']
-
-            """with open('horariosMarcadosRecepcao.json', 'r') as arquivo:
-                horariosMarcadosRecepcao = json.load(arquivo)"""
             
             horariosMarcadosRecepcao = abrirArquivo('horariosMarcadosRecepcao.json')
 
             #Leitura dos pacientes que estão marcados para a sessão aberta para poder fazer a verificação                
             pacientesMarcadosSessao = abrirArquivoLista('pacientesMarcadosSessao.json')
 
+            #Inserindo os dados do paciente na lista de atendimento
             for dados in horariosMarcadosRecepcao.values():
                 if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
                     pacientesAtual = {
@@ -494,9 +495,6 @@ def pacientesComHoraMarcadaSessao():
                     pacientesMarcadosSessao.append(pacientesAtual)
                     
                     inserirDadosArquivo('pacientesMarcadosSessao.json', pacientesMarcadosSessao)
-                
-                    """with open('pacientesMarcadosSessao.json', 'w') as arquivos:
-                        json.dump(pacientesMarcadosSessao, arquivos, indent=4)"""
 
     except FileNotFoundError:
         print("ERRO! Tente iniciar a sessão na opção 4.")
@@ -523,12 +521,15 @@ def sessaoAbertaOuFechada():
 def listaDeAtendimentoPacientes(nomePaciente):
     ordemPacientesMarcados = abrirArquivoLista('pacientesMarcadosSessao.json')
     print(nomePaciente)
-    try:
+
+    """try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             listaDeAtendimento = json.load(arquivos)
         
     except FileNotFoundError:
-        listaDeAtendimento = []
+        listaDeAtendimento = []"""
+    
+    listaDeAtendimento = abrirArquivoLista('listaDeAtendimento.json')
 
     paciente = None
 
@@ -544,9 +545,24 @@ def listaDeAtendimentoPacientes(nomePaciente):
         if paciente not in listaDeAtendimento and paciente is not None:
             listaDeAtendimento.append(paciente)
         
-            """with open('listaDeAtendimento.json', 'w') as arquivos:
-                json.dump(listaDeAtendimento, arquivos, indent=4)""" 
             inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
+
+#Verificação se paciente está com horário marcado
+def verificacaoPacienteMarcado(nomePaciente):
+    nomeConsta = 0
+    pacientesComHoraMarcadaSessao() #É listado nessa função todos os pacientes que estão com horário marcado para a sessão atual
+    try:
+        with open('pacientesMarcadosSessao.json', 'r') as arquivos:
+            pacientesMarcadosSessao = json.load(arquivos)
+    
+        for dados in pacientesMarcadosSessao:
+            if dados['nome'] == nomePaciente:
+                nomeConsta = 1
+
+    except FileNotFoundError:
+        print("Não há dados no arquivo!")
+    
+    return nomeConsta
 
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista

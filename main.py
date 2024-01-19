@@ -26,12 +26,12 @@ while encerrarPrograma != True:
         try:
             opcao = int(input("Opcão escolhida: "))
         except:
-            print("ERRO! Digite apenas números de 1 a 11!")
+            print("ERRO! Digite apenas números de 1 a 12!")
         else:
-            if 0 < opcao <= 11:
+            if 0 < opcao <= 12:
                 break
             else:
-                print("ERRO! Digite apenas de 1 a 11!")
+                print("ERRO! Digite apenas de 1 a 12!")
                 continue
 
     if opcao == 1:
@@ -72,14 +72,18 @@ while encerrarPrograma != True:
         confirmarHorario()
     
     elif opcao == 9: 
+        cabecalho("COLOCAR PACIENTE NA FILA")
+        colocarNaListaAtendimento()
+    
+    elif opcao == 10: 
         cabecalho("PRÓXIMO PACIENTE")
         listarProximos()
 
-    elif opcao == 10:
+    elif opcao == 11:
         cabecalho("CONSULTAS REALIZADAS NA SESSÃO")
         listarConsultasRealizadas()
     
-    elif opcao == 11:
+    elif opcao == 12:
         print("\nEncerrando...")
         encerrarPrograma = True
     
