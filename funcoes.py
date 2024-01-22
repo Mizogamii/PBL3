@@ -434,7 +434,7 @@ def listarConsultasRealizadas():
                 print("."*47)
 
     except FileNotFoundError:
-        print("ERRO! Ainda não foram atendidos pacientes nessa sessão.")
+        print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão.")
     
 #Função para formatação das datas
 def formatoData():
@@ -649,15 +649,30 @@ def atenderProxPaciente():
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario(nomePacienteAtendido):
     print(nomePacienteAtendido)
+    if nomePacienteAtendido != None:
+        dadosPaciente = abrirArquivo("dadosPaciente.json")
+        for dados in dadosPaciente.values():
+            if dados['nome'] == nomePacienteAtendido:
+                print(f"""Nome: {dados['nome']}
+Idade: {dados['idade']}
+Sexo: {dados['sexo']}
+RG: {dados['rg']}
+CPF: {dados['cpf']}""")
+        dataHora = abrirArquivo("dataHoraSessaoAberta.json")
+        if dataHora:
+            print("Data do atendimento: ", dataHora['data'])
+            print("Horário da sessão: ", dataHora['hora'])
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
-def lerPrimeiraAnotacao():
-    pass
+def lerPrimeiraAnotacao(nomePacienteAtendido):
+    print(nomePacienteAtendido)
 
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
-def lerUltimaAnotacao():
-    pass
+def lerUltimaAnotacao(nomePacienteAtendido):
+    print(nomePacienteAtendido)
 
 #Função da opção 7 para anotar informações do paciente no prontuário
-def anotarProntuario():
-    pass
+def anotarProntuario(nomePacienteAtendido):
+    print(nomePacienteAtendido)
+    anotacoes = abrirArquivo('anotacoes')
+    notas = input()

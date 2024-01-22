@@ -48,19 +48,28 @@ while encerrarPrograma != True:
         if atendendoPaciente == True:
             lerProntuario(nomePacienteAtendido)
         else:
-            print("ERRO! Não há pacientes sendo atendidos no momento!")
+            print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
     elif opcao == 5: 
         cabecalho("LER PRIMEIRA ANOTAÇÃO")
-        lerPrimeiraAnotacao()
+        if atendendoPaciente == True:
+            lerPrimeiraAnotacao(nomePacienteAtendido)
+        else:
+            print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
     elif opcao == 6: 
         cabecalho("LER ÚLTIMA ANOTAÇÃO")
-        lerUltimaAnotacao()
+        if atendendoPaciente == True:
+            lerUltimaAnotacao(nomePacienteAtendido)
+        else:
+            print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
     elif opcao == 7: 
         cabecalho("ANOTAR NO PRONTUÁRIO")
-        anotarProntuario()
+        if atendendoPaciente == True:
+            anotarProntuario(nomePacienteAtendido)
+        else:
+            print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
     elif opcao == 8:
         print("Encerrando...")
