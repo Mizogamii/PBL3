@@ -585,13 +585,19 @@ def atenderProxPaciente():
                 filaVazia = False
                 nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
                 
+                #Apagando o paciente já atendido do arquivo de pessoas comhorário marcado
                 horariosMarcRecepcao = abrirArquivo("horariosMarcadosRecepcao")
-                for dados in horariosMarcRecepcao.values():
-                    if dados['nomePac'] == nomeDoPacienteEmAtendimento:
-                        id = horariosMarcRecepcao['ordemMarcacao']
-                del id
-
-
+                if horariosMarcRecepcao:
+                    elementoExcluir = []
+                    for elementos, dados in horariosMarcRecepcao.items():
+                        if dados['nomePac'] == nomeDoPacienteEmAtendimento:
+                            elementoExcluir.append(elementos)
+                            
+                    for elementos in elementoExcluir:
+                        del horariosMarcRecepcao[elementos]
+                        
+                    inserirDadosArquivo("horariosMarcadosRecepcao", horariosMarcRecepcao) 
+                     
                 listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
                         
                 pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
