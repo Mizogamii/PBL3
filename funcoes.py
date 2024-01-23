@@ -204,7 +204,7 @@ def iniciarSessao():
         print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
 
     if contadorTemHorario == 0: 
-        print("Não há sessões com essa data e horário\ncadastrados no sistema.")
+        print("Não há sessões com essa data e horário cadas-\ntrados no sistema.")
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
