@@ -675,7 +675,12 @@ def lerUltimaAnotacao(nomePacienteAtendido):
 def anotarProntuario(nomePacienteAtendido):
     print(nomePacienteAtendido)
     anotacoes = abrirArquivo('anotacoes')
-    alergia = input("Alergias: ")
-    queixa = input("Motivo da consulta: ")
-    notas = input("Anotações: ")
-    
+    atendimento = input("Primeiro atendimento? [S/N]").upper()
+    if atendimento == "S":
+        alergia = input("Alergias: ")
+        queixa = input("Motivo da consulta: ")
+        notas = input("Anotações: ")
+    else:
+        queixa = input("Motivo da consulta: ")
+        notas = input("Anotações: ")
+
