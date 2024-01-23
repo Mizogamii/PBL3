@@ -678,3 +678,4 @@ def anotarProntuario(nomePacienteAtendido):
     alergia = input("Alergias: ")
     queixa = input("Motivo da consulta: ")
     notas = input("Anotações: ")
+    
