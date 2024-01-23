@@ -503,11 +503,11 @@ def pacientesComHoraMarcadaSessao():
                         'data': dados['data'], 
                         'horario': dados['horario']
                     }
-
-                if pacientesAtual not in pacientesMarcadosSessao:
-                    pacientesMarcadosSessao.append(pacientesAtual)
                     
-                    inserirDadosArquivo('pacientesMarcadosSessao.json', pacientesMarcadosSessao)
+                    if pacientesAtual not in pacientesMarcadosSessao:
+                        pacientesMarcadosSessao.append(pacientesAtual)
+                        
+                        inserirDadosArquivo('pacientesMarcadosSessao.json', pacientesMarcadosSessao)
 
     except FileNotFoundError:
         print("ERRO! Tente iniciar a sessão na opção 4.")
@@ -693,7 +693,7 @@ CPF: {dados['cpf']}""")
 def lerPrimeiraAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
-        if anotacoesGerais != None:
+        if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
             print("Alegias: ", anotacoesGerais[0]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[0]['queixa'])
@@ -711,7 +711,7 @@ def lerUltimaAnotacao(nomePacienteAtendido):
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         quantidade = len(anotacoesGerais)
         print(quantidade)
-        if anotacoesGerais != None:
+        if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
             print("Alegias: ", anotacoesGerais[quantidade]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[quantidade]['queixa'])
