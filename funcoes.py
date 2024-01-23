@@ -102,9 +102,12 @@ Sessão da tarde -- 14:00""")
     dataSessao = formatoData()
     horarioSessao = formatoHora()
 
-    duracao = int(input("Duração dessa sessão, em horas: "))
+    duracao = tratamentoDados("Duração dessa sessão, em horas: ")
+
     duracaoSessao = duracao * 60
-    tempoCadaConsulta = int(input("Duração de cada consulta, em minutos: "))
+
+    tempoCadaConsulta = tratamentoDados("Duração de cada consulta, em minutos: ")
+
     quantidadePacientePossivel = duracaoSessao // tempoCadaConsulta
     print("."*47)
 
@@ -454,6 +457,16 @@ def formatoData():
             break
     return data
 
+def tratamentoDados(mensagem):
+    while True:
+        try:
+            dados = int(input(mensagem))
+        except ValueError: 
+            print("ERRO! Digite apenas números!")
+        else:
+            break
+    return dados
+
 #Função para formatação das horas
 def formatoHora():
     while True:
@@ -679,27 +692,41 @@ CPF: {dados['cpf']}""")
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
 def lerPrimeiraAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
-        anotacoesGerais = []
-        listaAnotacoes = abrirArquivoLista("anotacoes.json")
-        for dados in listaAnotacoes:
-            if dados['paciente'] == nomePacienteAtendido:
-                anotacoesGerais.append(dados)
-        for dados in anotacoesGerais:
+        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
+        if anotacoesGerais != None:
             print("Paciente: ", nomePacienteAtendido)
-            print("Alegias: ", dados['alergia'])
-            print("Motivo da consulta: ", dados['queixa'])
-            print("Anotações: ", dados['notas'])
-            print("Data do atendimento: ", dados['data'])
-            print("Horário da sessão: ", dados['hora'])
+            print("Alegias: ", anotacoesGerais[0]['alergia'])
+            print("Motivo da consulta: ", anotacoesGerais[0]['queixa'])
+            print("Anotações: ", anotacoesGerais[0]['notas'])
+            print("Data do atendimento: ", anotacoesGerais[0]['data'])
+            print("Horário da sessão: ", anotacoesGerais[0]['hora'])
+        else:
+            print("Não há anotações a serem mostradas no momento.")
     else: 
         print("Não há pacientes em atendimento no momento.")
         
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
 def lerUltimaAnotacao(nomePacienteAtendido):
-    pass
+    if nomePacienteAtendido != None:
+        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
+        quantidade = len(anotacoesGerais)
+        print(quantidade)
+        if anotacoesGerais != None:
+            print("Paciente: ", nomePacienteAtendido)
+            print("Alegias: ", anotacoesGerais[quantidade]['alergia'])
+            print("Motivo da consulta: ", anotacoesGerais[quantidade]['queixa'])
+            print("Anotações: ", anotacoesGerais[quantidade]['notas'])
+            print("Data do atendimento: ", anotacoesGerais[quantidade]['data'])
+            print("Horário da sessão: ", anotacoesGerais[quantidade]['hora'])
+        else:
+            print("Não há anotações a serem mostradas no momento.")
+
+    else: 
+        print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido):
+    conteudo = True
     print(nomePacienteAtendido)
     if nomePacienteAtendido != None:
         anotacoes = abrirArquivoLista('anotacoes.json')
@@ -741,3 +768,14 @@ def anotarProntuario(nomePacienteAtendido):
         inserirDadosArquivo("anotacoes.json", anotacoes)
     else: 
         print("Não há pacientes em atendimento no momento.")
+    
+    return conteudo
+
+def listaDeAnotacoes(nomePacienteAtendido):
+    anotacoesGerais = []
+    listaAnotacoes = abrirArquivoLista("anotacoes.json")
+    for dados in listaAnotacoes:
+        if dados['paciente'] == nomePacienteAtendido:
+            anotacoesGerais.append(dados)
+
+    return anotacoesGerais
