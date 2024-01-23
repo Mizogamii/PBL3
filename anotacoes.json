@@ -1,0 +1,19 @@
+[
+    {
+        "paciente": "VILMA",
+        "alergia": "Leite",
+        "queixa": "Dores no dente",
+        "notas": "A paciente estava com c\u00e1rie"
+    },
+    {
+        "paciente": "VILMA",
+        "queixa": "Dor no queixo",
+        "notas": "Era um siso"
+    },
+    {
+        "paciente": "MIX",
+        "alergia": "Abacaxi",
+        "queixa": "Manchas no dente",
+        "notas": "Foi feito uma limpeza no dente."
+    }
+]

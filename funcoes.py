@@ -613,31 +613,42 @@ def atenderProxPaciente():
             else:
                 print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
                 filaVazia = True
-                try:
-                    with open('dataHoraSessaoAberta.json', 'r') as arquivo:
-                        conteudoArquivo = arquivo.read()
-                        if conteudoArquivo:
-                            arquivo.close()
-                            encerrar = input("Deseja encerrar sessão? [S/N]: ").upper()
-                            if encerrar == "S":
-                                print("Sessão finalizada!")
-                                try:
-                                    with open('dataHoraSessaoAberta.json', 'r') as arquivos:
-                                        dataHoraSessaoAberta = json.load(arquivos)
-                                        if dataHoraSessaoAberta:
-                                            del dataHoraSessaoAberta['data']
-                                            del dataHoraSessaoAberta['hora']
-                                        
-                                        inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
-                                    with open("pacientesMarcadosSessao.json", 'w') as arquivo:
-                                        pass
+                situacaoSessao = sessaoAbertaOuFechada()
+                if situacaoSessao == True:
+                    try:
+                        with open('dataHoraSessaoAberta.json', 'r') as arquivo:
+                            conteudoArquivo = arquivo.read()
+                            if conteudoArquivo:
+                                arquivo.close()
+                                encerrar = input("Deseja encerrar sessão? [S/N]: ").upper()
+                                if encerrar == "S":
+                                    print("Sessão finalizada!")
 
-                                except FileNotFoundError:
-                                    print("ERRO! Arquivo não encontrado.")   
-                                
-                except FileNotFoundError:
-                    print("ERRO!")
-            
+                                    #Apagando data e horário da sessão aberta do arquivo para encerrar a sessão
+                                    try:
+                                        with open('dataHoraSessaoAberta.json', 'r') as arquivos:
+                                            dataHoraSessaoAberta = json.load(arquivos)
+                                            if dataHoraSessaoAberta:
+                                                del dataHoraSessaoAberta['data']
+                                                del dataHoraSessaoAberta['hora']
+                                            
+                                            inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
+
+                                        #Limpando o arquivo que armazenava os dados dos pacientes que tinham hora marcada na sessão aberta
+                                        pacientesMarcadosSessao = abrirArquivoLista("pacientesMarcadosSessao.json")
+                                        pacientesMarcadosSessao.clear()
+                                        inserirDadosArquivo("pacientesMarcadosSessao.json", pacientesMarcadosSessao)
+
+                                        #Limpando o arquivo que armazenava os dados dos pacientes que foram atendidos na sessão aberta, já que agora a sessão já foi realizada e encerrada.
+                                        listaAtendidosSessao = abrirArquivoLista("listaPacientesAtendidos.json")
+                                        listaAtendidosSessao.clear()
+                                        inserirDadosArquivo("listaPacientesAtendidos.json",listaAtendidosSessao)
+
+                                    except FileNotFoundError:
+                                        print("ERRO! Arquivo não encontrado.")   
+                                    
+                    except FileNotFoundError:
+                        print("ERRO!")
     except FileNotFoundError:
         print("Erro! Não há pacientes na fila.")
 
@@ -662,25 +673,71 @@ CPF: {dados['cpf']}""")
         if dataHora:
             print("Data do atendimento: ", dataHora['data'])
             print("Horário da sessão: ", dataHora['hora'])
+    else: 
+        print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
 def lerPrimeiraAnotacao(nomePacienteAtendido):
-    print(nomePacienteAtendido)
-
+    if nomePacienteAtendido != None:
+        anotacoesGerais = []
+        listaAnotacoes = abrirArquivoLista("anotacoes.json")
+        for dados in listaAnotacoes:
+            if dados['paciente'] == nomePacienteAtendido:
+                anotacoesGerais.append(dados)
+        for dados in anotacoesGerais:
+            print("Paciente: ", nomePacienteAtendido)
+            print("Alegias: ", dados['alergia'])
+            print("Motivo da consulta: ", dados['queixa'])
+            print("Anotações: ", dados['notas'])
+            print("Data do atendimento: ", dados['data'])
+            print("Horário da sessão: ", dados['hora'])
+    else: 
+        print("Não há pacientes em atendimento no momento.")
+        
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
 def lerUltimaAnotacao(nomePacienteAtendido):
-    print(nomePacienteAtendido)
+    pass
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido):
     print(nomePacienteAtendido)
-    anotacoes = abrirArquivo('anotacoes')
-    atendimento = input("Primeiro atendimento? [S/N]").upper()
-    if atendimento == "S":
-        alergia = input("Alergias: ")
-        queixa = input("Motivo da consulta: ")
-        notas = input("Anotações: ")
-    else:
-        queixa = input("Motivo da consulta: ")
-        notas = input("Anotações: ")
+    if nomePacienteAtendido != None:
+        anotacoes = abrirArquivoLista('anotacoes.json')
 
+        atendimento = input("Primeiro atendimento?[S/N]: ").upper()
+
+        dataHora = abrirArquivo("dataHoraSessaoAberta.json")
+        if dataHora:
+            data = dataHora['data']
+            hora = dataHora['hora']
+
+        if atendimento == "S":
+            alergia = input("Alergias: ")
+            queixa = input("Motivo da consulta: ")
+            notas = input("Anotações: ")
+
+            anotacoesAtuais = {
+            'paciente': nomePacienteAtendido,
+            'alergia': alergia,
+            'queixa': queixa,
+            'notas': notas,
+            'data': data,
+            'hora': hora
+            }
+        else:
+            queixa = input("Motivo da consulta: ")
+            notas = input("Anotações: ")
+        
+            anotacoesAtuais = {
+                'paciente': nomePacienteAtendido,
+                'queixa': queixa,
+                'notas': notas,
+                'data': data,
+                'hora': hora
+            }
+        
+        #Inserindo as anotações
+        anotacoes.append(anotacoesAtuais)
+        inserirDadosArquivo("anotacoes.json", anotacoes)
+    else: 
+        print("Não há pacientes em atendimento no momento.")
