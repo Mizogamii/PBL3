@@ -10,10 +10,10 @@ def cabecalho(texto):
 
 #Função para realizar o login do dentista ou da recepção
 def login():
-    cabecalho("LOGIN")
-    print("R: Recepção\nD: Dentista")
+    cabecalho("USUÁRIO")
+    print("Digite:\nR para Recepção\nD para Dentista")
     print("."*47)
-    usuario = str(input("Digite a opção escolhida: ")).upper()
+    usuario = str(input("Informe a sua opção: ")).upper()
     print()
     return usuario
 
@@ -597,19 +597,25 @@ def menuDentista():
 #Função da opção 3 para atender o próximo paciente da lista
 def atenderProxPaciente():
     filaVazia = True
+    #Abrindo arquivo da lista de atendimento para atender o próximo da fila
     try:
         with open('listaDeAtendimento.json', 'r') as arquivos:
             listaDeAtendimento = json.load(arquivos)
             if listaDeAtendimento != []:
+                #Imprimindo dados do paciente em atendimento
                 print("Nome: ", listaDeAtendimento[0]['nome'])
                 print("Data: ", listaDeAtendimento[0]['data'])
                 print("Horário: ", listaDeAtendimento[0]['hora'])
                 print("."*47)
-                filaVazia = False
+
+                filaVazia = False #Enquanto houver pessoas na fila ficará em false
+
                 nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
-                     
+
+                #Abrindo arquivo com a lista de pacientes atendidos para poder mostrar depois na opção 11 da recepção     
                 listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
-                        
+                
+                #Inserindo dados no dicionário para ser deletado da fila após o atendimento
                 pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
 
                 listaPacientesAtendidos.append(pacienteAtendidoAtual)
@@ -620,13 +626,14 @@ def atenderProxPaciente():
 
                 inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
                 
+                #Armazenando em variáveis a data e o horário da sessão que está aberta no momento para possíveis verificações
                 datasHoraSessao = abrirArquivo("dataHoraSessaoAberta.json")
                 
                 data = datasHoraSessao['data']
                 hora = datasHoraSessao['hora']
                 
-                deletarHorario = []
                 #Apagando o paciente já atendido do arquivo de pessoas com horário marcado
+                deletarHorario = []
                 pacientesHorario = abrirArquivo("horariosMarcadosRecepcao.json")
                 for elemento, dados in pacientesHorario.items():
                     if nomeDoPacienteEmAtendimento == dados['nomePac'] and data == dados['data'] and hora == dados['horario']:
@@ -635,30 +642,50 @@ def atenderProxPaciente():
                 for dados in deletarHorario:
                     del pacientesHorario[dados]
                 inserirDadosArquivo("horariosMarcadosRecepcao.json", pacientesHorario)
-        
+
+        #Para caso não haja mais pacientes na fila de atendimento
             else:
                 print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
                 filaVazia = True
-                situacaoSessao = sessaoAbertaOuFechada()
+                situacaoSessao = sessaoAbertaOuFechada() #Chamando a função que verifica se tem alguma sessão aberta no momento para poder deletar informações da sessão encerrada
+
                 if situacaoSessao == True:
                     try:
                         with open('dataHoraSessaoAberta.json', 'r') as arquivo:
                             conteudoArquivo = arquivo.read()
                             if conteudoArquivo:
                                 arquivo.close()
+                                #Perguntando ao usuário se deseja encerrar a sessão para poder apagar os dados
                                 encerrar = input("Deseja encerrar sessão? [S/N]: ").upper()
                                 if encerrar == "S":
                                     print("Sessão finalizada!")
 
-                                    #Apagando data e horário da sessão aberta do arquivo para encerrar a sessão
+                                    #Apagando data e horário da sessão aberta do arquivo 
                                     try:
                                         with open('dataHoraSessaoAberta.json', 'r') as arquivos:
                                             dataHoraSessaoAberta = json.load(arquivos)
+                                            data = dataHoraSessaoAberta['data']
+                                            hora = dataHoraSessaoAberta['hora']
+
                                             if dataHoraSessaoAberta:
                                                 del dataHoraSessaoAberta['data']
                                                 del dataHoraSessaoAberta['hora']
-                                            
-                                            inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
+
+                                                #Limpando a sessão encerrada da lista de sessões
+                                                deletarSessao = []
+
+                                                sessao = abrirArquivo("dadosSessaoRecepcao.json")
+                
+                                                for elemento, dados in sessao.items():
+                                                    if  data == dados['dataSessao'] and hora == dados['horarioSessao']:
+                                                        deletarSessao.append(elemento)
+
+                                                for dados in deletarSessao:
+                                                    del sessao[dados]
+                                                inserirDadosArquivo("dadosSessaoRecepcao.json", sessao)
+                                        
+                                        #Salvando dados no arquivo da data e horário da sessão aberta
+                                        inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta) 
 
                                         #Limpando o arquivo que armazenava os dados dos pacientes que tinham hora marcada na sessão aberta
                                         pacientesMarcadosSessao = abrirArquivoLista("pacientesMarcadosSessao.json")
@@ -734,7 +761,7 @@ def lerUltimaAnotacao(nomePacienteAtendido, dentista):
             print("Dentista responsável: ", dentista)
         else:
             print("Não há anotações a serem mostradas no momento.")
-            
+
     else: 
         print("Não há pacientes em atendimento no momento.")
 
