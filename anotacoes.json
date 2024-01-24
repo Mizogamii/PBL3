@@ -1,41 +1,20 @@
 [
     {
-        "paciente": "PAULO",
-        "alergia": "Leite, ovos",
-        "queixa": "Dor no dente",
-        "notas": "Tinha c\u00e1rie, precisa passar fio dental",
-        "data": "22/02/2024",
-        "hora": "14:00"
-    },
-    {
-        "paciente": "PAULO",
-        "queixa": "Dor na gengiva",
-        "notas": "Continua sem passar fio dental, passe",
-        "data": "22/02/2024",
-        "hora": "14:00"
-    },
-    {
-        "paciente": "KHAO",
+        "paciente": "MIX",
         "alergia": "Abacaxi",
         "queixa": "Dor no dente",
-        "notas": "Sei l\u00e1",
+        "notas": "Foi feito um raio x para verifica\u00e7\u00e3o e h\u00e1 um siso a ser extra\u00eddo",
         "data": "22/02/2024",
-        "hora": "14:00"
+        "hora": "14:00",
+        "dentista": "Paulo"
     },
     {
-        "paciente": "KHAO",
-        "alergia": "Leite",
-        "queixa": "Sei la",
-        "notas": "Sei laaa",
+        "paciente": "CARLOS",
+        "alergia": "Gato",
+        "queixa": "Sangramento na gengiva",
+        "notas": "Paciente n\u00e3o faz uso de fio dental, sendo a causa principal",
         "data": "22/02/2024",
-        "hora": "14:00"
-    },
-    {
-        "paciente": "SATOMI",
-        "alergia": "Leite",
-        "queixa": "Dor no dente",
-        "notas": "Dor dor dor",
-        "data": "23/02/2024",
-        "hora": "08:00"
+        "hora": "14:00",
+        "dentista": "fff"
     }
 ]

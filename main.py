@@ -152,7 +152,7 @@ while encerrarPrograma != True:
 
             elif opcao == 4: 
                 cabecalho("LER PRONTUÁRIO")
-                if atendendoPaciente == True:
+                if atendendoPaciente == True:  
                     lerProntuario(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")

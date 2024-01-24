@@ -8,9 +8,10 @@ def cabecalho(texto):
     print(texto.center(47))
     print("-"*47)
 
+#Função para realizar o login do dentista ou da recepção
 def login():
     cabecalho("LOGIN")
-    print("D: Dentista\nR: Recepção")
+    print("R: Recepção\nD: Dentista")
     print("."*47)
     usuario = str(input("Digite a opção escolhida: ")).upper()
     print()
@@ -465,6 +466,7 @@ def formatoData():
             break
     return data
 
+#Função para tratar os dados inseridos pelo usuário
 def tratamentoDados(mensagem):
     while True:
         try:
@@ -605,19 +607,6 @@ def atenderProxPaciente():
                 print("."*47)
                 filaVazia = False
                 nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
-                
-                #Apagando o paciente já atendido do arquivo de pessoas comhorário marcado
-                horariosMarcRecepcao = abrirArquivo("horariosMarcadosRecepcao")
-                if horariosMarcRecepcao:
-                    elementoExcluir = []
-                    for elementos, dados in horariosMarcRecepcao.items():
-                        if dados['nomePac'] == nomeDoPacienteEmAtendimento:
-                            elementoExcluir.append(elementos)
-                            
-                    for elementos in elementoExcluir:
-                        del horariosMarcRecepcao[elementos]
-                        
-                    inserirDadosArquivo("horariosMarcadosRecepcao", horariosMarcRecepcao) 
                      
                 listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
                         
@@ -627,9 +616,20 @@ def atenderProxPaciente():
 
                 inserirDadosArquivo('listaPacientesAtendidos.json', listaPacientesAtendidos)
 
-                del listaDeAtendimento[0]
+                del listaDeAtendimento[0] #Tirando o paciente já atendido da lista de atendimento
 
                 inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
+
+                deletarHorario = []
+                #Apagando o paciente já atendido do arquivo de pessoas com horário marcado
+                pacientesHorario = abrirArquivo("horariosMarcadosRecepcao.json")
+                for elemento, dados in pacientesHorario.items():
+                    if nomeDoPacienteEmAtendimento == dados['nomePac'] and :
+                        deletarHorario.append(elemento)
+
+                for dados in deletarHorario:
+                    del pacientesHorario[dados]
+                inserirDadosArquivo("horariosMarcadosRecepcao.json", pacientesHorario)
         
             else:
                 print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
@@ -693,10 +693,9 @@ CPF: {dados['cpf']}""")
         if dataHora:
             print("Data do atendimento: ", dataHora['data'])
             print("Horário da sessão: ", dataHora['hora'])
-        
+
     else: 
         print("Não há pacientes em atendimento no momento.")
-
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
 def lerPrimeiraAnotacao(nomePacienteAtendido):
