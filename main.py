@@ -109,6 +109,8 @@ while encerrarPrograma != True:
         atendendoPaciente = False
         cont = 0
 
+        dentista = input("Insira o nome do dentista: ")
+
         while encerrarProgramaDentista != True:
             if cont == 0:
                 menuDentista()
@@ -172,7 +174,7 @@ while encerrarPrograma != True:
             elif opcao == 7: 
                 cabecalho("ANOTAR NO PRONTUÁRIO")
                 if atendendoPaciente == True:
-                    anotarProntuario(nomePacienteAtendido)
+                    anotarProntuario(nomePacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 

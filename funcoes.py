@@ -693,8 +693,10 @@ CPF: {dados['cpf']}""")
         if dataHora:
             print("Data do atendimento: ", dataHora['data'])
             print("Horário da sessão: ", dataHora['hora'])
+        
     else: 
         print("Não há pacientes em atendimento no momento.")
+
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
 def lerPrimeiraAnotacao(nomePacienteAtendido):
@@ -731,7 +733,7 @@ def lerUltimaAnotacao(nomePacienteAtendido):
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 7 para anotar informações do paciente no prontuário
-def anotarProntuario(nomePacienteAtendido):
+def anotarProntuario(nomePacienteAtendido, dentista):
     conteudo = True
     print(nomePacienteAtendido)
     if nomePacienteAtendido != None:
@@ -755,7 +757,8 @@ def anotarProntuario(nomePacienteAtendido):
             'queixa': queixa,
             'notas': notas,
             'data': data,
-            'hora': hora
+            'hora': hora, 
+            'dentista': dentista
             }
         else:
             queixa = input("Motivo da consulta: ")
@@ -766,7 +769,8 @@ def anotarProntuario(nomePacienteAtendido):
                 'queixa': queixa,
                 'notas': notas,
                 'data': data,
-                'hora': hora
+                'hora': hora,
+                'dentista': dentista
             }
         
         #Inserindo as anotações
