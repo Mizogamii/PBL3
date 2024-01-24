@@ -429,7 +429,7 @@ def listarProximos():
             if pacientesMarcadosSessao:
                 print(pacientesMarcadosSessao[0]['nome'])
             else:
-                print("Não há mais pacientes na fila")
+                print("Não há pacientes na fila")
 
     except FileNotFoundError:
         print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão ou verificar\nse algum paciente tem um horário marcado nessa\nsessão. Para isso, utilize a opção 8.")
@@ -444,6 +444,9 @@ def listarConsultasRealizadas():
                 print("Data: ", dados['data'])
                 print("Horário: ", dados['hora'])
                 print("."*47)
+                
+            if listaPacientesAtendidos == []:
+                print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão.")
 
     except FileNotFoundError:
         print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão.")
@@ -730,7 +733,7 @@ CPF: {dados['cpf']}""")
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
-def lerPrimeiraAnotacao(nomePacienteAtendido, dentista):
+def lerPrimeiraAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         if anotacoesGerais != []:
@@ -747,7 +750,7 @@ def lerPrimeiraAnotacao(nomePacienteAtendido, dentista):
         print("Não há pacientes em atendimento no momento.")
         
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
-def lerUltimaAnotacao(nomePacienteAtendido, dentista):
+def lerUltimaAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         quantidade = len(anotacoesGerais) - 1
