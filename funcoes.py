@@ -619,12 +619,17 @@ def atenderProxPaciente():
                 del listaDeAtendimento[0] #Tirando o paciente já atendido da lista de atendimento
 
                 inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
-
+                
+                datasHoraSessao = abrirArquivo("dataHoraSessaoAberta.json")
+                for dados in datasHoraSessao.values():
+                    data = dados['data']
+                    hora = dados['hora']
+                
                 deletarHorario = []
                 #Apagando o paciente já atendido do arquivo de pessoas com horário marcado
                 pacientesHorario = abrirArquivo("horariosMarcadosRecepcao.json")
                 for elemento, dados in pacientesHorario.items():
-                    if nomeDoPacienteEmAtendimento == dados['nomePac'] and :
+                    if nomeDoPacienteEmAtendimento == dados['nomePac'] and data == dados['data'] and hora == dados['horario']:
                         deletarHorario.append(elemento)
 
                 for dados in deletarHorario:
@@ -718,7 +723,7 @@ def lerUltimaAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         quantidade = len(anotacoesGerais)
-        if anotacoesGerais != []:
+        if anotacoesGerais != [] and quantidade > 1:
             print("Paciente: ", nomePacienteAtendido)
             print("Alegias: ", anotacoesGerais[quantidade]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[quantidade]['queixa'])
@@ -727,6 +732,9 @@ def lerUltimaAnotacao(nomePacienteAtendido):
             print("Horário da sessão: ", anotacoesGerais[quantidade]['hora'])
         else:
             print("Não há anotações a serem mostradas no momento.")
+
+        if quantidade == 1:
+            lerPrimeiraAnotacao(nomePacienteAtendido)
 
     else: 
         print("Não há pacientes em atendimento no momento.")
