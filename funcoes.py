@@ -8,6 +8,14 @@ def cabecalho(texto):
     print(texto.center(47))
     print("-"*47)
 
+def login():
+    cabecalho("LOGIN")
+    print("D: Dentista\nR: Recepção")
+    print("."*47)
+    usuario = str(input("Digite a opção escolhida: ")).upper()
+    print()
+    return usuario
+
 #Função para impressão do menu da recepção
 def menuRecepcao():
     cabecalho("MENU RECEPÇÃO")
