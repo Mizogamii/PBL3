@@ -621,9 +621,9 @@ def atenderProxPaciente():
                 inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
                 
                 datasHoraSessao = abrirArquivo("dataHoraSessaoAberta.json")
-                for dados in datasHoraSessao.values():
-                    data = dados['data']
-                    hora = dados['hora']
+                
+                data = datasHoraSessao['data']
+                hora = datasHoraSessao['hora']
                 
                 deletarHorario = []
                 #Apagando o paciente já atendido do arquivo de pessoas com horário marcado
@@ -703,7 +703,7 @@ CPF: {dados['cpf']}""")
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
-def lerPrimeiraAnotacao(nomePacienteAtendido):
+def lerPrimeiraAnotacao(nomePacienteAtendido, dentista):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         if anotacoesGerais != []:
@@ -713,35 +713,33 @@ def lerPrimeiraAnotacao(nomePacienteAtendido):
             print("Anotações: ", anotacoesGerais[0]['notas'])
             print("Data do atendimento: ", anotacoesGerais[0]['data'])
             print("Horário da sessão: ", anotacoesGerais[0]['hora'])
+            print("Dentista responsável: ", dentista)
         else:
             print("Não há anotações a serem mostradas no momento.")
     else: 
         print("Não há pacientes em atendimento no momento.")
         
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
-def lerUltimaAnotacao(nomePacienteAtendido):
+def lerUltimaAnotacao(nomePacienteAtendido, dentista):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
-        quantidade = len(anotacoesGerais)
-        if anotacoesGerais != [] and quantidade > 1:
+        quantidade = len(anotacoesGerais) - 1
+        if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
-            print("Alegias: ", anotacoesGerais[quantidade]['alergia'])
+            print("Alergias: ", anotacoesGerais[0]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[quantidade]['queixa'])
             print("Anotações: ", anotacoesGerais[quantidade]['notas'])
             print("Data do atendimento: ", anotacoesGerais[quantidade]['data'])
             print("Horário da sessão: ", anotacoesGerais[quantidade]['hora'])
+            print("Dentista responsável: ", dentista)
         else:
             print("Não há anotações a serem mostradas no momento.")
-
-        if quantidade == 1:
-            lerPrimeiraAnotacao(nomePacienteAtendido)
-
+            
     else: 
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido, dentista):
-    conteudo = True
     print(nomePacienteAtendido)
     if nomePacienteAtendido != None:
         anotacoes = abrirArquivoLista('anotacoes.json')
@@ -786,7 +784,6 @@ def anotarProntuario(nomePacienteAtendido, dentista):
     else: 
         print("Não há pacientes em atendimento no momento.")
     
-    return conteudo
 
 def listaDeAnotacoes(nomePacienteAtendido):
     anotacoesGerais = []

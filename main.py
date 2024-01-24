@@ -108,8 +108,9 @@ while encerrarPrograma != True:
         encerrarProgramaDentista = False
         atendendoPaciente = False
         cont = 0
-
+        print("."*47)
         dentista = input("Insira o nome do dentista: ")
+        print("."*47)
 
         while encerrarProgramaDentista != True:
             if cont == 0:
@@ -160,14 +161,14 @@ while encerrarPrograma != True:
             elif opcao == 5: 
                 cabecalho("LER PRIMEIRA ANOTAÇÃO")
                 if atendendoPaciente == True:
-                    lerPrimeiraAnotacao(nomePacienteAtendido)
+                    lerPrimeiraAnotacao(nomePacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 6: 
                 cabecalho("LER ÚLTIMA ANOTAÇÃO")
                 if atendendoPaciente == True:
-                    lerUltimaAnotacao(nomePacienteAtendido)
+                    lerUltimaAnotacao(nomePacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
