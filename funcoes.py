@@ -680,7 +680,6 @@ def atenderProxPaciente():
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
 def lerProntuario(nomePacienteAtendido):
-    print(nomePacienteAtendido)
     if nomePacienteAtendido != None:
         dadosPaciente = abrirArquivo("dadosPaciente.json")
         for dados in dadosPaciente.values():
@@ -718,7 +717,6 @@ def lerUltimaAnotacao(nomePacienteAtendido):
     if nomePacienteAtendido != None:
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         quantidade = len(anotacoesGerais)
-        print(quantidade)
         if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
             print("Alegias: ", anotacoesGerais[quantidade]['alergia'])
