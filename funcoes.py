@@ -359,7 +359,6 @@ def marcarHorario():
                     for dados in horariosMarcadosRecepcao.values():
                         if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
                             contadorDataHoraIguais += 1
-                    print(f"Contador iguais: {contadorDataHoraIguais}")
                     
                     #Verificar se o paciente tem um horário marcado para não marcar duas vezes
                     for informacoes in horariosMarcadosRecepcao.values():
@@ -618,7 +617,7 @@ def verificacaoPacienteMarcado(nomePaciente):
     
     return nomeConsta
 
-#----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista
 def menuDentista():

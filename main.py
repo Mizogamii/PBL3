@@ -58,7 +58,7 @@ while not encerrarPrograma:
                 except:
                     print("ERRO! Digite apenas números de 1 a 12!")
                 
-
+            os.system('cls||clear')
             #Chamando as funções de acordo com e escolha do usuário no menu
             if opcao == 1:
                 cabecalho("ADICIONAR NOVA SESSÃO CLÍNICA")
@@ -151,7 +151,8 @@ while not encerrarPrograma:
                         print("ERRO! Digite apenas de 1 a 8!")
                 except:
                     print("ERRO! Digite apenas números de 1 a 8!")
-
+                    
+            os.system('cls||clear')
             #Chamando funções de acordo com a escolha do usuário
             if opcao == 1:
                 cabecalho("BUSCAR SESSÃO")
