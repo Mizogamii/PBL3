@@ -55,7 +55,7 @@ while not encerrarPrograma:
                         opcaoValida = True
                     else:
                         print("ERRO! Digite apenas de 1 a 12!")
-                except:
+                except ValueError: 
                     print("ERRO! Digite apenas números de 1 a 12!")
                 
             os.system('cls||clear')
@@ -111,7 +111,7 @@ while not encerrarPrograma:
                 listarConsultasRealizadas()
             
             elif opcao == 12:
-                print("."*47)
+                print("-"*47)
                 print("Voltando para a página inicial...")
                 encerrarProgramaRecepcao = True
                      
@@ -149,9 +149,9 @@ while not encerrarPrograma:
                         opValida = True
                     else:
                         print("ERRO! Digite apenas de 1 a 8!")
-                except:
+                except ValueError:
                     print("ERRO! Digite apenas números de 1 a 8!")
-                    
+
             os.system('cls||clear')
             #Chamando funções de acordo com a escolha do usuário
             if opcao == 1:
@@ -160,11 +160,12 @@ while not encerrarPrograma:
 
             elif opcao == 2:
                 cabecalho("INICIAR SESSÃO")
-                sessaoAbertaParaConsulta = abrirSessaoConsulta()
+                abrirSessaoConsulta()
                 
             elif opcao == 3:
                 cabecalho("ATENDER PRÓXIMO PACIENTE")
-                if sessaoAbertaParaConsulta == True:
+                sessaoConsultaAberta = sessaoAbertaParaConsultas()
+                if sessaoConsultaAberta:
                     atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
                     nomePacienteAtendido = atenderProxPaciente()
                 else: 
@@ -172,34 +173,34 @@ while not encerrarPrograma:
 
             elif opcao == 4: 
                 cabecalho("LER PRONTUÁRIO")
-                if atendendoPaciente == True:  
+                if atendendoPaciente:  
                     lerProntuario(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 5: 
                 cabecalho("LER PRIMEIRA ANOTAÇÃO")
-                if atendendoPaciente == True:
+                if atendendoPaciente:
                     lerPrimeiraAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 6: 
                 cabecalho("LER ÚLTIMA ANOTAÇÃO")
-                if atendendoPaciente == True:
+                if atendendoPaciente:
                     lerUltimaAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 7: 
                 cabecalho("ANOTAR NO PRONTUÁRIO")
-                if atendendoPaciente == True:
+                if atendendoPaciente:
                     anotarProntuario(nomePacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 8:
-                print("."*47)
+                print("-"*47)
                 print("Voltando para a página inicial...")
                 encerrarProgramaDentista = True 
 

@@ -232,7 +232,7 @@ def iniciarSessao():
                     #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
                     dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
 
-                    dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
+                    dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao, 'sessaoAbertaConsulta': "Fechada"}
 
                     inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
 
@@ -645,7 +645,7 @@ def abrirSessaoConsulta():
         data = dataHora['data']
         hora = dataHora['hora']
 
-        dadosGerais = {'data': data, 'hora': hora, 'sessaoAberta': True}
+        dadosGerais = {'data': data, 'hora': hora, 'sessaoAbertaConsulta': "Aberta"}
         
         inserirDadosArquivo('dataHoraSessaoAberta.json', dadosGerais)
 
@@ -705,7 +705,7 @@ def atenderProxPaciente():
 
         #Para caso não haja mais pacientes na fila de atendimento
             else:
-                print("Não há mais pacientes na fila.\nSESSÃO ENCERRADA COM SUCESSO!")
+                print("Não há mais pacientes na fila.")
                 filaVazia = True
                 situacaoSessao = sessaoAbertaOuFechada() #Chamando a função que verifica se tem alguma sessão aberta no momento para poder deletar informações da sessão encerrada
 
@@ -730,7 +730,7 @@ def atenderProxPaciente():
                                             if dataHoraSessaoAberta:
                                                 del dataHoraSessaoAberta['data']
                                                 del dataHoraSessaoAberta['hora']
-                                                del dataHoraSessaoAberta['sessaoAberta']
+                                                del dataHoraSessaoAberta['sessaoAbertaConsulta']
 
                                                 #Limpando a sessão encerrada da lista de sessões
                                                 deletarSessao = []
@@ -828,11 +828,23 @@ def lerUltimaAnotacao(nomePacienteAtendido):
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido, dentista):
+    dadosValidos = False
+
     print(nomePacienteAtendido)
+    dadosValidos = False
+
     if nomePacienteAtendido != None:
         anotacoes = abrirArquivoLista('anotacoes.json')
 
-        atendimento = input("Primeiro atendimento?[S/N]: ").upper()
+        while not dadosValidos:
+            try:
+                atendimento = input("Primeiro atendimento?[S/N]: ").upper()
+                if atendimento == "S" or atendimento == "N":
+                    dadosValidos = True
+                else:
+                    print("ERRO! Digite apenas S ou N.")
+            except:
+                print("ERRO!")
 
         dataHora = abrirArquivo("dataHoraSessaoAberta.json")
         if dataHora:
@@ -848,11 +860,12 @@ def anotarProntuario(nomePacienteAtendido, dentista):
             'paciente': nomePacienteAtendido,
             'alergia': alergia,
             'queixa': queixa,
-            'notas': notas,
             'data': data,
             'hora': hora, 
-            'dentista': dentista
+            'dentista': dentista,
+            'notas': notas,
             }
+
         else:
             queixa = input("Motivo da consulta: ")
             notas = input("Anotações: ")
@@ -860,10 +873,10 @@ def anotarProntuario(nomePacienteAtendido, dentista):
             anotacoesAtuais = {
                 'paciente': nomePacienteAtendido,
                 'queixa': queixa,
-                'notas': notas,
                 'data': data,
                 'hora': hora,
-                'dentista': dentista
+                'dentista': dentista,
+                'notas': notas
             }
         
         #Inserindo as anotações
@@ -881,3 +894,10 @@ def listaDeAnotacoes(nomePacienteAtendido):
             anotacoesGerais.append(dados)
 
     return anotacoesGerais
+
+def sessaoAbertaParaConsultas():
+    sessaoConsultaAberta = abrirArquivo("dataHoraSessaoAberta.json")
+    if sessaoConsultaAberta['sessaoAbertaConsulta'] == "Aberta":
+        return True
+    else:
+        return False
