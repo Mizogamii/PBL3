@@ -25,6 +25,8 @@ def login():
     cabecalho("USUÁRIO")
     print("Digite:\n1 - Recepção\n2 - Dentista\n3 - Sair")
     print("."*47)
+
+    #Tratamento de dados, o usuário só poderá digitar números de 1 a 3
     while not entradaValida:
         try:
             usuario = int(input("Informe a sua opção: "))
@@ -56,7 +58,7 @@ def menuRecepcao():
     
     print("-"*47)
 
-#Função para abrir o arquivo json para leitura
+#Função para abrir o arquivo json para leitura com dicionário dentro de dicionário
 def abrirArquivo(nomeArquivo): 
     try:
         with open(nomeArquivo, 'r') as arquivo:
@@ -93,7 +95,7 @@ def inserirDadosArquivo(nomeArquivo, dados):
     with open(nomeArquivo, 'w') as arquivo:
         json.dump(dados, arquivo, indent=4)
 
-#Função para organizar id 
+#Função para fazer id 
 def codigoInicial(nomeArquivo, codigo):
     res = abrirArquivo(nomeArquivo) 
     #Verificando o último id inserido e acrescentando mais um para o próximo
@@ -119,16 +121,18 @@ def inserindoId(dados, dicionario, codigo, id):
 
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
+
     permitido = True
 
-    codigo = codigoInicial('dadosSessaoRecepcao.json', 'codigo')
+    codigo = codigoInicial('dadosSessaoRecepcao.json', 'codigo') #Chamando a função para fazer o id da sessão
 
     print("""Horário que inicia as sessões padrões: 
 Sessão da manhã -- 08:00 
 Sessão da tarde -- 14:00""")
     print("-"*47)
     print("Insira os dados pedidos: ")
-    
+
+    #Funções para a inserção de datas e horários nos formatos corretos 
     dataSessao = formatoData()
     horarioSessao = formatoHora()
 
@@ -145,7 +149,8 @@ Sessão da tarde -- 14:00""")
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
             dadosSessaoRecepcao = json.load(arquivos)
             for dados in dadosSessaoRecepcao.values():
-                if dados['dataSessao'] == dataSessao and dados['horarioSessao'] == horarioSessao:
+                #Verificando se não há datas e horários repetidos e assim permitir a inserção dos dados no arquivo 
+                if dados['dataSessao'] == dataSessao and dados['horarioSessao'] == horarioSessao: 
                     permitido = False
     except FileNotFoundError:
             dadosSessaoRecepcao = {}
@@ -170,8 +175,9 @@ Sessão da tarde -- 14:00""")
 
 #Função da opção 2 de listar as sessões clínicas
 def listarSessao():
+    #Chamando função para abrir o arquivo
     dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem mostrados.")
-    
+    #Imprimindo dados das sessões cadastrados
     if dadosSessaoRecepcao:
         for codigo, dados in dadosSessaoRecepcao.items():
             print("Sessão: ", codigo)
