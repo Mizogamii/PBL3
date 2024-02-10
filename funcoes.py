@@ -19,10 +19,20 @@ def cabecalho(texto):
 
 #Função para realizar o login do dentista ou da recepção
 def login():
+    entradaValida = False
     cabecalho("USUÁRIO")
-    print("Digite:\nR para Recepção\nD para Dentista")
+    print("Digite:\n1 - Recepção\n2 - Dentista\n3 - Sair")
     print("."*47)
-    usuario = str(input("Informe a sua opção: ")).upper()
+    while not entradaValida:
+        try:
+            usuario = int(input("Informe a sua opção: "))
+            if 0 < usuario <= 3:
+                entradaValida = True
+            else:
+                print("ERRO! Digite apenas 1 ou 3.")
+                continue
+        except ValueError:
+            print("ERRO! Digite apenas números(1 ou 3)")
     print()
     return usuario
 
@@ -462,7 +472,8 @@ def listarConsultasRealizadas():
     
 #Função para formatação das datas
 def formatoData():
-    while True:
+    entradaValida = False
+    while not entradaValida:
         try:
             inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
             data = datetime.strptime(inputDataSessao, "%d/%m/%Y")
@@ -475,23 +486,25 @@ def formatoData():
         except ValueError: 
             print("ERRO! Digite no formato pedido.")
         else:
-            break
+            entradaValida = True
     return data
 
 #Função para tratar os dados inseridos pelo usuário
 def tratamentoDados(mensagem):
-    while True:
+    entradaValida = False
+    while not entradaValida:
         try:
             dados = int(input(mensagem))
         except ValueError: 
             print("ERRO! Digite apenas números!")
         else:
-            break
+            entradaValida = True
     return dados
 
 #Função para formatação das horas
 def formatoHora():
-    while True:
+    entradaValida = False
+    while not entradaValida:
         try:
             inputHora = input("Hora da sessão [hh:mm]: ")
             hora = datetime.strptime(inputHora, "%H:%M").time()
@@ -500,7 +513,7 @@ def formatoHora():
             print("ERRO! Digite no formato pedido.")
         
         else:
-            break
+            entradaValida = True
     return hora
 
 #Função para listar os pacientes que estão marcados na sessão aberta no sistema

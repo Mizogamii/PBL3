@@ -12,7 +12,7 @@ from funcoes import *
 encerrarPrograma = False
 contadorSistema = 0
 
-while encerrarPrograma != True:
+while not encerrarPrograma:
 
     if contadorSistema == 0:
         usuario = login()
@@ -24,10 +24,12 @@ while encerrarPrograma != True:
 
     contadorSistema += 1
 
-    if usuario == "R":
+    if usuario == 1:
         encerrarProgramaRecepcao = False
         cont = 0
-        while encerrarProgramaRecepcao != True:
+        opcaoValida = False
+
+        while not encerrarProgramaRecepcao:
             if cont == 0:
                 menuRecepcao()
             else: 
@@ -37,17 +39,15 @@ while encerrarPrograma != True:
 
             cont += 1
 
-            while True:
+            while not opcaoValida:
                 try:
                     opcao = int(input("Opcão escolhida: "))
-                except:
-                    print("ERRO! Digite apenas números de 1 a 12!")
-                else:
                     if 0 < opcao <= 12:
-                        break
+                        opcaoValida = True
                     else:
                         print("ERRO! Digite apenas de 1 a 12!")
-                        continue
+                except:
+                    print("ERRO! Digite apenas números de 1 a 12!")
 
             if opcao == 1:
                 cabecalho("ADICIONAR NOVA SESSÃO CLÍNICA")
@@ -104,7 +104,7 @@ while encerrarPrograma != True:
             
             print("-"*47)
 
-    elif usuario == "D":
+    elif usuario == 2:
         encerrarProgramaDentista = False
         atendendoPaciente = False
         cont = 0
@@ -112,7 +112,8 @@ while encerrarPrograma != True:
         dentista = input("Insira o nome do dentista: ")
         print("."*47)
 
-        while encerrarProgramaDentista != True:
+        while not encerrarProgramaDentista:
+            opValida = False
             if cont == 0:
                 menuDentista()
             else: 
@@ -122,17 +123,17 @@ while encerrarPrograma != True:
 
             cont += 1
 
-            while True:
+            while not opValida:
                 try:
                     opcao = int(input("Opcão escolhida: "))
-                except:
-                    print("ERRO! Digite apenas números de 1 a 8!")
-                else:
+
                     if 0 < opcao <= 8:
-                        break
+                        opValida = True
                     else:
                         print("ERRO! Digite apenas de 1 a 8!")
-                        continue
+                except:
+                    print("ERRO! Digite apenas números de 1 a 8!")
+                
             if opcao == 1:
                 cabecalho("BUSCAR SESSÃO")
                 buscarSessao()
@@ -185,9 +186,9 @@ while encerrarPrograma != True:
 
             print("-"*47)
 
-    encerrar = input("Deseja encerrar o programa?[S/N]: ").upper()
-    if encerrar == "S":
+    elif usuario == 3:
         encerrarPrograma = True
+    
 
 
 print("\n" + "*"*47 + "\n")
