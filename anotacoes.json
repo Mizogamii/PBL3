@@ -1,0 +1,20 @@
+[
+    {
+        "paciente": "LIA",
+        "alergia": "Leite",
+        "queixa": "Dor na gengiva",
+        "notas": "Falta passar fio dental todo dia",
+        "data": "22/02/2024",
+        "hora": "14:00",
+        "dentista": "Carlos"
+    },
+    {
+        "paciente": "PAULO",
+        "alergia": "Nozes",
+        "queixa": "Sangramento na gengiva",
+        "notas": "Nunca passou fio dental na vida.",
+        "data": "22/02/2024",
+        "hora": "14:00",
+        "dentista": "Carlos"
+    }
+]

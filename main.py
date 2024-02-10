@@ -34,10 +34,10 @@ while not encerrarPrograma:
     if usuario == 1:
         encerrarProgramaRecepcao = False
         cont = 0
-        opcaoValida = False
         
         #Continuará rodando até o encerrarProgramaRecepcao seja False
         while not encerrarProgramaRecepcao:
+            opcaoValida = False
             if cont == 0:
                 menuRecepcao()
             else: 
@@ -46,7 +46,7 @@ while not encerrarPrograma:
                 menuRecepcao()
 
             cont += 1
-
+            
             #Tratamento de dados inseridos pelo usuário
             while not opcaoValida:
                 try:
@@ -111,18 +111,22 @@ while not encerrarPrograma:
                 listarConsultasRealizadas()
             
             elif opcao == 12:
+                print("."*47)
+                print("Voltando para a página inicial...")
                 encerrarProgramaRecepcao = True
-            
+                     
             print("-"*47)
 
     elif usuario == 2:
         encerrarProgramaDentista = False
         atendendoPaciente = False
+        sessaoAbertaParaConsulta = False
+
         cont = 0
-        print("."*47)
+        print()
         #Solicitando o nome do dentista que está atendendo o paciente para que assim esteja o nome do profissional no prontuário do paciente.
         dentista = input("Insira o nome do dentista: ")
-        print("."*47)
+        os.system('cls||clear')
 
         #Enquando o usuário não optar por sair do sistema do dentista, o sistema rodará a tela do dentista
         while not encerrarProgramaDentista:
@@ -157,12 +161,13 @@ while not encerrarPrograma:
                 cabecalho("INICIAR SESSÃO")
                 sessaoAbertaParaConsulta = abrirSessaoConsulta()
                 
-
             elif opcao == 3:
                 cabecalho("ATENDER PRÓXIMO PACIENTE")
-                if sessaoAbertaParaConsulta:
+                if sessaoAbertaParaConsulta == True:
                     atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
                     nomePacienteAtendido = atenderProxPaciente()
+                else: 
+                    print("ERRO! Não há sessões abertas para a consulta.\nTente novamente após iniciar a sessão para con-\nsulta na opção 2.")
 
             elif opcao == 4: 
                 cabecalho("LER PRONTUÁRIO")
@@ -174,14 +179,14 @@ while not encerrarPrograma:
             elif opcao == 5: 
                 cabecalho("LER PRIMEIRA ANOTAÇÃO")
                 if atendendoPaciente == True:
-                    lerPrimeiraAnotacao(nomePacienteAtendido, dentista)
+                    lerPrimeiraAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 6: 
                 cabecalho("LER ÚLTIMA ANOTAÇÃO")
                 if atendendoPaciente == True:
-                    lerUltimaAnotacao(nomePacienteAtendido, dentista)
+                    lerUltimaAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
@@ -193,7 +198,8 @@ while not encerrarPrograma:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 8:
-                print("Encerrando...")
+                print("."*47)
+                print("Voltando para a página inicial...")
                 encerrarProgramaDentista = True 
 
             print("-"*47)

@@ -23,7 +23,7 @@ def cabecalho(texto):
 def login():
     entradaValida = False
     cabecalho("USUÁRIO")
-    print("Digite:\n1 - Recepção\n2 - Dentista\n3 - Sair")
+    print("1 - Recepção\n2 - Dentista\n3 - Sair")
     print("."*47)
 
     #Tratamento de dados, o usuário só poderá digitar números de 1 a 3
@@ -54,7 +54,7 @@ def menuRecepcao():
 9 -  Colocar paciente na fila de atendimento
 10 - Mostrar próximo paciente na fila
 11 - Listar consultas realizadas na sessão
-12 - Sair do sistema """) 
+12 - Sair da página da recepção """) 
     
     print("-"*47)
 
@@ -211,7 +211,7 @@ def buscarSessao():
             print("Não há sessões com essa data e horário.")
 
     except FileNotFoundError:
-        print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,\ninserindo dados.")
+        print("ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,inserin-\ndo dados.")
 
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
@@ -264,7 +264,7 @@ def cadastrarPaciente():
     while not dadosValidos:
         try:
             input_sexo = str(input("Sexo[M/F]: ")).upper()
-            if input_sexo == "M" and input_sexo == "F":
+            if input_sexo == "M" or input_sexo == "F":
                 dadosValidos = True
             else:
                 print("ERRO! Digite apenas M ou F!")
@@ -451,7 +451,7 @@ def colocarNaListaAtendimento():
         else:
             print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e\ntente novamente.")
     else: 
-        print("Não há sessões abertas no momento.\nTente novamente.")
+        print("Não há sessões abertas momento.\nTente novamente.")
 
 #Função da opção 10 de mostrar aos paciente e dentistas a próxima pessoa a ser atendida
 def listarProximos():
@@ -464,7 +464,7 @@ def listarProximos():
                 print("Não há pacientes na fila")
 
     except FileNotFoundError:
-        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão ou verificar\nse algum paciente tem um horário marcado nessa\nsessão. Para isso, utilize a opção 8.")
+        print("ERRO! Não há dados no arquivo!\nTente inicialmente abrir a sessão ou inserir um\npaciente na fila de atendimento.\nPara isso, utilize a opção 9.")
 
 #Função da opção 11 de mostrar todas as consultas realizadas na sessão
 def listarConsultasRealizadas():
@@ -618,6 +618,7 @@ def verificacaoPacienteMarcado(nomePaciente):
     
     return nomeConsta
 
+#----------------------------------------------------------------------------------------------------
 #FUNÇÕES DA PARTE DO DENTISTA
 #Função para impressão do menu do dentista
 def menuDentista():
@@ -629,7 +630,7 @@ def menuDentista():
 5 - Ler a primeira anotação do paciente
 6 - Ler a última anotação do paciente
 7 - Anotar no prontuário
-8 - Sair do sistema""")
+8 - Sair da página do dentista""")
     print("-"*47)
 
 #Função da opção 2 para abrir uma sessão para iniciar as consultas
@@ -640,6 +641,14 @@ def abrirSessaoConsulta():
     if sessao: 
         print("Sucesso em iniciar a sessão para consulta.")
         sessaoAbertaConsulta = True
+        dataHora = abrirArquivo('dataHoraSessaoAberta.json')
+        
+        data = dataHora['data']
+        hora = dataHora['hora']
+
+        dadosGerais = {'data': data, 'hora': hora, 'sessaoAberta': True}
+        
+        inserirDadosArquivo('dataHoraSessaoAberta.json', dadosGerais)
 
     else: 
         print("Não há sessões iniciadas pela recepção.\nContate a recepção e tente novamente.")
@@ -722,6 +731,7 @@ def atenderProxPaciente():
                                             if dataHoraSessaoAberta:
                                                 del dataHoraSessaoAberta['data']
                                                 del dataHoraSessaoAberta['hora']
+                                                del dataHoraSessaoAberta['sessaoAberta']
 
                                                 #Limpando a sessão encerrada da lista de sessões
                                                 deletarSessao = []
