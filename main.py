@@ -57,6 +57,7 @@ while not encerrarPrograma:
                         print("ERRO! Digite apenas de 1 a 12!")
                 except:
                     print("ERRO! Digite apenas números de 1 a 12!")
+                
 
             #Chamando as funções de acordo com e escolha do usuário no menu
             if opcao == 1:
@@ -159,8 +160,9 @@ while not encerrarPrograma:
 
             elif opcao == 3:
                 cabecalho("ATENDER PRÓXIMO PACIENTE")
-                atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
-                nomePacienteAtendido = atenderProxPaciente()
+                if sessaoAbertaParaConsulta:
+                    atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
+                    nomePacienteAtendido = atenderProxPaciente()
 
             elif opcao == 4: 
                 cabecalho("LER PRONTUÁRIO")

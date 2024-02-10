@@ -121,7 +121,6 @@ def inserindoId(dados, dicionario, codigo, id):
 
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
-
     permitido = True
 
     codigo = codigoInicial('dadosSessaoRecepcao.json', 'codigo') #Chamando a função para fazer o id da sessão
@@ -635,6 +634,7 @@ def menuDentista():
 
 #Função da opção 2 para abrir uma sessão para iniciar as consultas
 def abrirSessaoConsulta():
+    sessaoAbertaConsulta = False
     sessao = sessaoAbertaOuFechada()
 
     if sessao: 
