@@ -154,12 +154,8 @@ while not encerrarPrograma:
 
             elif opcao == 2:
                 cabecalho("INICIAR SESSÃO")
-                sessaoAberta = sessaoAbertaOuFechada()
-                #Verificação de sessão, caso exista uma sessão aberta será impossível iniciar uma nova
-                if sessaoAberta == False:
-                    iniciarSessao()
-                else:
-                    print("Há uma sessão aberta.\nTente novamente após encerrar a sessão atual.")
+                sessaoAbertaParaConsulta = abrirSessaoConsulta()
+                
 
             elif opcao == 3:
                 cabecalho("ATENDER PRÓXIMO PACIENTE")

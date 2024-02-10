@@ -635,31 +635,16 @@ def menuDentista():
 
 #Função da opção 2 para abrir uma sessão para iniciar as consultas
 def abrirSessaoConsulta():
-    contadorTemHorario = 0
-    #Abrindo arquivo para o armazenamento de dados essenciais das sessões 
-    try: 
-        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
-            dadosSessaoRecepcao = json.load(arquivos)
+    sessao = sessaoAbertaOuFechada()
 
-            dataSessaoIniciar = formatoData()
-            horarioDaSessao = formatoHora()
+    if sessao: 
+        print("Sucesso em iniciar a sessão para consulta.")
+        sessaoAbertaConsulta = True
 
-            for dados in dadosSessaoRecepcao.values():
-                if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
-                    print('Sessão aberta com sucesso.')
-                    contadorTemHorario = 1
-                    #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
-                    dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
-
-                    dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
-
-                    inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
-
-    except FileNotFoundError:
-        print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
-
-    if contadorTemHorario == 0: 
-        print("Não há sessões com essa data e horário cadas-\ntrados no sistema.")
+    else: 
+        print("Não há sessões iniciadas pela recepção.\nContate a recepção e tente novamente.")
+    
+    return sessaoAbertaConsulta
 
 #Função da opção 3 para atender o próximo paciente da lista
 def atenderProxPaciente():
