@@ -11,7 +11,6 @@ do código, e estou ciente que estes trechos não serão considerados para fins 
 
 from datetime import datetime
 import json
-import os 
 from classes import Paciente, Recepcao, MarcarHorarioPaciente
 
 #Função para organizar os títulos
@@ -621,6 +620,34 @@ def menuDentista():
 7 - Anotar no prontuário
 8 - Sair do sistema""")
     print("-"*47)
+
+#Função da opção 2 para abrir uma sessão para iniciar as consultas
+def abrirSessaoConsulta():
+    contadorTemHorario = 0
+    #Abrindo arquivo para o armazenamento de dados essenciais das sessões 
+    try: 
+        with open('dadosSessaoRecepcao.json', 'r') as arquivos:
+            dadosSessaoRecepcao = json.load(arquivos)
+
+            dataSessaoIniciar = formatoData()
+            horarioDaSessao = formatoHora()
+
+            for dados in dadosSessaoRecepcao.values():
+                if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
+                    print('Sessão aberta com sucesso.')
+                    contadorTemHorario = 1
+                    #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
+                    dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
+
+                    dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao}
+
+                    inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
+
+    except FileNotFoundError:
+        print("ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1.")
+
+    if contadorTemHorario == 0: 
+        print("Não há sessões com essa data e horário cadas-\ntrados no sistema.")
 
 #Função da opção 3 para atender o próximo paciente da lista
 def atenderProxPaciente():
