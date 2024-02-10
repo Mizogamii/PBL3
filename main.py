@@ -7,8 +7,10 @@ apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de
 de outra autoria que não a minha está destacado com uma citação para o autor e a fonte
 do código, e estou ciente que estes trechos não serão considerados para fins de avaliação."""
 
-from funcoes import *
+#Sistema operacional utilizado: Windows
 
+from funcoes import *
+import os
 encerrarPrograma = False
 contadorSistema = 0
 
@@ -16,10 +18,11 @@ while not encerrarPrograma:
 
     if contadorSistema == 0:
         usuario = login()
-        print('\033c', end='')
+        os.system('cls||clear')
+
     else: 
         resposta = input("Clique ENTER para continuar ")
-        print('\033c', end='')
+        os.system('cls||clear')
         usuario = login()
 
     contadorSistema += 1
@@ -34,7 +37,7 @@ while not encerrarPrograma:
                 menuRecepcao()
             else: 
                 resposta = input("Clique ENTER para continuar ")
-                print('\033c', end='')
+                os.system('cls||clear')
                 menuRecepcao()
 
             cont += 1
@@ -118,7 +121,7 @@ while not encerrarPrograma:
                 menuDentista()
             else: 
                 resposta = input("Clique ENTER para continuar ")
-                print('\033c', end='')
+                os.system('cls||clear')
                 menuDentista()
 
             cont += 1

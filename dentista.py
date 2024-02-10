@@ -9,7 +9,7 @@ while encerrarPrograma != True:
         menuDentista()
     else: 
         resposta = input("Clique ENTER para continuar ")
-        print('\033c', end='')
+        os.system('cls||clear')
         menuDentista()
 
     cont += 1

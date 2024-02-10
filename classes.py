@@ -6,6 +6,8 @@ trecho de código de outro colega ou de outro autor, tais como provindos de livr
 apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
 de outra autoria que não a minha está destacado com uma citação para o autor e a fonte
 do código, e estou ciente que estes trechos não serão considerados para fins de avaliação."""
+
+#Sistema operacional utilizado: Windows
 class Paciente():
     def __init__(self, nome, idade, sexo, rg, cpf, id):
         self.nome = nome
