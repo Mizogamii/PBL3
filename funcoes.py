@@ -194,7 +194,7 @@ def buscarSessao():
     buscarHorario = formatoHora()
 
     print("."*47)
-
+    #Abrindo arquivo de sessões para a verificação da existência da sessão nos dados cadastrados
     try:
         with open('dadosSessaoRecepcao.json', 'r') as arquivos:
             dadosSessaoRecepcao = json.load(arquivos)
@@ -229,6 +229,7 @@ def iniciarSessao():
                 if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
                     print('Sessão aberta com sucesso.')
                     contadorTemHorario = 1
+
                     #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
                     dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
 
@@ -244,55 +245,60 @@ def iniciarSessao():
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
+    dadosValidos = False
 
     id = codigoInicial('dadosPaciente.json', 'id')
 
     input_nome = str(input("Nome: ")).upper()
 
     #Tratamento de dados, só aceita números
-    while True:
+    while not dadosValidos:
         try:
             input_idade = int(input("Idade: "))
         except ValueError: 
             print("ERRO! Digite apenas números!")
         else:
-            break
+            dadosValidos = True
 
     #Tratamento de dados, somente aceita F ou M, feminino ou masculino
-    while True:
+    dadosValidos = False
+    while not dadosValidos:
         try:
             input_sexo = str(input("Sexo[M/F]: ")).upper()
-            if input_sexo != "M" and input_sexo != "F":
+            if input_sexo == "M" and input_sexo == "F":
+                dadosValidos = True
+            else:
                 print("ERRO! Digite apenas M ou F!")
-                continue
+                
         except ValueError:
             print("ERRO! Digite apenas M ou F!")
-        else:
-            break
 
-    #Tratamento de dados, como é rg somente aceita 10 dígitos
-    while True:
+    #Tratamento de dados, como é RG somente aceita 10 dígitos
+    dadosValidos = False
+    while not dadosValidos:
         try:
             input_rg = int(input("RG: "))
-            if len(str(input_rg)) != 10:
+            if len(str(input_rg)) == 10:
+                dadosValidos = True
+            else: 
                 print("ERRO! Digite somente os 10 números do RG")
-                continue
+
         except ValueError:
             print("ERRO! Digite apenas números!")
-        else:
-            break
+    
 
     #Tratamento de dados, como é cpf somente aceita 11 dígitos     
-    while True:
+    dadosValidos = False
+    while not dadosValidos:
         try:
             input_cpf = int(input("CPF: "))
-            if len(str(input_cpf)) != 11:
+            if len(str(input_cpf)) == 11:
+                dadosValidos = True
+            else:
                 print("ERRO! Digite somente os 11 números do CPF")
-                continue
+                
         except ValueError:
             print("ERRO! Digite apenas números!")
-        else:
-            break
 
     #Inserindo as informações na classe
     paciente = Paciente(input_nome, input_idade, input_sexo, input_rg, input_cpf, id)
@@ -306,9 +312,7 @@ def cadastrarPaciente():
         'cpf': paciente.cpf, 
         'id': paciente.id
     }
-
-    #dadosGerais = {'id': id, 'dados': arquivosJson}
-
+    #Inserindo dados dentro do arquivo json para armazenamento dos dados do paciente
     dadosPaciente = abrirArquivo('dadosPaciente.json')
     paciente.id = inserindoId(dadosPaciente, arquivosJson, 'id', id)
     inserirDadosArquivo('dadosPaciente.json', dadosPaciente)
@@ -325,7 +329,7 @@ def marcarHorario():
     
     ordemMarcacao = codigoInicial('horariosMarcadosRecepcao.json', 'ordemMarcacao')
 
-    #Abrindo o arquivo de cadastramento de clientes para verificação da existência de cadastro
+    #Abrindo o arquivo de cadastramento de clientes para verificação da existência de cadastro, caso não exista dados não será permitido marcar horário
     try: 
         with open('dadosPaciente.json', 'r') as arquivo:
             dadosPaciente = json.load(arquivo)
@@ -341,7 +345,7 @@ def marcarHorario():
         if contadorNomeCerto == 0: 
             print("Não há cadastros com este nome!\nTente novamente!")
 
-        #Pedindo a data e horário que o paciente deseja marcar 
+        #Pedindo a data e horário que o paciente deseja marcar caso haja dados do paciente cadastrados no sistema
         else: 
             dataMarcar = formatoData()
             horarioMarcar = formatoHora()
@@ -363,13 +367,15 @@ def marcarHorario():
                         if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar:
                             repetido = True
                             print("Paciente já está com horário marcado.")
+
             except FileNotFoundError:
                 horariosMarcadosRecepcao = {}
-        
+            #Abrindo o arquivo com os dados da recepção sobre as sessões cadastradas no sistema para verificação
             try:
                 with open('dadosSessaoRecepcao.json', 'r') as arquivos:
                     dadosSessaoRecepcao = json.load(arquivos)
 
+                #Verificação da possibilidade de marcar um horário, é necessário ainda ter vagas para consultas e também a existência da sessão que foi escolhido pelo paciente no sistema
                 for dados in dadosSessaoRecepcao.values():
                     if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
                         if dados['quantidadePacientePossivel'] > contadorDataHoraIguais and repetido == False: 
