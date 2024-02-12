@@ -226,8 +226,9 @@ def buscarSessao():
                     print("Data da sessão: ", dados['dataSessao'])
                     print("Duração de cada consulta: ", dados['tempoConsulta'], "minutos")
                     contadorSucessoBuscar = 1
-        if contadorSucessoBuscar == 0:
-            print("Não há sessões com essa data e horário.")
+
+    if contadorSucessoBuscar == 0:
+        print("Não há sessões com essa data e horário.")
 
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
@@ -771,7 +772,7 @@ def lerPrimeiraAnotacao(nomePacienteAtendido):
         anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
         if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
-            print("Alegias: ", anotacoesGerais[0]['alergia'])
+            print("Alergias: ", anotacoesGerais[0]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[0]['queixa'])
             print("Data do atendimento: ", anotacoesGerais[0]['data'])
             print("Horário da sessão: ", anotacoesGerais[0]['hora'])
@@ -803,23 +804,21 @@ def lerUltimaAnotacao(nomePacienteAtendido):
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido, dentista):
-    atendimento = False
+    atendimento = 0
 
-    print(nomePacienteAtendido)
-
-    if nomePacienteAtendido != None:
+    if nomePacienteAtendido != None or nomePacienteAtendido != []:
         anotacoes = abrirArquivoLista('anotacoes.json')
 
         for dados in anotacoes:
             if nomePacienteAtendido != dados['paciente']:
-                atendimento = True
+                atendimento = 1
 
         dataHora = abrirArquivo("dataHoraSessaoAberta.json")
         if dataHora:
             data = dataHora['data']
             hora = dataHora['hora']
 
-        if atendimento == True:
+        if atendimento == 1:
             alergia = input("Alergias: ")
             queixa = input("Motivo da consulta: ")
             notas = input("Anotações: ")
