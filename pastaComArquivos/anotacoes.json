@@ -61,5 +61,23 @@
         "hora": "14:00",
         "dentista": "Lia",
         "notas": "Ele comeu limao"
+    },
+    {
+        "paciente": "TESTE5",
+        "alergia": "Ele per",
+        "queixa": "Teste eh",
+        "data": "24/02/2024",
+        "hora": "08:00",
+        "dentista": "Bali",
+        "notas": "Testando"
+    },
+    {
+        "paciente": "TESTE1",
+        "alergia": "Pediu alergia vei",
+        "queixa": "teste",
+        "data": "24/02/2024",
+        "hora": "08:00",
+        "dentista": "Bali",
+        "notas": "Tessss"
     }
 ]

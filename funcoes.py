@@ -703,7 +703,7 @@ def atenderProxPaciente():
                         if encerrar == "S":
                             print("Sessão finalizada!")
 
-                            #Apagando data e horário da sessão aberta do arquivo 
+                            #Apagando data, horário e situação da sessão aberta do arquivo 
                             dataHoraSessaoAberta = abrirArquivoComMensagem('dataHoraSessaoAberta.json', "ERRO! Arquivo não encontrado.")
                             data = dataHoraSessaoAberta['data']
                             hora = dataHoraSessaoAberta['hora']
@@ -729,15 +729,15 @@ def atenderProxPaciente():
                             #Salvando dados no arquivo da data e horário da sessão aberta
                             inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta) 
 
-                        #Limpando o arquivo que armazenava os dados dos pacientes que tinham hora marcada na sessão aberta
-                        pacientesMarcadosSessao = abrirArquivoLista("pacientesMarcadosSessao.json")
-                        pacientesMarcadosSessao.clear()
-                        inserirDadosArquivo("pacientesMarcadosSessao.json", pacientesMarcadosSessao)
+                            #Limpando o arquivo que armazenava os dados dos pacientes que tinham hora marcada na sessão aberta
+                            pacientesMarcadosSessao = abrirArquivoLista("pacientesMarcadosSessao.json")
+                            pacientesMarcadosSessao.clear()
+                            inserirDadosArquivo("pacientesMarcadosSessao.json", pacientesMarcadosSessao)
 
-                        #Limpando o arquivo que armazenava os dados dos pacientes que foram atendidos na sessão aberta, já que agora a sessão já foi realizada e encerrada.
-                        listaAtendidosSessao = abrirArquivoLista("listaPacientesAtendidos.json")
-                        listaAtendidosSessao.clear()
-                        inserirDadosArquivo("listaPacientesAtendidos.json",listaAtendidosSessao)
+                            #Limpando o arquivo que armazenava os dados dos pacientes que foram atendidos na sessão aberta, já que agora a sessão já foi realizada e encerrada.
+                            listaAtendidosSessao = abrirArquivoLista("listaPacientesAtendidos.json")
+                            listaAtendidosSessao.clear()
+                            inserirDadosArquivo("listaPacientesAtendidos.json",listaAtendidosSessao)
                                     
             except FileNotFoundError:
                 print("ERRO!")
@@ -762,7 +762,6 @@ CPF: {dados['cpf']}""")
         if dataHora:
             print("Data do atendimento: ", dataHora['data'])
             print("Horário da sessão: ", dataHora['hora'])
-
     else: 
         print("Não há pacientes em atendimento no momento.")
 
