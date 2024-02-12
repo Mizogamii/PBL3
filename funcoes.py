@@ -206,7 +206,7 @@ def listarSessao():
             print("Quantidade de consultas possíveis: ", dados['quantidadePacientePossivel'])
             print("."*47)
 
-#Função da opção 3 de buscar a sessão clínica
+#Função da opção 3 de buscar a sessão clínica 
 def buscarSessao():
     contadorSucessoBuscar = 0
 
@@ -215,19 +215,19 @@ def buscarSessao():
 
     print("."*47)
     #Abrindo arquivo de sessões para a verificação da existência da sessão nos dados cadastrados
-    dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1,inserin-\ndo dados." ) 
-    
-    for dados in dadosSessaoRecepcao.values():
-        if dados['dataSessao'] == buscarData:
-            if dados['horarioSessao'] == buscarHorario:
-                print("Sessão encontrada com sucesso.")
-                print("."*47)
-                print("Sessão número", dados['codigo'])
-                print("Data da sessão: ", dados['dataSessao'])
-                print("Duração de cada consulta: ", dados['tempoConsulta'], "minutos")
-                contadorSucessoBuscar = 1
-    if contadorSucessoBuscar == 0:
-        print("Não há sessões com essa data e horário.")
+    dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem buscados.\nTente inicialmente executar a opção 1, inserin-\ndo dados." ) 
+    if dadosSessaoRecepcao:
+        for dados in dadosSessaoRecepcao.values():
+            if dados['dataSessao'] == buscarData:
+                if dados['horarioSessao'] == buscarHorario:
+                    print("Sessão encontrada com sucesso.")
+                    print("."*47)
+                    print("Sessão número", dados['codigo'])
+                    print("Data da sessão: ", dados['dataSessao'])
+                    print("Duração de cada consulta: ", dados['tempoConsulta'], "minutos")
+                    contadorSucessoBuscar = 1
+        if contadorSucessoBuscar == 0:
+            print("Não há sessões com essa data e horário.")
 
 #Função da opção 4 de iniciar as sessões
 def iniciarSessao():
@@ -236,23 +236,24 @@ def iniciarSessao():
 
     dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Arquivo da recepção não encontrado!\nTente inserir os dados na opção 1." )
     
-    dataSessaoIniciar = formatoData()
-    horarioDaSessao = formatoHora()
+    if dadosSessaoRecepcao:
+        dataSessaoIniciar = formatoData()
+        horarioDaSessao = formatoHora()
 
-    for dados in dadosSessaoRecepcao.values():
-        if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
-            print('Sessão aberta com sucesso.')
-            contadorTemHorario = 1
+        for dados in dadosSessaoRecepcao.values():
+            if dataSessaoIniciar == dados['dataSessao'] and horarioDaSessao == dados['horarioSessao']:
+                print('Sessão aberta com sucesso.')
+                contadorTemHorario = 1
 
-            #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
-            dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
+                #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
+                dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
 
-            dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao, 'sessaoAbertaConsulta': "Fechada"}
+                dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao, 'sessaoAbertaConsulta': "Fechada"}
 
-            inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
+                inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
 
-    if contadorTemHorario == 0: 
-        print("Não há sessões com essa data e horário cadas-\ntrados no sistema.")
+        if contadorTemHorario == 0: 
+            print("Não há sessões com essa data e horário cadas-\ntrados no sistema.")
 
 #Função da opção 5 de adicionar novo paciente (cadastro)
 def cadastrarPaciente():
@@ -405,19 +406,20 @@ def marcarHorario():
 def listarHorariosMarcados():
     contadorNomeCerto = 0
     horariosMarcadosRecepcao = abrirArquivoComMensagem('horariosMarcadosRecepcao.json', "Arquivo da recepção não encontrada!\nTente inicialmente inserir os dados.\nPara isso utilize as opções 1, 5 e 6. ")
-    
-    nomePaciente = input("Informe o nome do paciente: ").upper()
-    
-    for dados in horariosMarcadosRecepcao.values():
-        if dados['nomePac'] == nomePaciente:
-            contadorNomeCerto = 1
-            print("."*47)
-            print(f"Nome: {dados['nomePac']}")
-            print(f"Data: {dados['data']}")
-            print(f"Horário: {dados['horario']}")
-    
-    if contadorNomeCerto == 0: 
-        print("Não há reservas para este nome.\nTente novamente!")
+
+    if horariosMarcadosRecepcao:
+        nomePaciente = input("Informe o nome do paciente: ").upper()
+        
+        for dados in horariosMarcadosRecepcao.values():
+            if dados['nomePac'] == nomePaciente:
+                contadorNomeCerto = 1
+                print("."*47)
+                print(f"Nome: {dados['nomePac']}")
+                print(f"Data: {dados['data']}")
+                print(f"Horário: {dados['horario']}")
+        
+        if contadorNomeCerto == 0: 
+            print("Não há reservas para este nome.\nTente novamente!")
 
 #Função da opção 8 de confirmar se paciente está com horário marcado 
 def confirmarHorario():
@@ -563,7 +565,6 @@ def sessaoAbertaOuFechada():
 
 #Função para listar os pacientes que apareceram para a consulta da sessão que foi iniciado 
 def listaDeAtendimentoPacientes(nomePaciente):
-    contador = 0
     ordemPacientesMarcados = abrirArquivoLista('pacientesMarcadosSessao.json')
     
     listaDeAtendimento = abrirArquivoLista('listaDeAtendimento.json')
@@ -581,14 +582,9 @@ def listaDeAtendimentoPacientes(nomePaciente):
 
         if paciente not in listaDeAtendimento and paciente is not None:
             listaDeAtendimento.append(paciente)
-        else:
-            contador = 1
-
             inserirDadosArquivo('listaDeAtendimento.json', listaDeAtendimento)
-    if contador == 1:
-        print("Paciente já está na lista para o antendimento.")
-    else:
-        print("Paciente na lista: ", nomePaciente)
+    
+    print("Paciente na lista: ", nomePaciente)
 
 #Verificação se paciente está com horário marcado
 def verificacaoPacienteMarcado(nomePaciente):
@@ -645,7 +641,8 @@ def atenderProxPaciente():
     #Abrindo arquivo da lista de atendimento para atender o próximo da fila
     listaDeAtendimento = abrirArquivoComMensagem('listaDeAtendimento.json', "Erro! Não há pacientes na fila.")
 
-    if listaDeAtendimento != []:
+    print(listaDeAtendimento)
+    if listaDeAtendimento != [] and listaDeAtendimento != None:
         #Imprimindo dados do paciente em atendimento
         print("Nome: ", listaDeAtendimento[0]['nome'])
         print("Data: ", listaDeAtendimento[0]['data'])
@@ -729,8 +726,8 @@ def atenderProxPaciente():
                                     del sessao[dados]
                                 inserirDadosArquivo("dadosSessaoRecepcao.json", sessao)
                         
-                        #Salvando dados no arquivo da data e horário da sessão aberta
-                        inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta) 
+                            #Salvando dados no arquivo da data e horário da sessão aberta
+                            inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta) 
 
                         #Limpando o arquivo que armazenava os dados dos pacientes que tinham hora marcada na sessão aberta
                         pacientesMarcadosSessao = abrirArquivoLista("pacientesMarcadosSessao.json")
@@ -807,30 +804,23 @@ def lerUltimaAnotacao(nomePacienteAtendido):
 
 #Função da opção 7 para anotar informações do paciente no prontuário
 def anotarProntuario(nomePacienteAtendido, dentista):
-    dadosValidos = False
+    atendimento = False
 
     print(nomePacienteAtendido)
-    dadosValidos = False
 
     if nomePacienteAtendido != None:
         anotacoes = abrirArquivoLista('anotacoes.json')
 
-        while not dadosValidos:
-            try:
-                atendimento = input("Primeiro atendimento?[S/N]: ").upper()
-                if atendimento == "S" or atendimento == "N":
-                    dadosValidos = True
-                else:
-                    print("ERRO! Digite apenas S ou N.")
-            except:
-                print("ERRO!")
+        for dados in anotacoes:
+            if nomePacienteAtendido != dados['paciente']:
+                atendimento = True
 
         dataHora = abrirArquivo("dataHoraSessaoAberta.json")
         if dataHora:
             data = dataHora['data']
             hora = dataHora['hora']
 
-        if atendimento == "S":
+        if atendimento == True:
             alergia = input("Alergias: ")
             queixa = input("Motivo da consulta: ")
             notas = input("Anotações: ")
@@ -876,7 +866,9 @@ def listaDeAnotacoes(nomePacienteAtendido):
 
 def sessaoAbertaParaConsultas():
     sessaoConsultaAberta = abrirArquivo("dataHoraSessaoAberta.json")
-    if sessaoConsultaAberta['sessaoAbertaConsulta'] == "Aberta":
-        return True
-    else:
-        return False
+    if sessaoConsultaAberta: 
+        if sessaoConsultaAberta['sessaoAbertaConsulta'] == "Aberta":
+            return True
+        else:
+            return False
+    return False
