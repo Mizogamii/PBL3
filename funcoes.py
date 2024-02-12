@@ -362,42 +362,42 @@ def marcarHorario():
             dataMarcar = formatoData()
             horarioMarcar = formatoHora()
 
-        print("."*47)
+            print("."*47)
 
-        #Abrindo arquivo de horários marcados para inserir os dados
-        horariosMarcadosRecepcao = abrirArquivo('horariosMarcadosRecepcao.json')
-        
-        for dados in horariosMarcadosRecepcao.values():
-            if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
-                contadorDataHoraIguais += 1
-        
-        #Verificar se o paciente tem um horário marcado para não marcar duas vezes
-        for informacoes in horariosMarcadosRecepcao.values():
-            if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar:
-                repetido = True
-                print("Paciente já está com horário marcado.")
+            #Abrindo arquivo de horários marcados para inserir os dados
+            horariosMarcadosRecepcao = abrirArquivo('horariosMarcadosRecepcao.json')
+            
+            for dados in horariosMarcadosRecepcao.values():
+                if dados['data'] == dataMarcar and dados['horario'] == horarioMarcar:
+                    contadorDataHoraIguais += 1
+            
+            #Verificar se o paciente tem um horário marcado para não marcar duas vezes
+            for informacoes in horariosMarcadosRecepcao.values():
+                if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar:
+                    repetido = True
+                    print("Paciente já está com horário marcado.")
 
-        #Abrindo o arquivo com os dados da recepção sobre as sessões cadastradas no sistema para verificação
-        dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem mostrados.")
-        
-        #Verificação da possibilidade de marcar um horário, é necessário ainda ter vagas para consultas e também a existência da sessão que foi escolhido pelo paciente no sistema
-        for dados in dadosSessaoRecepcao.values():
-            if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
-                if dados['quantidadePacientePossivel'] > contadorDataHoraIguais and repetido == False: 
-                    print("Horário marcado com sucesso.")
-                    sucessoMarcar = 1
+            #Abrindo o arquivo com os dados da recepção sobre as sessões cadastradas no sistema para verificação
+            dadosSessaoRecepcao = abrirArquivoComMensagem('dadosSessaoRecepcao.json', "ERRO! Não há dados a serem mostrados.")
+            
+            #Verificação da possibilidade de marcar um horário, é necessário ainda ter vagas para consultas e também a existência da sessão que foi escolhido pelo paciente no sistema
+            for dados in dadosSessaoRecepcao.values():
+                if dados['dataSessao'] == dataMarcar and dados['horarioSessao'] == horarioMarcar:
+                    if dados['quantidadePacientePossivel'] > contadorDataHoraIguais and repetido == False: 
+                        print("Horário marcado com sucesso.")
+                        sucessoMarcar = 1
 
-                    marcando = MarcarHorarioPaciente(ordemMarcacao, nomePaciente, dataMarcar, horarioMarcar)
+                        marcando = MarcarHorarioPaciente(ordemMarcacao, nomePaciente, dataMarcar, horarioMarcar)
+                            
+                        marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
                         
-                    marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
-                    
-                    marcando.ordemMarcacao = inserindoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao', ordemMarcacao)
-                    
-                    inserirDadosArquivo('horariosMarcadosRecepcao.json', horariosMarcadosRecepcao)
-                else: 
-                    deuErro = 1
-                    if repetido == False:
-                        print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.") 
+                        marcando.ordemMarcacao = inserindoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao', ordemMarcacao)
+                        
+                        inserirDadosArquivo('horariosMarcadosRecepcao.json', horariosMarcadosRecepcao)
+                    else: 
+                        deuErro = 1
+                        if repetido == False:
+                            print("Não há mais vagas nessa sessão.\nTente em um outro horário ou data.") 
 
         if sucessoMarcar == 0 and deuErro == 0:
             print("Não há sessões para essa data e horário.\nTente novamente com novos dados.")
@@ -473,7 +473,7 @@ def listarConsultasRealizadas():
             print("Horário: ", dados['hora'])
             print("."*47)
         
-    elif listaPacientesAtendidos == []:
+    elif listaPacientesAtendidos == [] or listaPacientesAtendidos == None:
         print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão.")
     
 #Função para formatação das datas
@@ -641,7 +641,6 @@ def atenderProxPaciente():
     #Abrindo arquivo da lista de atendimento para atender o próximo da fila
     listaDeAtendimento = abrirArquivoComMensagem('listaDeAtendimento.json', "Erro! Não há pacientes na fila.")
 
-    print(listaDeAtendimento)
     if listaDeAtendimento != [] and listaDeAtendimento != None:
         #Imprimindo dados do paciente em atendimento
         print("Nome: ", listaDeAtendimento[0]['nome'])

@@ -10,10 +10,29 @@
     },
     {
         "paciente": "TESTE5",
+        "alergia": "Leite",
         "queixa": "Sei la",
         "data": "22/02/2024",
         "hora": "14:00",
         "dentista": "",
         "notas": "dlkajdjfa"
+    },
+    {
+        "paciente": "TESTE4",
+        "alergia": "Leite",
+        "queixa": "Nap seii",
+        "data": "23/02/2024",
+        "hora": "08:00",
+        "dentista": "sd",
+        "notas": "daskFJ"
+    },
+    {
+        "paciente": "TESTE3",
+        "alergia": "Poeira",
+        "queixa": "kajfkjas",
+        "data": "23/02/2024",
+        "hora": "08:00",
+        "dentista": "sd",
+        "notas": "kjfkjskdj"
     }
 ]
