@@ -62,10 +62,7 @@ def menuRecepcao():
 
 #Função para abrir o arquivo json para leitura com dicionário dentro de dicionário
 def abrirArquivo(nomeArquivo):
-    # Definindo o caminho da pasta onde os arquivos JSON serão salvos
-    pastaArquivos = Path('pastaComArquivos')
-    # Cria o caminho completo do arquivo incluindo a pasta 'dados'
-    caminho = pastaArquivos / nomeArquivo
+    caminho = salvarEmPasta(nomeArquivo)
 
     try:
         with caminho.open('r') as arquivo:
@@ -78,11 +75,7 @@ def abrirArquivo(nomeArquivo):
 
 #Função para abrir o arquivo json para leitura, com diferença que nesse o except aparece uma mensagem
 def abrirArquivoComMensagem(nomeArquivo, mensagem):
-    # Definindo o caminho da pasta onde os arquivos JSON serão salvos
-    pastaArquivos = Path('pastaComArquivos')
-    # Cria o caminho completo do arquivo incluindo a pasta 'dados'
-    caminho = pastaArquivos / nomeArquivo
-
+    caminho = salvarEmPasta(nomeArquivo)
     dados = None
 
     try:
@@ -98,10 +91,7 @@ def abrirArquivoComMensagem(nomeArquivo, mensagem):
     
 #Função para leitura de arquivos com o dicionário dentro de lista
 def abrirArquivoLista(nomeArquivo):
-    # Definindo o caminho da pasta onde os arquivos JSON serão salvos
-    pastaArquivos = Path('pastaComArquivos')
-    # Cria o caminho completo do arquivo incluindo a pasta 'dados'
-    caminho = pastaArquivos / nomeArquivo
+    caminho = salvarEmPasta(nomeArquivo)
 
     try:
         with caminho.open('r') as arquivos:
@@ -113,6 +103,12 @@ def abrirArquivoLista(nomeArquivo):
 
 #Função para a inserção dos dados no arquivo
 def inserirDadosArquivo(nomeArquivo, dados):
+    caminho = salvarEmPasta(nomeArquivo)
+    # Salvando os dados no arquivo JSON no novo caminho
+    with caminho.open('w') as arquivo:
+        json.dump(dados, arquivo, indent=4)
+
+def salvarEmPasta(nomeArquivo):
     # Definindo o caminho da pasta onde os arquivos JSON serão salvos
     pastaArquivos = Path('pastaComArquivos')
 
@@ -121,10 +117,8 @@ def inserirDadosArquivo(nomeArquivo, dados):
     
     # Cria o caminho completo do arquivo incluindo a pasta 'dados'
     caminho = pastaArquivos / nomeArquivo
-    
-    # Salvando os dados no arquivo JSON no novo caminho
-    with caminho.open('w') as arquivo:
-        json.dump(dados, arquivo, indent=4)
+
+    return caminho
 
 #Função para fazer id 
 def codigoInicial(nomeArquivo, codigo):
@@ -700,12 +694,7 @@ def atenderProxPaciente():
         situacaoSessao = sessaoAbertaOuFechada() #Chamando a função que verifica se tem alguma sessão aberta no momento para poder deletar informações da sessão encerrada
 
         if situacaoSessao == True:
-            # Definindo o caminho da pasta onde os arquivos JSON serão salvos
-            pasta_dados = Path('pastaComArquivos')
-            # Verifica se a pasta existe, se não, cria a pasta
-            pasta_dados.mkdir(exist_ok=True)
-            # Cria o caminho completo do arquivo incluindo a pasta 'dados'
-            caminho = pasta_dados / 'dataHoraSessaoAberta.json'
+            caminho = salvarEmPasta('dataHoraSessaoAberta.json')
 
             try:
                 with caminho.open('r') as arquivo:
