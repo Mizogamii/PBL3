@@ -809,7 +809,7 @@ def anotarProntuario(nomePacienteAtendido, dentista):
         anotacoes = abrirArquivoLista('anotacoes.json')
 
         for dados in anotacoes:
-            if nomePacienteAtendido != dados['paciente']:
+            if nomePacienteAtendido == dados['paciente']:
                 atendimento = 1
 
         dataHora = abrirArquivo("dataHoraSessaoAberta.json")
@@ -817,7 +817,7 @@ def anotarProntuario(nomePacienteAtendido, dentista):
             data = dataHora['data']
             hora = dataHora['hora']
 
-        if atendimento == 1:
+        if atendimento == 0:
             alergia = input("Alergias: ")
             queixa = input("Motivo da consulta: ")
             notas = input("Anotações: ")
@@ -832,7 +832,7 @@ def anotarProntuario(nomePacienteAtendido, dentista):
             'notas': notas,
             }
 
-        else:
+        elif atendimento == 1:
             queixa = input("Motivo da consulta: ")
             notas = input("Anotações: ")
         
