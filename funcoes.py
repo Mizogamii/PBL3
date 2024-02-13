@@ -83,8 +83,7 @@ def abrirArquivoComMensagem(nomeArquivo, mensagem):
             dados = json.load(arquivo)
 
     except FileNotFoundError:
-        mensagemErro = mensagem
-        print(mensagemErro)
+        print(mensagem)
 
     if dados:
         return dados
