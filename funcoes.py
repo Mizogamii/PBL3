@@ -248,7 +248,7 @@ def iniciarSessao():
                 #Abrindo um arquivo para o armazenamento da data e horário da sessão aberta
                 dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
 
-                dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao, 'sessaoAbertaConsulta': "Fechada"}
+                dataHoraSessaoAberta = {'data': dataSessaoIniciar, 'hora': horarioDaSessao, 'sessaoAbertaConsulta': "Fechada", 'situacao': True}
 
                 inserirDadosArquivo('dataHoraSessaoAberta.json', dataHoraSessaoAberta)
 
@@ -432,7 +432,7 @@ def confirmarHorario():
         if nomeConsta == 1:
             print("Paciente está com horário marcado.")
         else:
-            print("Não há horários marcados para esse paciente")
+            print("Não há horários marcados para esse paciente.")
     else: 
         print("Não há sessões abertas no momento.\nTente novamente.")
         
@@ -445,10 +445,7 @@ def colocarNaListaAtendimento():
         if verificacao == 1:
             listaDeAtendimentoPacientes(nomePaciente)
         else:
-            print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e\ntente novamente.")
-
-        """if nomeNaLista == 1:
-            print("O nome desse paciente já se encontra na fila")"""
+            print("Não há horário marcado com esse nome.\nVerifique se não há erros na escrita e tente\nnovamente.")
 
     else: 
         print("Não há sessões abertas momento.\nTente novamente.")
@@ -472,9 +469,6 @@ def listarConsultasRealizadas():
             print("Data: ", dados['data'])
             print("Horário: ", dados['hora'])
             print("."*47)
-        
-    elif listaPacientesAtendidos == [] or listaPacientesAtendidos == None:
-        print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão.")
     
 #Função para formatação das datas
 def formatoData():
@@ -591,12 +585,12 @@ def verificacaoPacienteMarcado(nomePaciente):
     nomeConsta = 0
     pacientesComHoraMarcadaSessao() #É listado nessa função todos os pacientes que estão com horário marcado para a sessão atual
     pacientesMarcadosSessao = abrirArquivoComMensagem('pacientesMarcadosSessao.json', "Não há dados no arquivo!")
-    
-    for dados in pacientesMarcadosSessao:
-        if dados['nome'] == nomePaciente:
-            nomeConsta = 1
-    
-    return nomeConsta
+    if pacientesMarcadosSessao:
+        for dados in pacientesMarcadosSessao:
+            if dados['nome'] == nomePaciente:
+                nomeConsta = 1
+        
+        return nomeConsta
 
 #-----------------------------------------------------------------------------------
 #FUNÇÕES DA PARTE DO DENTISTA
@@ -626,7 +620,7 @@ def abrirSessaoConsulta():
         data = dataHora['data']
         hora = dataHora['hora']
 
-        dadosGerais = {'data': data, 'hora': hora, 'sessaoAbertaConsulta': "Aberta"}
+        dadosGerais = {'data': data, 'hora': hora, 'sessaoAbertaConsulta': "Aberta", 'situacao': True}
         
         inserirDadosArquivo('dataHoraSessaoAberta.json', dadosGerais)
 
@@ -711,6 +705,7 @@ def atenderProxPaciente():
                                 del dataHoraSessaoAberta['data']
                                 del dataHoraSessaoAberta['hora']
                                 del dataHoraSessaoAberta['sessaoAbertaConsulta']
+                                del dataHoraSessaoAberta['situacao']
 
                                 #Limpando a sessão encerrada da lista de sessões
                                 deletarSessao = []
@@ -737,7 +732,12 @@ def atenderProxPaciente():
                             listaAtendidosSessao = abrirArquivoLista("listaPacientesAtendidos.json")
                             listaAtendidosSessao.clear()
                             inserirDadosArquivo("listaPacientesAtendidos.json",listaAtendidosSessao)
-                                    
+
+                        else:
+                            dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
+                            dataHoraSessaoAberta['situacao'] = False
+                            inserirDadosArquivo('dataHoraSessaoAberta.json',dataHoraSessaoAberta)
+                    
             except FileNotFoundError:
                 print("ERRO!")
 
@@ -868,3 +868,13 @@ def sessaoAbertaParaConsultas():
         else:
             return False
     return False
+
+def sessaoAbertaSemPacientesNaFila():
+    sessaoConsultaAberta = abrirArquivo("dataHoraSessaoAberta.json")
+    if sessaoConsultaAberta:
+        if sessaoConsultaAberta['situacao'] == True:
+            return True
+        else:
+            return False
+    else:
+        return False

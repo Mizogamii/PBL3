@@ -9,7 +9,7 @@ do código, e estou ciente que estes trechos não serão considerados para fins 
 
 #Sistema operacional utilizado: Windows
 
-from funcoes import *
+import funcoes
 import os
 encerrarPrograma = False
 contadorSistema = 0
@@ -18,14 +18,14 @@ contadorSistema = 0
 while not encerrarPrograma:
     #Mostrando a tela de login pela primeira vez, para recepção ou dentista, sem necessitar da limpeza do terminal
     if contadorSistema == 0:
-        usuario = login()
+        usuario = funcoes.login()
         os.system('cls||clear')
 
     #Tela se limpa com a permissão do usuário para continuar utilizando o programa
     else: 
         resposta = input("Clique ENTER para continuar ")
         os.system('cls||clear')
-        usuario = login()
+        usuario = funcoes.login()
         os.system('cls||clear')
 
     contadorSistema += 1 #Contador para verificar se é a primeira vez que o programa está sendo rodado
@@ -39,11 +39,11 @@ while not encerrarPrograma:
         while not encerrarProgramaRecepcao:
             opcaoValida = False
             if cont == 0:
-                menuRecepcao()
+                funcoes.menuRecepcao()
             else: 
                 resposta = input("Clique ENTER para continuar ")
                 os.system('cls||clear')
-                menuRecepcao()
+                funcoes.menuRecepcao()
 
             cont += 1
             
@@ -61,54 +61,54 @@ while not encerrarPrograma:
             os.system('cls||clear')
             #Chamando as funções de acordo com e escolha do usuário no menu
             if opcao == 1:
-                cabecalho("ADICIONAR NOVA SESSÃO CLÍNICA")
-                adicionarNovaSessao()
+                funcoes.cabecalho("ADICIONAR NOVA SESSÃO CLÍNICA")
+                funcoes.adicionarNovaSessao()
                 
             elif opcao == 2: 
-                cabecalho("LISTAR SESSÕES CLÍNICAS")
-                listarSessao()
+                funcoes.cabecalho("LISTAR SESSÕES CLÍNICAS")
+                funcoes.listarSessao()
 
             elif opcao == 3: 
-                cabecalho("BUSCAR SESSÕES CLÍNICAS")
-                buscarSessao()
+                funcoes.cabecalho("BUSCAR SESSÕES CLÍNICAS")
+                funcoes.buscarSessao()
             
             elif opcao == 4:
-                cabecalho("INICIAR SESSÃO")
-                sessaoAberta = sessaoAbertaOuFechada()
+                funcoes.cabecalho("INICIAR SESSÃO")
+                sessaoAberta = funcoes.sessaoAbertaOuFechada()
                 
                 #Verificação de sessão, caso já tenha uma sessão aberta, torna-se impossível iniciar uma nova ao mesmo tempo
                 if sessaoAberta == False:
-                    iniciarSessao()
+                    funcoes.iniciarSessao()
                 else:
                     print("Há uma sessão aberta.\nTente novamente após encerrar a sessão atual.")
                 
             elif opcao == 5:
-                cabecalho("CADASTRAR NOVO PACIENTE")
-                cadastrarPaciente()
+                funcoes.cabecalho("CADASTRAR NOVO PACIENTE")
+                funcoes.cadastrarPaciente()
                 
             elif opcao == 6:
-                cabecalho("MARCAR HORÁRIO")
-                marcarHorario()
+                funcoes.cabecalho("MARCAR HORÁRIO")
+                funcoes.marcarHorario()
                 
             elif opcao == 7:
-                cabecalho("LISTAR HORÁRIOS MARCADOS")
-                listarHorariosMarcados()
+                funcoes.cabecalho("LISTAR HORÁRIOS MARCADOS")
+                funcoes.listarHorariosMarcados()
 
             elif opcao == 8:
-                cabecalho('VERIFICAR SE PACIENTE TEM HORÁRIO MARCADO')
-                confirmarHorario()
+                funcoes.cabecalho('VERIFICAR SE PACIENTE TEM HORÁRIO MARCADO')
+                funcoes.confirmarHorario()
             
             elif opcao == 9: 
-                cabecalho("COLOCAR PACIENTE NA FILA")
-                colocarNaListaAtendimento()
+                funcoes.cabecalho("COLOCAR PACIENTE NA FILA")
+                funcoes.colocarNaListaAtendimento()
             
             elif opcao == 10: 
-                cabecalho("PRÓXIMO PACIENTE")
-                listarProximos()
+                funcoes.cabecalho("PRÓXIMO PACIENTE")
+                funcoes.listarProximos()
 
             elif opcao == 11:
-                cabecalho("CONSULTAS REALIZADAS NA SESSÃO")
-                listarConsultasRealizadas()
+                funcoes.cabecalho("CONSULTAS REALIZADAS NA SESSÃO")
+                funcoes.listarConsultasRealizadas()
             
             elif opcao == 12:
                 print("-"*47)
@@ -132,11 +132,11 @@ while not encerrarPrograma:
         while not encerrarProgramaDentista:
             opValida = False
             if cont == 0:
-                menuDentista()
+                funcoes.menuDentista()
             else: 
                 resposta = input("Clique ENTER para continuar ")
                 os.system('cls||clear')
-                menuDentista()
+                funcoes.menuDentista()
 
             cont += 1
 
@@ -155,47 +155,53 @@ while not encerrarPrograma:
             os.system('cls||clear')
             #Chamando funções de acordo com a escolha do usuário
             if opcao == 1:
-                cabecalho("BUSCAR SESSÃO")
-                buscarSessao()
+                funcoes.cabecalho("BUSCAR SESSÃO")
+                funcoes.buscarSessao()
 
             elif opcao == 2:
-                cabecalho("INICIAR SESSÃO")
-                abrirSessaoConsulta()
+                funcoes.cabecalho("INICIAR SESSÃO")
+                funcoes.abrirSessaoConsulta()
                 
             elif opcao == 3:
-                cabecalho("ATENDER PRÓXIMO PACIENTE")
-                sessaoConsultaAberta = sessaoAbertaParaConsultas()
+                funcoes.cabecalho("ATENDER PRÓXIMO PACIENTE")
+                sessaoConsultaAberta = funcoes.sessaoAbertaParaConsultas()
+                sessaoAbertaSemPaciente = funcoes.sessaoAbertaSemPacientesNaFila()
+                print(sessaoConsultaAberta)
                 if sessaoConsultaAberta:
-                    atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
-                    nomePacienteAtendido = atenderProxPaciente()
+                    nomePacienteAtendido = funcoes.atenderProxPaciente()
+                    if sessaoAbertaSemPaciente:
+                        atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
+                
                 else: 
                     print("ERRO! Não há sessões abertas para a consulta.\nTente novamente após iniciar a sessão para con-\nsulta na opção 2.")
-
+                print(sessaoAbertaSemPaciente)
             elif opcao == 4: 
-                cabecalho("LER PRONTUÁRIO")
+                funcoes.cabecalho("LER PRONTUÁRIO")
                 if atendendoPaciente:  
-                    lerProntuario(nomePacienteAtendido)
+                    funcoes.lerProntuario(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 5: 
-                cabecalho("LER PRIMEIRA ANOTAÇÃO")
+                funcoes.cabecalho("LER PRIMEIRA ANOTAÇÃO")
                 if atendendoPaciente:
-                    lerPrimeiraAnotacao(nomePacienteAtendido)
+                    funcoes.lerPrimeiraAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 6: 
-                cabecalho("LER ÚLTIMA ANOTAÇÃO")
+                funcoes.cabecalho("LER ÚLTIMA ANOTAÇÃO")
+                print(atendendoPaciente)
                 if atendendoPaciente:
-                    lerUltimaAnotacao(nomePacienteAtendido)
+                    funcoes.lerUltimaAnotacao(nomePacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 7: 
-                cabecalho("ANOTAR NO PRONTUÁRIO")
+                funcoes.cabecalho("ANOTAR NO PRONTUÁRIO")
+                print(atendendoPaciente)
                 if atendendoPaciente:
-                    anotarProntuario(nomePacienteAtendido, dentista)
+                    funcoes.anotarProntuario(nomePacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
