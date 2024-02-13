@@ -860,6 +860,7 @@ def listaDeAnotacoes(nomePacienteAtendido):
 
     return anotacoesGerais
 
+#Função para verificar se a sessão está aberta pelo dentista
 def sessaoAbertaParaConsultas():
     sessaoConsultaAberta = abrirArquivo("dataHoraSessaoAberta.json")
     if sessaoConsultaAberta: 
@@ -869,6 +870,7 @@ def sessaoAbertaParaConsultas():
             return False
     return False
 
+#Função para verificar se a sessão está aberta após atender todos os pacientes, pois tendo vaga é possível que algum paciente apareça ainda para a consulta, sendo inserido na fila. 
 def sessaoAbertaSemPacientesNaFila():
     sessaoConsultaAberta = abrirArquivo("dataHoraSessaoAberta.json")
     if sessaoConsultaAberta:

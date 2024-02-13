@@ -165,8 +165,8 @@ while not encerrarPrograma:
             elif opcao == 3:
                 funcoes.cabecalho("ATENDER PRÓXIMO PACIENTE")
                 sessaoConsultaAberta = funcoes.sessaoAbertaParaConsultas()
-                sessaoAbertaSemPaciente = funcoes.sessaoAbertaSemPacientesNaFila()
-                print(sessaoConsultaAberta)
+                sessaoAbertaSemPaciente = funcoes.sessaoAbertaSemPacientesNaFila() 
+
                 if sessaoConsultaAberta:
                     nomePacienteAtendido = funcoes.atenderProxPaciente()
                     if sessaoAbertaSemPaciente:
@@ -174,7 +174,7 @@ while not encerrarPrograma:
                 
                 else: 
                     print("ERRO! Não há sessões abertas para a consulta.\nTente novamente após iniciar a sessão para con-\nsulta na opção 2.")
-                print(sessaoAbertaSemPaciente)
+
             elif opcao == 4: 
                 funcoes.cabecalho("LER PRONTUÁRIO")
                 if atendendoPaciente:  
@@ -191,7 +191,6 @@ while not encerrarPrograma:
 
             elif opcao == 6: 
                 funcoes.cabecalho("LER ÚLTIMA ANOTAÇÃO")
-                print(atendendoPaciente)
                 if atendendoPaciente:
                     funcoes.lerUltimaAnotacao(nomePacienteAtendido)
                 else:
@@ -199,7 +198,6 @@ while not encerrarPrograma:
 
             elif opcao == 7: 
                 funcoes.cabecalho("ANOTAR NO PRONTUÁRIO")
-                print(atendendoPaciente)
                 if atendendoPaciente:
                     funcoes.anotarProntuario(nomePacienteAtendido, dentista)
                 else:
