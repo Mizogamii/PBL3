@@ -27,9 +27,10 @@ class Recepcao():
         self.quantidadePacientePossivel = quantidadePacientePossivel 
 
 class MarcarHorarioPaciente():
-    def __init__(self, ordemMarcacao, nomePaciente, dataMarcar, horarioMarcar):
+    def __init__(self, ordemMarcacao, nomePaciente, idPaciente, dataMarcar, horarioMarcar):
         self.ordemMarcacao = ordemMarcacao
         self.nomePaciente = nomePaciente
+        self.idPaciente = idPaciente
         self.dataMarcar = dataMarcar
         self.horarioMarcar = horarioMarcar
     

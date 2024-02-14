@@ -168,7 +168,7 @@ while not encerrarPrograma:
                 sessaoAbertaSemPaciente = funcoes.sessaoAbertaSemPacientesNaFila() 
 
                 if sessaoConsultaAberta:
-                    nomePacienteAtendido = funcoes.atenderProxPaciente()
+                    nomePacienteAtendido, idPacienteAtendido = funcoes.atenderProxPaciente()
                     if sessaoAbertaSemPaciente:
                         atendendoPaciente = True #Para futuras verificações, caso não tenha nenhum paciente em atendimento muitos serviços serão impossibilitados de ocorrer
                 
@@ -178,28 +178,28 @@ while not encerrarPrograma:
             elif opcao == 4: 
                 funcoes.cabecalho("LER PRONTUÁRIO")
                 if atendendoPaciente:  
-                    funcoes.lerProntuario(nomePacienteAtendido)
+                    funcoes.lerProntuario(nomePacienteAtendido, idPacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 5: 
                 funcoes.cabecalho("LER PRIMEIRA ANOTAÇÃO")
                 if atendendoPaciente:
-                    funcoes.lerPrimeiraAnotacao(nomePacienteAtendido)
+                    funcoes.lerPrimeiraAnotacao(nomePacienteAtendido, idPacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 6: 
                 funcoes.cabecalho("LER ÚLTIMA ANOTAÇÃO")
                 if atendendoPaciente:
-                    funcoes.lerUltimaAnotacao(nomePacienteAtendido)
+                    funcoes.lerUltimaAnotacao(nomePacienteAtendido, idPacienteAtendido)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 7: 
                 funcoes.cabecalho("ANOTAR NO PRONTUÁRIO")
                 if atendendoPaciente:
-                    funcoes.anotarProntuario(nomePacienteAtendido, dentista)
+                    funcoes.anotarProntuario(nomePacienteAtendido, idPacienteAtendido, dentista)
                 else:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 

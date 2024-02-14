@@ -8,7 +8,6 @@ de outra autoria que não a minha está destacado com uma citação para o autor
 do código, e estou ciente que estes trechos não serão considerados para fins de avaliação."""
 
 #Sistema operacional utilizado: Windows
-#Existe um with open com path na linha 703
 
 from datetime import datetime
 import json
@@ -263,14 +262,7 @@ def cadastrarPaciente():
 
     input_nome = str(input("Nome: ")).upper()
 
-    #Tratamento de dados, só aceita números
-    while not dadosValidos:
-        try:
-            input_idade = int(input("Idade: "))
-        except ValueError: 
-            print("ERRO! Digite apenas números!")
-        else:
-            dadosValidos = True
+    input_idade = tratamentoDados("Idade: ")
 
     #Tratamento de dados, somente aceita F ou M, feminino ou masculino
     dadosValidos = False
@@ -348,10 +340,11 @@ def marcarHorario():
     if dadosPaciente:
         #Pedindo o nome do paciente
         nomePaciente = input("Informe o nome do paciente: ").upper()
-
+        idPaciente = tratamentoDados("Insira o ID do paciente: ")
+        
         #Verificando se o nome existe no arquivo de cadastro
         for dados in dadosPaciente.values():
-            if dados['nome'] == nomePaciente:
+            if dados['nome'] == nomePaciente and dados['id'] == idPaciente:
                 contadorNomeCerto = 1
 
         if contadorNomeCerto == 0: 
@@ -373,7 +366,7 @@ def marcarHorario():
             
             #Verificar se o paciente tem um horário marcado para não marcar duas vezes
             for informacoes in horariosMarcadosRecepcao.values():
-                if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar:
+                if informacoes['nomePac'] == nomePaciente and informacoes['data'] == dataMarcar and informacoes['horario'] == horarioMarcar and informacoes['idPaciente'] == idPaciente:
                     repetido = True
                     print("Paciente já está com horário marcado.")
 
@@ -387,9 +380,9 @@ def marcarHorario():
                         print("Horário marcado com sucesso.")
                         sucessoMarcar = 1
 
-                        marcando = MarcarHorarioPaciente(ordemMarcacao, nomePaciente, dataMarcar, horarioMarcar)
+                        marcando = MarcarHorarioPaciente(ordemMarcacao, nomePaciente, idPaciente, dataMarcar, horarioMarcar)
                             
-                        marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
+                        marcarHorarioSessao = {'ordemMarcacao': marcando.ordemMarcacao ,'nomePac': marcando.nomePaciente, 'idPaciente': marcando.idPaciente, 'data': marcando.dataMarcar, 'horario': marcando.horarioMarcar}
                         
                         marcando.ordemMarcacao = inserindoId(horariosMarcadosRecepcao, marcarHorarioSessao, 'ordemMarcacao', ordemMarcacao)
                         
@@ -409,12 +402,14 @@ def listarHorariosMarcados():
 
     if horariosMarcadosRecepcao:
         nomePaciente = input("Informe o nome do paciente: ").upper()
-        
+        idPaciente = tratamentoDados("Insira o ID do paciente: ")
+
         for dados in horariosMarcadosRecepcao.values():
-            if dados['nomePac'] == nomePaciente:
+            if dados['nomePac'] == nomePaciente and dados['idPaciente'] == idPaciente:
                 contadorNomeCerto = 1
                 print("."*47)
                 print(f"Nome: {dados['nomePac']}")
+                print(f"ID: {dados['idPaciente']}")
                 print(f"Data: {dados['data']}")
                 print(f"Horário: {dados['horario']}")
         
@@ -426,10 +421,11 @@ def confirmarHorario():
     situacaoDaSessao = sessaoAbertaOuFechada()
     if situacaoDaSessao == True:
         nomePaciente = input("Informe o nome do paciente: ").upper()
+        idPaciente = tratamentoDados("Insira o ID do paciente: ")
 
-        nomeConsta = verificacaoPacienteMarcado(nomePaciente)
+        pacienteConsta = verificacaoPacienteMarcado(nomePaciente, idPaciente)
 
-        if nomeConsta == 1:
+        if pacienteConsta == 1:
             print("Paciente está com horário marcado.")
         else:
             print("Não há horários marcados para esse paciente.")
@@ -441,7 +437,10 @@ def colocarNaListaAtendimento():
     situacaoDaSessao = sessaoAbertaOuFechada()
     if situacaoDaSessao == True:
         nomePaciente = input("Informe o nome do paciente: ").upper()
-        verificacao = verificacaoPacienteMarcado(nomePaciente)
+        idPaciente = tratamentoDados("Insira o ID do paciente: ")
+
+        verificacao = verificacaoPacienteMarcado(nomePaciente, idPaciente)
+
         if verificacao == 1:
             listaDeAtendimentoPacientes(nomePaciente)
         else:
@@ -466,6 +465,7 @@ def listarConsultasRealizadas():
     if listaPacientesAtendidos:
         for dados in listaPacientesAtendidos:
             print("Nome: ", dados['nome'])
+            print("Id: ", dados['id'])
             print("Data: ", dados['data'])
             print("Horário: ", dados['hora'])
             print("."*47)
@@ -533,6 +533,7 @@ def pacientesComHoraMarcadaSessao():
         if dataSessaoAberta == dados['data'] and horaSessaoAberta == dados['horario']:
             pacientesAtual = {
                 'nome': dados['nomePac'], 
+                'id': dados['idPaciente'],
                 'data': dados['data'], 
                 'horario': dados['horario']
             }
@@ -569,6 +570,7 @@ def listaDeAtendimentoPacientes(nomePaciente):
         if nomePaciente == dados['nome']:
             paciente = {
                 'nome': dados['nome'],
+                'id': dados['id'],
                 'data': dados['data'],
                 'hora': dados['horario'],
                 'paciente': "presente"
@@ -581,16 +583,16 @@ def listaDeAtendimentoPacientes(nomePaciente):
     print("Paciente na lista: ", nomePaciente)
 
 #Verificação se paciente está com horário marcado
-def verificacaoPacienteMarcado(nomePaciente):
-    nomeConsta = 0
+def verificacaoPacienteMarcado(nomePaciente, idPaciente):
+    pacienteConsta = 0
     pacientesComHoraMarcadaSessao() #É listado nessa função todos os pacientes que estão com horário marcado para a sessão atual
     pacientesMarcadosSessao = abrirArquivoComMensagem('pacientesMarcadosSessao.json', "Não há dados no arquivo!")
     if pacientesMarcadosSessao:
         for dados in pacientesMarcadosSessao:
-            if dados['nome'] == nomePaciente:
-                nomeConsta = 1
+            if dados['nome'] == nomePaciente and dados['id'] == idPaciente:
+                pacienteConsta = 1
         
-        return nomeConsta
+        return pacienteConsta
 
 #-----------------------------------------------------------------------------------
 #FUNÇÕES DA PARTE DO DENTISTA
@@ -638,6 +640,7 @@ def atenderProxPaciente():
     if listaDeAtendimento != [] and listaDeAtendimento != None:
         #Imprimindo dados do paciente em atendimento
         print("Nome: ", listaDeAtendimento[0]['nome'])
+        print("ID: ", listaDeAtendimento[0]['id'])
         print("Data: ", listaDeAtendimento[0]['data'])
         print("Horário: ", listaDeAtendimento[0]['hora'])
         print("."*47)
@@ -645,6 +648,7 @@ def atenderProxPaciente():
         filaVazia = False #Enquanto houver pessoas na fila ficará em false
 
         nomeDoPacienteEmAtendimento = listaDeAtendimento[0]['nome']
+        idDoPacienteEmAtendimento = listaDeAtendimento[0]['id']
 
         #Abrindo arquivo com a lista de pacientes atendidos para poder mostrar depois na opção 11 da recepção     
         listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
@@ -662,6 +666,8 @@ def atenderProxPaciente():
         
         #Armazenando em variáveis a data e o horário da sessão que está aberta no momento para possíveis verificações
         datasHoraSessao = abrirArquivo("dataHoraSessaoAberta.json")
+
+        datasHoraSessao['situacao'] = True
         
         data = datasHoraSessao['data']
         hora = datasHoraSessao['hora']
@@ -675,7 +681,10 @@ def atenderProxPaciente():
 
         for dados in deletarHorario:
             del pacientesHorario[dados]
+
         inserirDadosArquivo("horariosMarcadosRecepcao.json", pacientesHorario)
+
+        inserirDadosArquivo('dataHoraSessaoAberta.json', datasHoraSessao)
 
     #Para caso não haja mais pacientes na fila de atendimento
     else:
@@ -742,17 +751,18 @@ def atenderProxPaciente():
                 print("ERRO!")
 
     if filaVazia == False:
-        return nomeDoPacienteEmAtendimento
+        return nomeDoPacienteEmAtendimento, idDoPacienteEmAtendimento
     else:
-        return None
+        return None, None
 
 #Função da opção 4 para ler o prontuário do paciente que está sendo atendido
-def lerProntuario(nomePacienteAtendido):
+def lerProntuario(nomePacienteAtendido, idPacienteAtendido):
     if nomePacienteAtendido != None:
         dadosPaciente = abrirArquivo("dadosPaciente.json")
         for dados in dadosPaciente.values():
-            if dados['nome'] == nomePacienteAtendido:
+            if dados['nome'] == nomePacienteAtendido and dados['id'] == idPacienteAtendido:
                 print(f"""Nome: {dados['nome']}
+ID: {dados['id']}
 Idade: {dados['idade']}
 Sexo: {dados['sexo']}
 RG: {dados['rg']}
@@ -765,11 +775,12 @@ CPF: {dados['cpf']}""")
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 5 para ler a primeira anotação feita na consulta do paciente
-def lerPrimeiraAnotacao(nomePacienteAtendido):
+def lerPrimeiraAnotacao(nomePacienteAtendido, idPacienteAtendido):
     if nomePacienteAtendido != None:
-        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
+        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido, idPacienteAtendido)
         if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
+            print("ID: ", idPacienteAtendido)
             print("Alergias: ", anotacoesGerais[0]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[0]['queixa'])
             print("Data do atendimento: ", anotacoesGerais[0]['data'])
@@ -782,12 +793,13 @@ def lerPrimeiraAnotacao(nomePacienteAtendido):
         print("Não há pacientes em atendimento no momento.")
         
 #Função da opção 6 para ler a anotação da última vez que o paciente esteve na consulta
-def lerUltimaAnotacao(nomePacienteAtendido):
+def lerUltimaAnotacao(nomePacienteAtendido, idPacienteAtendido):
     if nomePacienteAtendido != None:
-        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido)
+        anotacoesGerais = listaDeAnotacoes(nomePacienteAtendido, idPacienteAtendido)
         quantidade = len(anotacoesGerais) - 1
         if anotacoesGerais != []:
             print("Paciente: ", nomePacienteAtendido)
+            print("ID: ", idPacienteAtendido)
             print("Alergias: ", anotacoesGerais[0]['alergia'])
             print("Motivo da consulta: ", anotacoesGerais[quantidade]['queixa'])
             print("Data do atendimento: ", anotacoesGerais[quantidade]['data'])
@@ -801,7 +813,7 @@ def lerUltimaAnotacao(nomePacienteAtendido):
         print("Não há pacientes em atendimento no momento.")
 
 #Função da opção 7 para anotar informações do paciente no prontuário
-def anotarProntuario(nomePacienteAtendido, dentista):
+def anotarProntuario(nomePacienteAtendido, idPacienteAtendido, dentista):
     atendimento = 0
 
     if nomePacienteAtendido != None or nomePacienteAtendido != []:
@@ -823,6 +835,7 @@ def anotarProntuario(nomePacienteAtendido, dentista):
 
             anotacoesAtuais = {
             'paciente': nomePacienteAtendido,
+            'id': idPacienteAtendido,
             'alergia': alergia,
             'queixa': queixa,
             'data': data,
@@ -837,6 +850,7 @@ def anotarProntuario(nomePacienteAtendido, dentista):
         
             anotacoesAtuais = {
                 'paciente': nomePacienteAtendido,
+                'id': idPacienteAtendido,
                 'queixa': queixa,
                 'data': data,
                 'hora': hora,
@@ -851,11 +865,11 @@ def anotarProntuario(nomePacienteAtendido, dentista):
         print("Não há pacientes em atendimento no momento.")
     
 #Função para colocar as anotações do paciente que está sendo atendido dentro de uma lista
-def listaDeAnotacoes(nomePacienteAtendido):
+def listaDeAnotacoes(nomePacienteAtendido, idPacienteAtendido):
     anotacoesGerais = []
     listaAnotacoes = abrirArquivoLista("anotacoes.json")
     for dados in listaAnotacoes:
-        if dados['paciente'] == nomePacienteAtendido:
+        if dados['paciente'] == nomePacienteAtendido and dados['id'] == idPacienteAtendido:
             anotacoesGerais.append(dados)
 
     return anotacoesGerais
