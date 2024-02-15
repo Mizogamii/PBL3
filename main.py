@@ -76,7 +76,7 @@ while not encerrarPrograma:
                 funcoes.cabecalho("INICIAR SESSÃO")
                 sessaoAberta = funcoes.sessaoAbertaOuFechada()
                 
-                #Verificação de sessão, caso já tenha uma sessão aberta, torna-se impossível iniciar uma nova ao mesmo tempo
+                #Verificação da sessão, caso já tenha uma sessão aberta, torna-se impossível iniciar uma nova ao mesmo tempo
                 if sessaoAberta == False:
                     funcoes.iniciarSessao()
                 else:
@@ -197,7 +197,7 @@ while not encerrarPrograma:
                     print("ERRO!\nNão há pacientes sendo atendidos no momento!")
 
             elif opcao == 7: 
-                funcoes.cabecalho("ANOTAR NO PRONTUÁRIO")
+                funcoes.cabecalho("FAZER ANOTAÇÕES")
                 if atendendoPaciente:
                     funcoes.anotarProntuario(nomePacienteAtendido, idPacienteAtendido, dentista)
                 else:

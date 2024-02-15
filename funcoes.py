@@ -600,12 +600,12 @@ def verificacaoPacienteMarcado(nomePaciente, idPaciente):
 def menuDentista():
     cabecalho("MENU DENTISTA")
     print("""1 - Buscar sessão clínica
-2 - Iniciar sessão clínica
+2 - Iniciar sessão clínica para consultas
 3 - Atender próximo paciente
 4 - Ler prontuário de paciente
 5 - Ler a primeira anotação do paciente
 6 - Ler a última anotação do paciente
-7 - Anotar no prontuário
+7 - Fazer anotações
 8 - Sair da página do dentista""")
     print("-"*47)
 
