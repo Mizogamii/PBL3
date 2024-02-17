@@ -41,24 +41,6 @@ def login():
     print()
     return usuario
 
-#Função para impressão do menu da recepção
-def menuRecepcao():
-    cabecalho("MENU RECEPÇÃO")
-    print("""1 -  Adicionar nova sessão
-2 -  Listar sessões clínicas 
-3 -  Buscar sessão clínica
-4 -  Iniciar sessão               
-5 -  Cadastrar novo paciente
-6 -  Marcar horário 
-7 -  Listar horários marcados
-8 -  Verificar se paciente tem horário marcado
-9 -  Colocar paciente na fila de atendimento
-10 - Mostrar próximo paciente na fila
-11 - Listar consultas realizadas na sessão
-12 - Sair da página da recepção """) 
-    
-    print("-"*47)
-
 #Função para abrir o arquivo json para leitura com dicionário dentro de dicionário
 def abrirArquivo(nomeArquivo):
     caminho = salvarEmPasta(nomeArquivo)
@@ -126,6 +108,72 @@ def inserindoId(dados, dicionario, codigo, id):
     dados[idStr] = dicionario
 
     return id
+
+#Função para formatação das datas
+def formatoData():
+    entradaValida = False
+    while not entradaValida:
+        try:
+            inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
+            data = datetime.strptime(inputDataSessao, "%d/%m/%Y")
+        
+            if data < datetime.now():
+                print("Digite anos atuais!")
+                continue
+
+            data = data.strftime("%d/%m/%Y")
+        except ValueError: 
+            print("ERRO! Digite no formato pedido.")
+        else:
+            entradaValida = True
+    return data
+
+#Função para tratar os dados inseridos pelo usuário
+def tratamentoDados(mensagem):
+    entradaValida = False
+    while not entradaValida:
+        try:
+            dados = int(input(mensagem))
+        except ValueError: 
+            print("ERRO! Digite apenas números!")
+        else:
+            entradaValida = True
+    return dados
+
+#Função para formatação das horas
+def formatoHora():
+    entradaValida = False
+    while not entradaValida:
+        try:
+            inputHora = input("Hora da sessão [hh:mm]: ")
+            hora = datetime.strptime(inputHora, "%H:%M").time()
+            hora = hora.strftime("%H:%M")
+        except ValueError:
+            print("ERRO! Digite no formato pedido.")
+        
+        else:
+            entradaValida = True
+    return hora
+
+#-----------------------------------------------------------------------------------
+#FUNÇÕES APENAS DA RECEPÇÃO
+#Função para impressão do menu da recepção
+def menuRecepcao():
+    cabecalho("MENU RECEPÇÃO")
+    print("""1 -  Adicionar nova sessão
+2 -  Listar sessões clínicas 
+3 -  Buscar sessão clínica
+4 -  Iniciar sessão               
+5 -  Cadastrar novo paciente
+6 -  Marcar horário 
+7 -  Listar horários marcados
+8 -  Verificar se paciente tem horário marcado
+9 -  Colocar paciente na fila de atendimento
+10 - Mostrar próximo paciente na fila
+11 - Listar consultas realizadas na sessão
+12 - Sair da página da recepção """) 
+    
+    print("-"*47)
 
 #Função da opção 1 de adicionar nova sessão clínica
 def adicionarNovaSessao():
@@ -466,52 +514,6 @@ def listarConsultasRealizadas():
     else: 
         print("ERRO! Ainda não foram atendidos pacientes nessa\nsessão." )
                   
-#Função para formatação das datas
-def formatoData():
-    entradaValida = False
-    while not entradaValida:
-        try:
-            inputDataSessao = input("Data da sessão[dd/mm/yyyy]: ")
-            data = datetime.strptime(inputDataSessao, "%d/%m/%Y")
-        
-            if data < datetime.now():
-                print("Digite anos atuais!")
-                continue
-
-            data = data.strftime("%d/%m/%Y")
-        except ValueError: 
-            print("ERRO! Digite no formato pedido.")
-        else:
-            entradaValida = True
-    return data
-
-#Função para tratar os dados inseridos pelo usuário
-def tratamentoDados(mensagem):
-    entradaValida = False
-    while not entradaValida:
-        try:
-            dados = int(input(mensagem))
-        except ValueError: 
-            print("ERRO! Digite apenas números!")
-        else:
-            entradaValida = True
-    return dados
-
-#Função para formatação das horas
-def formatoHora():
-    entradaValida = False
-    while not entradaValida:
-        try:
-            inputHora = input("Hora da sessão [hh:mm]: ")
-            hora = datetime.strptime(inputHora, "%H:%M").time()
-            hora = hora.strftime("%H:%M")
-        except ValueError:
-            print("ERRO! Digite no formato pedido.")
-        
-        else:
-            entradaValida = True
-    return hora
-
 #Função para listar os pacientes que estão marcados na sessão aberta no sistema
 def pacientesComHoraMarcadaSessao():
     dataHoraSessaoAberta = abrirArquivo('dataHoraSessaoAberta.json')
@@ -594,7 +596,7 @@ def verificacaoPacienteMarcado(nomePaciente, idPaciente):
         return pacienteConsta
 
 #-----------------------------------------------------------------------------------
-#FUNÇÕES DA PARTE DO DENTISTA
+#FUNÇÕES APENAS DO DENTISTA
 #Função para impressão do menu do dentista
 def menuDentista():
     cabecalho("MENU DENTISTA")
