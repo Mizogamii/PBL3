@@ -1,0 +1,10 @@
+{
+    "1": {
+        "codigo": 1,
+        "dataSessao": "22/02/2024",
+        "horarioSessao": "14:00",
+        "duracaoSessao": 240,
+        "tempoConsulta": 30,
+        "quantidadePacientePossivel": 8
+    }
+}

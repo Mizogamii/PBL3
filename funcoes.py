@@ -593,7 +593,7 @@ def verificacaoPacienteMarcado(nomePaciente, idPaciente):
     else:
         print("Não há dados no arquivo!")
 
-        return pacienteConsta
+    return pacienteConsta
 
 #-----------------------------------------------------------------------------------
 #FUNÇÕES APENAS DO DENTISTA
