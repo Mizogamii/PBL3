@@ -655,7 +655,7 @@ def atenderProxPaciente():
         listaPacientesAtendidos = abrirArquivoLista('listaPacientesAtendidos.json')
         
         #Inserindo dados no dicionário para ser deletado da fila após o atendimento
-        pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
+        pacienteAtendidoAtual = {'nome': listaDeAtendimento[0]['nome'], 'id': listaDeAtendimento[0]['id'], 'data': listaDeAtendimento[0]['data'], 'hora': listaDeAtendimento[0]['hora']}
 
         listaPacientesAtendidos.append(pacienteAtendidoAtual)
 
